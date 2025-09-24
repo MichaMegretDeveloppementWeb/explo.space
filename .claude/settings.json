@@ -1,0 +1,7 @@
+{
+    "permissions": {
+        "allow": ["Read", "Write", "Edit", "MultiEdit"]
+    },
+    "defaultMode": "plan",
+    "includeCoAuthoredBy": false
+}
