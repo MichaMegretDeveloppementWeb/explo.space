@@ -1,5 +1,14 @@
 @import 'tailwindcss';
 
+/* Import des bibliothèques Leaflet */
+@import 'leaflet/dist/leaflet.css';
+@import 'leaflet.markercluster/dist/MarkerCluster.css';
+@import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
+
+/* Import des styles custom pour PlaceExplorer */
+/*@import './web/place/index/index.css';*/
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';

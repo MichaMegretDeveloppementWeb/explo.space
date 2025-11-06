@@ -1,0 +1,32 @@
+<?php
+
+return [
+    // Site
+    'site_name' => 'Explo.space',
+    'site_baseline' => 'Explorez les sites de la conquête spatiale',
+
+    // Navigation
+    'navigation' => [
+        'home' => 'Accueil',
+        'explore' => 'Explorer',
+        'features' => 'Fonctionnalités',
+        'about' => 'À propos',
+        'contact' => 'Contact',
+        'propose_place' => 'Proposer un lieu',
+        'login_admin' => 'Connexion admin',
+    ],
+
+    // Mots-clés traduits
+    'keywords' => [
+        'base' => 'espace, spatial, conquête spatiale, exploration univers',
+    ],
+
+    // Actions communes
+    'close' => 'Fermer',
+    'retry' => 'Réessayer',
+    'view_detail' => 'Voir le détail',
+    'back' => 'Retour',
+
+    // Chargement
+    'loading_map' => 'Chargement de la carte...',
+];

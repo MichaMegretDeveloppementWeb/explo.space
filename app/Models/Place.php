@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +22,7 @@ class Place extends Model
     protected $fillable = [
         'latitude',
         'longitude',
+        'coordinates',
         'address',
         'is_featured',
         'admin_id',
@@ -30,8 +32,8 @@ class Place extends Model
     protected function casts(): array
     {
         return [
-            'latitude' => 'decimal:7',
-            'longitude' => 'decimal:7',
+            'latitude' => 'decimal:6', // Précision au mètre
+            'longitude' => 'decimal:6', // Précision au mètre
             'is_featured' => 'boolean',
         ];
     }
@@ -46,18 +48,13 @@ class Place extends Model
 
     /**
      * Get translation for specific locale
+     *
+     * Note: Avoid using this method in loops or with eagerly loaded relations.
+     * Prefer accessing $model->translations->first() to use already loaded data.
      */
     public function translate(string $locale): ?PlaceTranslation
     {
         return $this->translations->firstWhere('locale', $locale);
-    }
-
-    /**
-     * Get translation for current app locale
-     */
-    public function getTranslationAttribute(): ?PlaceTranslation
-    {
-        return $this->translate(app()->getLocale());
     }
 
     /**
@@ -106,5 +103,52 @@ class Place extends Model
     public function placeRequest(): BelongsTo
     {
         return $this->belongsTo(PlaceRequest::class, 'request_id');
+    }
+
+    /**
+     * Scope pour recherche dans un rayon géographique
+     * Utilise l'index spatial pour performance optimale
+     */
+    /**
+     * @param  Builder<Place>  $query
+     */
+    public function scopeWithinRadius(Builder $query, float $latitude, float $longitude, float $radiusKm): void
+    {
+        $radiusMeters = $radiusKm * 1000;
+
+        $query->whereRaw(
+            'ST_Distance_Sphere(coordinates, POINT(?, ?)) <= ?',
+            [$longitude, $latitude, $radiusMeters]
+        );
+    }
+
+    /**
+     * Scope pour recherche dans une bounding box
+     * Plus efficace pour grandes zones
+     *
+     * @param  Builder<Place>  $query
+     */
+    public function scopeWithinBounds(Builder $query, float $swLat, float $swLng, float $neLat, float $neLng): void
+    {
+        $query->whereRaw(
+            'ST_Within(coordinates, ST_GeomFromText(?))',
+            ["POLYGON(($swLng $swLat, $neLng $swLat, $neLng $neLat, $swLng $neLat, $swLng $swLat))"]
+        );
+    }
+
+    /**
+     * Met à jour automatiquement la colonne coordinates
+     * quand latitude/longitude changent
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::saving(function (Place $place) {
+            // Auto-remplir la colonne coordinates POINT depuis latitude/longitude
+            if ($place->latitude && $place->longitude) {
+                $place->coordinates = \DB::raw("POINT({$place->longitude}, {$place->latitude})");
+            }
+        });
     }
 }

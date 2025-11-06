@@ -17,8 +17,14 @@ class PlaceFactory extends Factory
     public function definition(): array
     {
         return [
-            'latitude' => fake()->latitude(40, 50),
-            'longitude' => fake()->longitude(-5, 10),
+            'latitude' => fake()->latitude(
+                config('map.coordinates.latitude.min'),
+                config('map.coordinates.latitude.max')
+            ),
+            'longitude' => fake()->longitude(
+                config('map.coordinates.longitude.min'),
+                config('map.coordinates.longitude.max')
+            ),
             'address' => fake()->address(),
             'is_featured' => false,
         ];

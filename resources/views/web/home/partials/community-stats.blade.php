@@ -3,10 +3,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 sm:mb-16">
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
-                Une communauté passionnée
+                {{ __('web/pages/home.community_stats.title') }}
             </h2>
             <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl sm:max-w-3xl mx-auto px-2 sm:px-0">
-                Rejoignez des milliers d'explorateurs qui partagent votre passion pour l'espace
+                {{ __('web/pages/home.community_stats.subtitle') }}
             </p>
         </div>
 
@@ -19,8 +19,8 @@
                         <div class="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 opacity-10"></div>
                         <x-heroicon-o-map-pin class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-500 relative z-10" />
                     </div>
-                    <div class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">1,247</div>
-                    <div class="text-xs sm:text-sm text-gray-600">Lieux référencés</div>
+                    <div class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">{{ __('web/pages/home.community_stats.stats.places.count') }}</div>
+                    <div class="text-xs sm:text-sm text-gray-600">{{ __('web/pages/home.community_stats.stats.places.label') }}</div>
                 </div>
             </div>
 
@@ -32,8 +32,8 @@
                         <div class="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 opacity-10"></div>
                         <x-heroicon-o-users class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-purple-500 relative z-10" />
                     </div>
-                    <div class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">12,847</div>
-                    <div class="text-xs sm:text-sm text-gray-600">Membres actifs</div>
+                    <div class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">{{ __('web/pages/home.community_stats.stats.members.count') }}</div>
+                    <div class="text-xs sm:text-sm text-gray-600">{{ __('web/pages/home.community_stats.stats.members.label') }}</div>
                 </div>
             </div>
 
@@ -45,8 +45,8 @@
                         <div class="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-green-500 to-teal-600 opacity-10"></div>
                         <x-heroicon-o-globe-alt class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-500 relative z-10" />
                     </div>
-                    <div class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">54</div>
-                    <div class="text-xs sm:text-sm text-gray-600">Pays couverts</div>
+                    <div class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">{{ __('web/pages/home.community_stats.stats.countries.count') }}</div>
+                    <div class="text-xs sm:text-sm text-gray-600">{{ __('web/pages/home.community_stats.stats.countries.label') }}</div>
                 </div>
             </div>
 
@@ -58,8 +58,8 @@
                         <div class="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 opacity-10"></div>
                         <x-heroicon-o-document-plus class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-orange-500 relative z-10" />
                     </div>
-                    <div class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">127</div>
-                    <div class="text-xs sm:text-sm text-gray-600">Propositions ce mois</div>
+                    <div class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">{{ __('web/pages/home.community_stats.stats.monthly_submissions.count') }}</div>
+                    <div class="text-xs sm:text-sm text-gray-600">{{ __('web/pages/home.community_stats.stats.monthly_submissions.label') }}</div>
                 </div>
             </div>
         </div>

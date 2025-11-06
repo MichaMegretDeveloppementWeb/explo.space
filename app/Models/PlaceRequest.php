@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\RequestStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PlaceRequest extends Model
@@ -36,8 +38,9 @@ class PlaceRequest extends Model
     protected function casts(): array
     {
         return [
-            'latitude' => 'decimal:7',
-            'longitude' => 'decimal:7',
+            'status' => RequestStatus::class,
+            'latitude' => 'decimal:6', // Précision au mètre
+            'longitude' => 'decimal:6', // Précision au mètre
             'viewed_at' => 'datetime',
             'processed_at' => 'datetime',
         ];
@@ -60,6 +63,14 @@ class PlaceRequest extends Model
     }
 
     /**
+     * @return HasMany<PlaceRequestPhoto, $this>
+     */
+    public function photos(): HasMany
+    {
+        return $this->hasMany(PlaceRequestPhoto::class)->orderBy('sort_order');
+    }
+
+    /**
      * @return HasOne<Place, $this>
      */
     public function place(): HasOne
@@ -69,21 +80,21 @@ class PlaceRequest extends Model
 
     public function isSubmitted(): bool
     {
-        return $this->status === 'submitted';
+        return $this->status === RequestStatus::Submitted;
     }
 
     public function isPending(): bool
     {
-        return $this->status === 'pending';
+        return $this->status === RequestStatus::Pending;
     }
 
     public function isAccepted(): bool
     {
-        return $this->status === 'accepted';
+        return $this->status === RequestStatus::Accepted;
     }
 
     public function isRefused(): bool
     {
-        return $this->status === 'refused';
+        return $this->status === RequestStatus::Refused;
     }
 }

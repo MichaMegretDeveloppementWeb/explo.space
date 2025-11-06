@@ -1,7 +1,4 @@
-@extends('layouts.web')
-
-@section('title', 'COSMAP - Decouvrez les lieux de la conquete spatiale')
-@section('description', 'Explorez un annuaire mondial des objets et lieux lies a la conquete spatiale et a la decouverte de l\'univers. Recherchez autour de vous ou par thematique.')
+@extends('layouts.web', ['footer' => true])
 
 @section('content')
 

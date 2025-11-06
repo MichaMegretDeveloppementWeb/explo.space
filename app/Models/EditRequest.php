@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RequestStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,6 +30,7 @@ class EditRequest extends Model
     protected function casts(): array
     {
         return [
+            'status' => RequestStatus::class,
             'suggested_changes' => 'array',
             'viewed_at' => 'datetime',
             'processed_at' => 'datetime',
@@ -71,11 +73,21 @@ class EditRequest extends Model
 
     public function isSubmitted(): bool
     {
-        return $this->status === 'submitted';
+        return $this->status === RequestStatus::Submitted;
+    }
+
+    public function isPending(): bool
+    {
+        return $this->status === RequestStatus::Pending;
     }
 
     public function isAccepted(): bool
     {
-        return $this->status === 'accepted';
+        return $this->status === RequestStatus::Accepted;
+    }
+
+    public function isRefused(): bool
+    {
+        return $this->status === RequestStatus::Refused;
     }
 }

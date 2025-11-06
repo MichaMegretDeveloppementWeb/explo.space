@@ -18,10 +18,10 @@ return new class extends Migration
 
             $table->id();
             $table->string('contact_email'); // Email pour suivi et notification (pas de compte utilisateur)
-            $table->string('detected_language', 5)->nullable(); // Langue détectée automatiquement
+            $table->string('detected_language', 10)->nullable(); // Langue détectée automatiquement
             $table->foreignId('place_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['modification', 'signalement'])->default('modification');
-            $table->text('description');
+            $table->enum('type', ['modification', 'signalement', 'photo_suggestion'])->default('modification');
+            $table->text('description')->nullable();
             $table->json('suggested_changes')->nullable();
             $table->enum('status', ['submitted', 'pending', 'accepted', 'refused'])->default('submitted');
             $table->text('admin_reason')->nullable();

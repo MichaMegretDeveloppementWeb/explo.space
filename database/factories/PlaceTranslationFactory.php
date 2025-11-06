@@ -18,25 +18,18 @@ class PlaceTranslationFactory extends Factory
      */
     public function definition(): array
     {
-        $title = fake()->sentence(3, false);
+        $title = fake('fr_FR')->sentence(3, false);
 
         return [
             'place_id' => Place::factory(),
             'locale' => 'fr',
             'title' => $title,
             'slug' => Str::slug($title),
-            'description' => fake()->paragraph(5),
-            'practical_info' => fake()->optional()->paragraph(),
+            'description' => fake('fr_FR')->paragraph(5),
+            'practical_info' => fake('fr_FR')->optional()->paragraph(),
             'status' => 'published',
             'source_hash' => null,
         ];
-    }
-
-    public function french(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'locale' => 'fr',
-        ]);
     }
 
     public function english(): static

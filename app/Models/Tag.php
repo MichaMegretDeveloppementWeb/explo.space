@@ -34,18 +34,13 @@ class Tag extends Model
 
     /**
      * Get translation for specific locale
+     *
+     * Note: Avoid using this method in loops or with eagerly loaded relations.
+     * Prefer accessing $model->translations->first() to use already loaded data.
      */
     public function translate(string $locale): ?TagTranslation
     {
         return $this->translations->firstWhere('locale', $locale);
-    }
-
-    /**
-     * Get translation for current app locale
-     */
-    public function getTranslationAttribute(): ?TagTranslation
-    {
-        return $this->translate(app()->getLocale());
     }
 
     public function isActive(): bool

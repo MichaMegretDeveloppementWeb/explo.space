@@ -1,81 +1,77 @@
+@php use App\Models\Photo; @endphp
 <!-- Section Lieux emblematiques -->
 <section class="py-12 sm:py-16 md:py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 sm:mb-16">
             <div class="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium mb-3 sm:mb-4">
                 <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full mr-1.5 sm:mr-2"></span>
-                Lieux emblématiques
+                {{ __('web/pages/home.featured_places.badge') }}
             </div>
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
-                Des destinations extraordinaires
+                {{ __('web/pages/home.featured_places.title') }}
             </h2>
             <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl sm:max-w-3xl mx-auto px-2 sm:px-0">
-                Découvrez quelques-uns des lieux les plus fascinants de notre collection mondiale
+                {{ __('web/pages/home.featured_places.subtitle') }}
             </p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <!-- Lieu 1 -->
-            <div class="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg overflow-hidden hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300">
-                <!-- Image : Centre spatial Kennedy, vue aerienne, 400x250px -->
-                <div class="h-40 sm:h-48 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center relative overflow-hidden">
-                    <img src="{{ Vite::asset('resources/images/home/featured-places/kennedy_space_center.jpg') }}" alt="Centre spacial Kennedy" class="w-full h-full object-cover">
-                    <div class="absolute top-2 right-2">
-                        <span class="px-2 py-1 bg-white/90 text-blue-600 text-xs font-medium rounded-full">NASA</span>
-                    </div>
-                </div>
-                <div class="p-4 sm:p-6">
-                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-2">Centre spatial Kennedy</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-3 sm:mb-4">Centre de lancement historique de la NASA en Floride, berceau des missions Apollo et des navettes spatiales.</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs sm:text-sm text-gray-500">Floride, USA</span>
-                        <x-heroicon-o-arrow-right class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                </div>
-            </div>
+            @forelse($featuredPlaces as $place)
 
-            <!-- Lieu 2 -->
-            <div class="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg overflow-hidden hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300">
-                <!-- Image : Baikonour, rampe de lancement Soyouz, 400x250px -->
-                <div class="h-40 sm:h-48 bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center relative overflow-hidden">
-                    <img src="{{ Vite::asset('resources/images/home/featured-places/cosmodrome_baikonour.jpg') }}" alt="Cosmodrome de Baikonour" class="w-full h-full object-cover">
-                    <div class="absolute top-2 right-2">
-                        <span class="px-2 py-1 bg-white/90 text-red-600 text-xs font-medium rounded-full">Roscosmos</span>
-                    </div>
-                </div>
-                <div class="p-4 sm:p-6">
-                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-2">Cosmodrome de Baikonour</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-3 sm:mb-4">Premier cosmodrome au monde, site historique du vol de Gagarine et base actuelle des missions Soyouz.</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs sm:text-sm text-gray-500">Kazakhstan</span>
-                        <x-heroicon-o-arrow-right class="w-4 h-4 sm:w-5 sm:h-5 text-red-600 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                </div>
-            </div>
+                @php
+                    $translation = $place->translations->first();
+                    /** @var Photo $mainPhoto */
+                    $mainPhoto = $place->photos->first();
+                    $tag = $place->tags->first();
+                    $tagTranslation = $tag?->translations->first();
+                @endphp
 
-            <!-- Lieu 3 -->
-            <div class="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg overflow-hidden hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300">
-                <!-- Image : Observatoire ALMA, desert Atacama, 400x250px -->
-                <div class="h-40 sm:h-48 bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center relative overflow-hidden">
-                    <img src="{{ Vite::asset('resources/images/home/featured-places/observatoire_alma.jpg') }}" alt="Observatoire Alma" class="w-full h-full object-cover">
-                    <div class="absolute top-2 right-2">
-                        <span class="px-2 py-1 bg-white/90 text-purple-600 text-xs font-medium rounded-full">Observatoire</span>
+                @if($translation)
+                <a href="{{ localRoute('places.show', ['slug' => $translation->slug]) }}"
+                   class="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg overflow-hidden hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300 block">
+                    <div class="h-40 sm:h-48 bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center relative overflow-hidden">
+                        @if($mainPhoto?->medium_url)
+                            <img src="{{ $mainPhoto->medium_url }}"
+                                 alt="{{ $translation->title }}"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        @else
+                            <div class="w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                                <span class="text-white text-sm font-medium">{{ $translation->title }}</span>
+                            </div>
+                        @endif
+
+                        @if($tagTranslation)
+                            <div class="absolute top-2 right-2">
+                                <span class="px-2 py-1 bg-white/90 text-xs font-medium rounded-full"
+                                      style="color: {{ $tag->color ?? '#6366f1' }}">
+                                    {{ $tagTranslation->name }}
+                                </span>
+                            </div>
+                        @endif
                     </div>
-                </div>
-                <div class="p-4 sm:p-6">
-                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-2">Observatoire ALMA</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-3 sm:mb-4">Plus grand projet astronomique au monde, 66 antennes dans le désert d'Atacama pour sonder l'univers lointain.</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs sm:text-sm text-gray-500">Chili</span>
-                        <x-heroicon-o-arrow-right class="w-4 h-4 sm:w-5 sm:h-5 text-purple-600 group-hover:translate-x-1 transition-transform" />
+
+                    <div class="p-4 sm:p-6">
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-2">{{ $translation->title }}</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-3 sm:mb-4 line-clamp-2">{{ $translation->description }}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs sm:text-sm text-gray-500">{{ $place->address }}</span>
+                            <x-heroicon-o-arrow-right class="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 group-hover:translate-x-1 transition-transform"
+                                                      style="color: {{ $tag->color ?? '#6366f1' }}" />
+                        </div>
                     </div>
+                </a>
+                @endif
+            @empty
+                <!-- Fallback si aucun lieu featured -->
+                <div class="col-span-full text-center py-12">
+                    <p class="text-gray-500 text-lg">{{ __('web/pages/home.featured_places.no_places') }}</p>
                 </div>
-            </div>
+            @endforelse
         </div>
 
         <div class="text-center mt-8 sm:mt-12">
-            <a href="#" class="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white font-semibold rounded-lg sm:rounded-xl hover:bg-gray-800 transition-colors text-sm sm:text-base">
-                Voir tous les lieux emblématiques
+            <a href="{{ localRoute('explore') }}" class="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white font-semibold rounded-lg sm:rounded-xl hover:bg-gray-800 transition-colors text-sm sm:text-base">
+                {{ __('web/pages/home.featured_places.cta') }}
                 <x-heroicon-o-arrow-right class="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
             </a>
         </div>

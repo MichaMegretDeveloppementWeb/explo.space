@@ -4,26 +4,26 @@
         <div class="flex flex-wrap items-start justify-around gap-y-16 gap-x-20">
             <!-- À propos -->
             <div>
-                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">À propos</h3>
+                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">{{ __('web/components/footer.sections.about.title') }}</h3>
                 <ul class="space-y-3">
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Notre mission
+                            {{ __('web/components/footer.sections.about.links.mission') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Comment ça marche
+                            {{ __('web/components/footer.sections.about.links.how_it_works') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Équipe
+                            {{ __('web/components/footer.sections.about.links.team') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Contact
+                            {{ __('web/components/footer.sections.about.links.contact') }}
                         </a>
                     </li>
                 </ul>
@@ -31,26 +31,26 @@
 
             <!-- Explorer -->
             <div>
-                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Explorer</h3>
+                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">{{ __('web/components/footer.sections.explore.title') }}</h3>
                 <ul class="space-y-3">
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Rechercher un lieu
+                            {{ __('web/components/footer.sections.explore.links.search') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Lieux à la une
+                            {{ __('web/components/footer.sections.explore.links.featured') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Derniers ajouts
+                            {{ __('web/components/footer.sections.explore.links.latest') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Tous les tags
+                            {{ __('web/components/footer.sections.explore.links.all_tags') }}
                         </a>
                     </li>
                 </ul>
@@ -58,26 +58,26 @@
 
             <!-- Communauté -->
             <div>
-                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Communauté</h3>
+                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">{{ __('web/components/footer.sections.community.title') }}</h3>
                 <ul class="space-y-3">
                     <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Proposer un lieu
+                        <a href="{{ localRoute('place_requests.create') }}" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
+                            {{ __('web/components/footer.sections.community.links.suggest_place') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Signaler une erreur
+                            {{ __('web/components/footer.sections.community.links.report_error') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Contributeurs
+                            {{ __('web/components/footer.sections.community.links.contributors') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Guidelines
+                            {{ __('web/components/footer.sections.community.links.guidelines') }}
                         </a>
                     </li>
                 </ul>
@@ -85,26 +85,26 @@
 
             <!-- Support -->
             <div>
-                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Support</h3>
+                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">{{ __('web/components/footer.sections.support.title') }}</h3>
                 <ul class="space-y-3">
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Centre d'aide
+                            {{ __('web/components/footer.sections.support.links.help_center') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            FAQ
+                            {{ __('web/components/footer.sections.support.links.faq') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Nous contacter
+                            {{ __('web/components/footer.sections.support.links.contact_us') }}
                         </a>
                     </li>
                     <li>
                         <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            Signaler un bug
+                            {{ __('web/components/footer.sections.support.links.report_bug') }}
                         </a>
                     </li>
                 </ul>
@@ -122,8 +122,8 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-sm font-semibold text-gray-900">COSMAP</div>
-                        <div class="text-xs text-gray-600">Découvrez l'univers spatial</div>
+                        <div class="text-sm font-semibold text-gray-900">{{ __('web/components/footer.brand.name') }}</div>
+                        <div class="text-xs text-gray-600">{{ __('web/components/footer.brand.tagline') }}</div>
                     </div>
                 </div>
 
@@ -131,16 +131,16 @@
                 <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
                     <div class="flex space-x-4 text-xs text-gray-600">
                         <a href="#" class="hover:text-blue-600 transition-colors">
-                            Mentions légales
+                            {{ __('web/components/footer.legal.terms') }}
                         </a>
                         <a href="#" class="hover:text-blue-600 transition-colors">
-                            CGU
+                            {{ __('web/components/footer.legal.conditions') }}
                         </a>
                         <a href="#" class="hover:text-blue-600 transition-colors">
-                            Confidentialité
+                            {{ __('web/components/footer.legal.privacy') }}
                         </a>
                         <a href="#" class="hover:text-blue-600 transition-colors">
-                            Cookies
+                            {{ __('web/components/footer.legal.cookies') }}
                         </a>
                     </div>
                 </div>
@@ -149,8 +149,8 @@
             <!-- Copyright -->
             <div class="mt-4 pt-4 border-t border-gray-200 text-center">
                 <p class="text-xs text-gray-500">
-                    © {{ date('Y') }} COSMAP. Tous droits réservés.
-                    Créé avec passion pour les explorateurs de l'univers.
+                    © {{ date('Y') }} {{ __('web/components/footer.brand.name') }}. {{ __('web/components/footer.copyright.text') }}
+                    {{ __('web/components/footer.copyright.tagline') }}
                 </p>
             </div>
         </div>

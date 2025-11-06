@@ -18,7 +18,30 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/storage/debugbar/*
+!/storage/debugbar/.gitignore
 /vendor
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Configuration IDE et outils IA
+.claude/
+.junie/
+.mcp.json
+CLAUDE.md
+
+# Documentation de travail et notes
+docs/
+
+# Configuration qualité code locale
+grumphp.yml
+
+# Fichiers de travail local
+conversation.md
+prompt.txt
+todo_list.md
+
+# Scripts utilitaires locaux
+create-test-database.php
+verify-translations.php

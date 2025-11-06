@@ -18,12 +18,12 @@ return new class extends Migration
 
             $table->id();
             $table->string('contact_email'); // Email pour suivi et notification (pas de compte utilisateur)
-            $table->string('detected_language', 5)->nullable(); // Langue détectée automatiquement
+            $table->string('detected_language', 10)->nullable(); // Langue détectée automatiquement
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('description');
-            $table->decimal('latitude', 10, 7);
-            $table->decimal('longitude', 10, 7);
+            $table->text('description')->nullable();
+            $table->decimal('latitude', 9, 6)->nullable(); // Précision au mètre (6 décimales)
+            $table->decimal('longitude', 9, 6)->nullable(); // Précision au mètre (6 décimales)
             $table->string('address')->nullable();
             $table->text('practical_info')->nullable();
             $table->enum('status', ['submitted', 'pending', 'accepted', 'refused'])->default('submitted');

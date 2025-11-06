@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'nominatim' => [
+        'url' => env('NOMINATIM_URL', 'https://nominatim.openstreetmap.org'),
+        'user_agent' => env('NOMINATIM_USER_AGENT', env('APP_NAME', 'explo.space')),
+        'cache_minutes' => env('NOMINATIM_CACHE_MINUTES', 60),
+        'rate_limit_delay' => env('NOMINATIM_RATE_LIMIT_DELAY', 1),
+    ],
+
 ];

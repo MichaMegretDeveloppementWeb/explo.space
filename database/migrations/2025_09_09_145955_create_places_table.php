@@ -17,8 +17,9 @@ return new class extends Migration
             $table->collation('utf8mb4_general_ci');
 
             $table->id();
-            $table->decimal('latitude', 10, 7);
-            $table->decimal('longitude', 10, 7);
+            $table->decimal('latitude', 9, 6); // Précision au mètre (6 décimales)
+            $table->decimal('longitude', 9, 6); // Précision au mètre (6 décimales)
+            $table->geometry('coordinates', 'point');
             $table->string('address')->nullable();
             $table->boolean('is_featured')->default(false); // Pour "références à la une" page d'accueil
             $table->foreignId('admin_id')->nullable()->constrained('users')->onDelete('set null')->onUpdate('cascade'); // Admin qui a créé/validé ce lieu
@@ -27,7 +28,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['is_featured']);
-            $table->index(['latitude', 'longitude']);
+            $table->index(['latitude', 'longitude']); // Index classique pour compatibilité
+            $table->spatialIndex('coordinates'); // Index spatial pour performance optimale
         });
     }
 

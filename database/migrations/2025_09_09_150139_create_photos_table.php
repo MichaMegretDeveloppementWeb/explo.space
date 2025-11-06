@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('filename');
             $table->string('original_name');
             $table->string('mime_type', 50);
-            $table->unsignedBigInteger('size');
+            $table->unsignedInteger('size');
             $table->string('alt_text')->nullable();
             $table->boolean('is_main')->default(false);
             $table->unsignedTinyInteger('sort_order')->default(0);

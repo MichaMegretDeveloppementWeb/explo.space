@@ -4,10 +4,10 @@
         <!-- Header Section -->
         <div class="text-center mb-12 sm:mb-16">
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-                Deux modes de recherche
+                {{ __('web/pages/home.features.title') }}
             </h2>
             <p class="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl sm:max-w-3xl mx-auto px-2 sm:px-0">
-                Decouvrez les lieux spatiaux selon vos besoins : autour de vous ou par thematique mondiale.
+                {{ __('web/pages/home.features.subtitle') }}
             </p>
         </div>
 
@@ -32,8 +32,8 @@
                         <!-- Curseur rayon mis en avant avec animation -->
                         <div class="mb-3 sm:mb-4 p-2.5 sm:p-3 bg-blue-50 border-2 border-blue-200 rounded-lg">
                             <div class="flex items-center justify-between mb-1.5 sm:mb-2">
-                                <span class="text-xs font-medium text-blue-800">Rayon de recherche</span>
-                                <span class="text-xs font-bold text-blue-600 radius-display">750 km</span>
+                                <span class="text-xs font-medium text-blue-800">{{ __('web/pages/home.features.modes.proximity.mockup.radius_label') }}</span>
+                                <span class="text-xs font-bold text-blue-600 radius-display">{{ __('web/pages/home.features.modes.proximity.mockup.radius_display') }}</span>
                             </div>
                             <div class="relative h-1.5 sm:h-2 bg-blue-200 rounded-full">
                                 <div class="absolute h-3 w-3 sm:h-4 sm:w-4 bg-blue-600 rounded-full -mt-0.5 sm:-mt-1 transform -translate-x-1/2 shadow-lg radius-slider" style="left: 50%; animation: slideRadius 10s infinite;"></div>
@@ -53,60 +53,60 @@
                             </div>
 
 
-                            <!-- Continents réalistes (identiques au mockup thématique) -->
+                            <!-- Continents réalistes (repositionnés plus près du centre) -->
                             <!-- Amérique du Nord -->
-                            <div class="absolute top-6 left-2">
-                                <div class="relative w-12 h-10 bg-gray-300 opacity-70" style="clip-path: polygon(10% 90%, 20% 80%, 30% 85%, 40% 75%, 60% 80%, 80% 70%, 90% 50%, 95% 30%, 85% 20%, 75% 10%, 60% 15%, 40% 5%, 20% 15%, 10% 25%, 5% 40%, 0% 60%, 5% 80%);">
+                            <div class="absolute top-10 left-6">
+                                <div class="relative w-12 h-10 bg-gray-400 opacity-70" style="clip-path: polygon(10% 90%, 20% 80%, 30% 85%, 40% 75%, 60% 80%, 80% 70%, 90% 50%, 95% 30%, 85% 20%, 75% 10%, 60% 15%, 40% 5%, 20% 15%, 10% 25%, 5% 40%, 0% 60%, 5% 80%);">
                                     <div class="absolute inset-0 bg-gradient-to-se from-gray-400 to-gray-300"></div>
                                 </div>
                             </div>
 
                             <!-- Europe / Afrique -->
-                            <div class="absolute top-4 left-1/2 transform -translate-x-1/2">
-                                <div class="relative w-8 h-16 bg-gray-300 opacity-70" style="clip-path: polygon(20% 0%, 60% 5%, 80% 15%, 90% 35%, 85% 50%, 90% 65%, 80% 80%, 60% 90%, 40% 95%, 20% 90%, 10% 75%, 5% 60%, 15% 45%, 10% 30%, 20% 15%);">
+                            <div class="absolute top-8 left-1/2 transform -translate-x-1/2">
+                                <div class="relative w-8 h-16 bg-gray-400 opacity-70" style="clip-path: polygon(20% 0%, 60% 5%, 80% 15%, 90% 35%, 85% 50%, 90% 65%, 80% 80%, 60% 90%, 40% 95%, 20% 90%, 10% 75%, 5% 60%, 15% 45%, 10% 30%, 20% 15%);">
                                     <div class="absolute inset-0 bg-gradient-to-s from-gray-400 to-gray-300"></div>
                                 </div>
                             </div>
 
                             <!-- Asie -->
-                            <div class="absolute top-8 right-4">
-                                <div class="relative w-14 h-12 bg-gray-300 opacity-70" style="clip-path: polygon(0% 40%, 15% 20%, 30% 25%, 50% 15%, 70% 20%, 85% 35%, 95% 50%, 90% 70%, 75% 85%, 60% 90%, 40% 95%, 25% 85%, 10% 70%, 5% 55%);">
+                            <div class="absolute top-12 right-8">
+                                <div class="relative w-14 h-12 bg-gray-400 opacity-70" style="clip-path: polygon(0% 40%, 15% 20%, 30% 25%, 50% 15%, 70% 20%, 85% 35%, 95% 50%, 90% 70%, 75% 85%, 60% 90%, 40% 95%, 25% 85%, 10% 70%, 5% 55%);">
                                     <div class="absolute inset-0 bg-gradient-to-sw from-gray-400 to-gray-300"></div>
                                 </div>
                             </div>
 
                             <!-- Océanie/Australie -->
-                            <div class="absolute bottom-8 right-8">
-                                <div class="relative w-6 h-4 bg-gray-300 opacity-70" style="clip-path: polygon(15% 30%, 85% 20%, 95% 60%, 80% 90%, 20% 95%, 5% 70%);">
+                            <div class="absolute bottom-12 right-12">
+                                <div class="relative w-6 h-4 bg-gray-400 opacity-70" style="clip-path: polygon(15% 30%, 85% 20%, 95% 60%, 80% 90%, 20% 95%, 5% 70%);">
                                     <div class="absolute inset-0 bg-gradient-to-e from-gray-400 to-gray-300"></div>
                                 </div>
                             </div>
 
                             <!-- Amérique du Sud -->
-                            <div class="absolute bottom-12 left-6">
-                                <div class="relative w-5 h-10 bg-gray-300 opacity-70" style="clip-path: polygon(40% 0%, 70% 10%, 85% 30%, 80% 50%, 85% 70%, 75% 85%, 60% 95%, 40% 90%, 25% 85%, 20% 70%, 30% 50%, 25% 30%, 35% 15%);">
+                            <div class="absolute bottom-16 left-10">
+                                <div class="relative w-5 h-10 bg-gray-400 opacity-70" style="clip-path: polygon(40% 0%, 70% 10%, 85% 30%, 80% 50%, 85% 70%, 75% 85%, 60% 95%, 40% 90%, 25% 85%, 20% 70%, 30% 50%, 25% 30%, 35% 15%);">
                                     <div class="absolute inset-0 bg-gradient-to-s from-gray-400 to-gray-300"></div>
                                 </div>
                             </div>
 
-                            <!-- Points statiques (lieux) placés sur les continents -->
+                            <!-- Points statiques (lieux) placés sur les continents repositionnés -->
                             <!-- Points Amérique du Nord -->
-                            <div class="absolute top-8 left-6 w-2 h-2 bg-gray-400 rounded-full"></div>
-                            <div class="absolute top-12 left-8 w-2 h-2 bg-gray-400 rounded-full"></div>
+                            <div class="absolute top-12 left-10 w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <div class="absolute top-16 left-12 w-2 h-2 bg-blue-500 rounded-full"></div>
 
                             <!-- Points Europe/Afrique -->
-                            <div class="absolute top-16 left-1/2 w-2 h-2 bg-gray-400 rounded-full transform -translate-x-1/2"></div>
-                            <div class="absolute top-24 left-1/2 w-2 h-2 bg-gray-400 rounded-full transform translate-x-1"></div>
+                            <div class="absolute top-18 left-1/2 w-2 h-2 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
+                            <div class="absolute top-20 left-1/2 w-2 h-2 bg-blue-500 rounded-full transform translate-x-1"></div>
 
                             <!-- Points Asie -->
-                            <div class="absolute top-12 right-8 w-2 h-2 bg-gray-400 rounded-full"></div>
-                            <div class="absolute top-16 right-12 w-2 h-2 bg-gray-400 rounded-full"></div>
+                            <div class="absolute top-20 right-16 w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <div class="absolute top-24 right-20 w-2 h-2 bg-blue-500 rounded-full"></div>
 
                             <!-- Point Océanie -->
-                            <div class="absolute bottom-8 right-10 w-2 h-2 bg-gray-400 rounded-full"></div>
+                            <div class="absolute bottom-16 right-18 w-2 h-2 bg-blue-500 rounded-full"></div>
 
                             <!-- Point Amérique du Sud -->
-                            <div class="absolute bottom-16 left-8 w-2 h-2 bg-gray-400 rounded-full"></div>
+                            <div class="absolute bottom-22 left-16 w-2 h-2 bg-blue-500 rounded-full"></div>
 
                             <!-- Point central clignotant (position utilisateur) -->
                             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -120,6 +120,14 @@
                             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                 <div class="border-2 border-blue-400 bg-[#79aaff38] border-dashed rounded-full opacity-70 radius-circle" style="width: 60px; height: 60px; animation: radiusAnimation 10s infinite;"></div>
                             </div>
+
+                            <!-- Filtre d'opacité avec masque radial animé par JavaScript -->
+                            <div class="absolute inset-0 pointer-events-none search-radius-mask" id="radius-mask" style="
+                                background: rgba(255,255,255,0.92);
+                                -webkit-mask: radial-gradient(circle 45px at center, transparent 45px, black 55px);
+                                mask: radial-gradient(circle 45px at center, transparent 45px, black 55px);
+                                will-change: mask;
+                            "></div>
                         </div>
                     </div>
                 </div>
@@ -127,11 +135,10 @@
 
             <div class="order-1 lg:order-2">
                 <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
-                    Recherche "Autour de moi"
+                    {{ __('web/pages/home.features.modes.proximity.title') }}
                 </h3>
                 <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-2 sm:px-0 leading-relaxed">
-                    Vous etes quelque part et souhaitez decouvrir les lieux spatiaux dans un rayon defini ?
-                    Utilisez notre recherche geolocalisee avec un rayon ajustable jusqu'a 1500 km.
+                    {{ __('web/pages/home.features.modes.proximity.description') }}
                 </p>
                 <ul class="space-y-2 sm:space-y-3">
                     <li class="flex items-center space-x-2 sm:space-x-3">
@@ -140,7 +147,7 @@
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <span class="text-sm sm:text-base text-gray-700">Geolocalisation automatique</span>
+                        <span class="text-sm sm:text-base text-gray-700">{{ __('web/pages/home.features.modes.proximity.benefits.geolocation') }}</span>
                     </li>
                     <li class="flex items-center space-x-2 sm:space-x-3">
                         <div class="w-4 h-4 sm:w-5 sm:h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -148,7 +155,7 @@
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <span class="text-sm sm:text-base text-gray-700">Rayon ajustable jusqu'a 1500 km</span>
+                        <span class="text-sm sm:text-base text-gray-700">{{ __('web/pages/home.features.modes.proximity.benefits.custom_radius') }}</span>
                     </li>
                 </ul>
             </div>
@@ -156,11 +163,10 @@
             <!-- Fonctionnalite 2: Recherche thematique -->
             <div class="order-3">
                 <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
-                    Recherche thematique
+                    {{ __('web/pages/home.features.modes.thematic.title') }}
                 </h3>
                 <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-2 sm:px-0 leading-relaxed">
-                    Explorez tous les lieux mondiaux lies a une thematique precise : NASA, SpaceX,
-                    missions Apollo, observatoires, musees spatiaux et bien plus.
+                    {{ __('web/pages/home.features.modes.thematic.description') }}
                 </p>
                 <ul class="space-y-2 sm:space-y-3">
                     <li class="flex items-center space-x-2 sm:space-x-3">
@@ -169,7 +175,7 @@
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <span class="text-sm sm:text-base text-gray-700">25+ thematiques disponibles</span>
+                        <span class="text-sm sm:text-base text-gray-700">{{ __('web/pages/home.features.modes.thematic.benefits.themes_available') }}</span>
                     </li>
                     <li class="flex items-center space-x-2 sm:space-x-3">
                         <div class="w-4 h-4 sm:w-5 sm:h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -177,7 +183,7 @@
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <span class="text-sm sm:text-base text-gray-700">Couverture mondiale</span>
+                        <span class="text-sm sm:text-base text-gray-700">{{ __('web/pages/home.features.modes.thematic.benefits.worldwide_coverage') }}</span>
                     </li>
                     <li class="flex items-center space-x-2 sm:space-x-3">
                         <div class="w-4 h-4 sm:w-5 sm:h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -185,7 +191,7 @@
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <span class="text-sm sm:text-base text-gray-700">Clustering intelligent</span>
+                        <span class="text-sm sm:text-base text-gray-700">{{ __('web/pages/home.features.modes.thematic.benefits.smart_clustering') }}</span>
                     </li>
                 </ul>
             </div>
@@ -197,8 +203,8 @@
                         <!-- Tags selectionnes avec animation -->
                         <div class="mb-4">
                             <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 text-xs font-medium rounded-full border shadow-sm tag-nasa" style="animation: tagNasaAnimation 6s infinite;">NASA</span>
-                                <span class="px-3 py-1 text-xs rounded-full border transition-colors cursor-pointer tag-apollo" style="animation: tagApolloAnimation 6s infinite;">Apollo</span>
+                                <span class="px-3 py-1 text-xs font-medium rounded-full border shadow-sm tag-nasa" style="animation: tagNasaAnimation 6s infinite;">{{ __('web/pages/home.features.modes.thematic.mockup.tag_nasa') }}</span>
+                                <span class="px-3 py-1 text-xs rounded-full border transition-colors cursor-pointer tag-apollo" style="animation: tagApolloAnimation 6s infinite;">{{ __('web/pages/home.features.modes.thematic.mockup.tag_apollo') }}</span>
                                 <span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full border border-gray-200 hover:bg-gray-200 transition-colors cursor-pointer">SpaceX</span>
                                 <div class="px-2 py-1 border-2 border-dashed border-gray-300 text-gray-400 text-xs rounded-full flex items-center">
                                     <div class="w-2 h-2 bg-gray-300 rounded-full mr-1"></div>
@@ -222,35 +228,35 @@
                             <!-- Continents réalistes -->
                             <!-- Amérique du Nord -->
                             <div class="absolute top-6 left-2">
-                                <div class="relative w-12 h-10 bg-gray-300 opacity-70" style="clip-path: polygon(10% 90%, 20% 80%, 30% 85%, 40% 75%, 60% 80%, 80% 70%, 90% 50%, 95% 30%, 85% 20%, 75% 10%, 60% 15%, 40% 5%, 20% 15%, 10% 25%, 5% 40%, 0% 60%, 5% 80%);">
+                                <div class="relative w-12 h-10 bg-gray-400 opacity-70" style="clip-path: polygon(10% 90%, 20% 80%, 30% 85%, 40% 75%, 60% 80%, 80% 70%, 90% 50%, 95% 30%, 85% 20%, 75% 10%, 60% 15%, 40% 5%, 20% 15%, 10% 25%, 5% 40%, 0% 60%, 5% 80%);">
                                     <div class="absolute inset-0 bg-gradient-to-se from-gray-400 to-gray-300"></div>
                                 </div>
                             </div>
 
                             <!-- Europe / Afrique -->
                             <div class="absolute top-16 left-1/2 transform -translate-x-1/2">
-                                <div class="relative w-8 h-16 bg-gray-300 opacity-70" style="clip-path: polygon(20% 0%, 60% 5%, 80% 15%, 90% 35%, 85% 50%, 90% 65%, 80% 80%, 60% 90%, 40% 95%, 20% 90%, 10% 75%, 5% 60%, 15% 45%, 10% 30%, 20% 15%);">
+                                <div class="relative w-8 h-16 bg-gray-400 opacity-70" style="clip-path: polygon(20% 0%, 60% 5%, 80% 15%, 90% 35%, 85% 50%, 90% 65%, 80% 80%, 60% 90%, 40% 95%, 20% 90%, 10% 75%, 5% 60%, 15% 45%, 10% 30%, 20% 15%);">
                                     <div class="absolute inset-0 bg-gradient-to-s from-gray-400 to-gray-300"></div>
                                 </div>
                             </div>
 
                             <!-- Asie -->
                             <div class="absolute top-8 right-4">
-                                <div class="relative w-14 h-12 bg-gray-300 opacity-70" style="clip-path: polygon(0% 40%, 15% 20%, 30% 25%, 50% 15%, 70% 20%, 85% 35%, 95% 50%, 90% 70%, 75% 85%, 60% 90%, 40% 95%, 25% 85%, 10% 70%, 5% 55%);">
+                                <div class="relative w-14 h-12 bg-gray-400 opacity-70" style="clip-path: polygon(0% 40%, 15% 20%, 30% 25%, 50% 15%, 70% 20%, 85% 35%, 95% 50%, 90% 70%, 75% 85%, 60% 90%, 40% 95%, 25% 85%, 10% 70%, 5% 55%);">
                                     <div class="absolute inset-0 bg-gradient-to-sw from-gray-400 to-gray-300"></div>
                                 </div>
                             </div>
 
                             <!-- Océanie/Australie -->
                             <div class="absolute bottom-8 right-8">
-                                <div class="relative w-6 h-4 bg-gray-300 opacity-70" style="clip-path: polygon(15% 30%, 85% 20%, 95% 60%, 80% 90%, 20% 95%, 5% 70%);">
+                                <div class="relative w-6 h-4 bg-gray-400 opacity-70" style="clip-path: polygon(15% 30%, 85% 20%, 95% 60%, 80% 90%, 20% 95%, 5% 70%);">
                                     <div class="absolute inset-0 bg-gradient-to-e from-gray-400 to-gray-300"></div>
                                 </div>
                             </div>
 
                             <!-- Amérique du Sud -->
                             <div class="absolute bottom-12 left-6">
-                                <div class="relative w-5 h-10 bg-gray-300 opacity-70" style="clip-path: polygon(40% 0%, 70% 10%, 85% 30%, 80% 50%, 85% 70%, 75% 85%, 60% 95%, 40% 90%, 25% 85%, 20% 70%, 30% 50%, 25% 30%, 35% 15%);">
+                                <div class="relative w-5 h-10 bg-gray-400 opacity-70" style="clip-path: polygon(40% 0%, 70% 10%, 85% 30%, 80% 50%, 85% 70%, 75% 85%, 60% 95%, 40% 90%, 25% 85%, 20% 70%, 30% 50%, 25% 30%, 35% 15%);">
                                     <div class="absolute inset-0 bg-gradient-to-s from-gray-400 to-gray-300"></div>
                                 </div>
                             </div>
@@ -327,8 +333,10 @@
 
                         <!-- Compteur resultats avec animation -->
                         <div class="mt-4 text-center">
-                            <span class="text-sm text-gray-600 results-counter" style="animation: resultsAnimation 6s infinite;">
-                                <strong class="text-blue-600">47 lieux</strong> trouvés pour "NASA"
+                            <span class="text-sm text-gray-600 results-counter" style="animation: resultsAnimation 6s infinite;"
+                                  data-nasa-text="{{ str_replace(':count', '47', __('web/pages/home.features.modes.thematic.mockup.results_nasa')) }}"
+                                  data-apollo-text="{{ str_replace(':count', '23', __('web/pages/home.features.modes.thematic.mockup.results_apollo')) }}">
+                                <span class="results-content">{{ str_replace(':count', '47', __('web/pages/home.features.modes.thematic.mockup.results_nasa')) }}</span>
                             </span>
                         </div>
                     </div>
@@ -337,6 +345,101 @@
         </div>
     </div>
 </section>
+
+<script>
+// Animation du compteur de résultats multilingue
+document.addEventListener('DOMContentLoaded', function() {
+    const resultsCounter = document.querySelector('.results-counter .results-content');
+
+    if (resultsCounter) {
+        const parentEl = resultsCounter.parentElement;
+        const nasaText = parentEl.dataset.nasaText;
+        const apolloText = parentEl.dataset.apolloText;
+
+        function animateResults() {
+            // Phase NASA (0% - 35.7%)
+            setTimeout(() => {
+                resultsCounter.innerHTML = '<strong class="text-blue-600">47</strong> ' + nasaText.replace('47 ', '');
+            }, 0);
+
+            // Phase Apollo (43% - 85.7%)
+            setTimeout(() => {
+                resultsCounter.innerHTML = '<strong class="text-blue-600">23</strong> ' + apolloText.replace('23 ', '');
+            }, 2580); // 43% de 6000ms
+
+            // Retour à NASA (92.8%)
+            setTimeout(() => {
+                resultsCounter.innerHTML = '<strong class="text-blue-600">47</strong> ' + nasaText.replace('47 ', '');
+            }, 5570); // 92.8% de 6000ms
+        }
+
+        // Démarrer l'animation
+        animateResults();
+
+        // Répéter l'animation toutes les 6 secondes
+        setInterval(animateResults, 6000);
+    }
+
+    // Animation du rayon (cycles de 10 secondes)
+    const radiusDisplay = document.querySelector('.radius-display');
+    if (radiusDisplay) {
+        const originalText = radiusDisplay.textContent;
+        const radiusValues = ['200 km', '300 km', '400 km', '500 km', '650 km', '800 km', '950 km', '1100 km'];
+        const reverseValues = [...radiusValues].reverse();
+
+        function animateRadius() {
+            let step = 0;
+            const interval = setInterval(() => {
+                if (step < radiusValues.length) {
+                    // Phase ascendante
+                    radiusDisplay.textContent = radiusValues[step];
+                } else if (step < radiusValues.length + reverseValues.length - 1) {
+                    // Phase descendante
+                    radiusDisplay.textContent = reverseValues[step - radiusValues.length + 1];
+                } else {
+                    // Retour à l'original
+                    radiusDisplay.textContent = originalText;
+                    clearInterval(interval);
+                }
+                step++;
+            }, 625); // 10s / 16 étapes
+        }
+
+        // Démarrer et répéter l'animation toutes les 10 secondes
+        setInterval(animateRadius, 10000);
+        animateRadius();
+    }
+
+    // Animation fluide du masque radial PARFAITEMENT synchronisée en lisant l'état CSS réel
+    const radiusMask = document.getElementById('radius-mask');
+    const radiusCircle = document.querySelector('.radius-circle');
+
+    if (radiusMask && radiusCircle) {
+        function animateRadiusMask() {
+            // Lire la taille RÉELLE du cercle animé par CSS
+            const computedStyle = getComputedStyle(radiusCircle);
+            const currentWidth = parseFloat(computedStyle.width);
+
+            // Convertir la largeur du cercle en rayon de masque
+            // Le cercle varie de 60px à 300px en width, donc rayon de 30px à 150px
+            // On veut que le masque ait exactement le même rayon
+            const circleRadius = (currentWidth / 2) * 0.97;
+            const maskRadius = Math.round(circleRadius);
+
+            // Appliquer le masque avec le rayon calculé
+            const maskValue = `radial-gradient(circle ${maskRadius}px at center, transparent ${maskRadius}px, black ${maskRadius + 10}px)`;
+
+            radiusMask.style.webkitMask = maskValue;
+            radiusMask.style.mask = maskValue;
+
+            requestAnimationFrame(animateRadiusMask);
+        }
+
+        // Démarrer immédiatement - plus besoin de délai car on lit l'état réel
+        animateRadiusMask();
+    }
+});
+</script>
 
 <style>
 /* Animations pour le mockup "Autour de moi" */
@@ -354,83 +457,25 @@
 
 @keyframes radiusAnimation {
     0%, 10% {
-        width: 90px;
-        height: 90px;
+        width: 110px;
+        height: 110px;
     }
     45%, 55% {
         width: 300px;
         height: 300px;
     }
     90%, 100% {
-        width: 90px;
-        height: 90px;
+        width: 110px;
+        height: 110px;
     }
 }
 
-/* Animation du texte du rayon - synchronisée avec le curseur */
-.radius-display::after {
-    content: '200 km';
-    animation: radiusTextContent 10s infinite;
-}
-
-@keyframes radiusTextContent {
-    0%, 10% {
-        content: '200 km';
-    }
-    15% {
-        content: '300 km';
-    }
-    20% {
-        content: '400 km';
-    }
-    25% {
-        content: '500 km';
-    }
-    30% {
-        content: '650 km';
-    }
-    35% {
-        content: '800 km';
-    }
-    40% {
-        content: '950 km';
-    }
-    45%, 55% {
-        content: '1100 km';
-    }
-    60% {
-        content: '950 km';
-    }
-    65% {
-        content: '800 km';
-    }
-    70% {
-        content: '650 km';
-    }
-    75% {
-        content: '500 km';
-    }
-    80% {
-        content: '400 km';
-    }
-    85% {
-        content: '300 km';
-    }
-    90%, 100% {
-        content: '200 km';
-    }
-}
-
-/* Cacher le texte original */
+/* Animation du texte du rayon désormais gérée uniquement par JavaScript */
 .radius-display {
-    font-size: 0;
+    opacity: 1;
 }
 
-.radius-display::after {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #2563eb;
-}
+/* Ancienne animation radiusTextAnimation supprimée - plus d'opacité variable */
 
 /* Animations pour le mockup "Recherche thématique" - Cycle de 6s avec pause de 7s */
 
@@ -644,19 +689,8 @@
 }
 
 /* Animation du compteur de résultats avec transition marquée */
-.results-counter::after {
-    content: '52 lieux trouvés pour "NASA"';
-    animation: resultsContentAnimation 6s infinite;
-}
-
 .results-counter {
-    font-size: 0;
     animation: resultsContainerAnimation 6s infinite;
-}
-
-.results-counter::after {
-    font-size: 0.875rem;
-    color: #6b7280;
 }
 
 @keyframes resultsContainerAnimation {
@@ -690,36 +724,5 @@
     }
 }
 
-@keyframes resultsContentAnimation {
-    0%, 35% {
-        content: '52 lieux trouvés pour "NASA"';
-    }
-    43%, 85% {
-        content: '31 lieux trouvés pour "Apollo"';
-    }
-    100% {
-        content: '52 lieux trouvés pour "NASA"';
-    }
-}
-
-/* Styles pour les éléments strong dans le compteur */
-.results-counter::after {
-    background: linear-gradient(to right, #2563eb 0%, #2563eb 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-}
-
-/* Animation spécifique pour les couleurs du compteur */
-@keyframes resultsContentAnimation {
-    0%, 35.7% {
-        content: '47 lieux trouvés pour "NASA"';
-    }
-    50%, 85.7% {
-        content: '23 lieux trouvés pour "Apollo"';
-    }
-    100% {
-        content: '47 lieux trouvés pour "NASA"';
-    }
-}
 </style>
 

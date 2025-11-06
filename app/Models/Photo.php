@@ -5,7 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
+/**
+ * @property-read string $url URL complète de la photo
+ * @property-read string $thumb_url URL de la miniature (150x150)
+ * @property-read string $medium_url URL de la taille moyenne (400px)
+ */
 class Photo extends Model
 {
     /** @use HasFactory<\Database\Factories\PhotoFactory> */
@@ -31,6 +37,8 @@ class Photo extends Model
         ];
     }
 
+    private string $disk = 'place_photos';
+
     /**
      * @return BelongsTo<Place, $this>
      */
@@ -41,22 +49,16 @@ class Photo extends Model
 
     public function getUrlAttribute(): string
     {
-        return asset('storage/photos/'.$this->filename);
+        return Storage::disk($this->disk)->url($this->filename);
     }
 
     public function getThumbUrlAttribute(): string
     {
-        $pathinfo = pathinfo($this->filename);
-        $thumbFilename = $pathinfo['filename'].'_thumb.'.$pathinfo['extension'];
-
-        return asset('storage/photos/thumbs/'.$thumbFilename);
+        return Storage::disk($this->disk)->url('thumbs/'.$this->filename);
     }
 
     public function getMediumUrlAttribute(): string
     {
-        $pathinfo = pathinfo($this->filename);
-        $mediumFilename = $pathinfo['filename'].'_medium.'.$pathinfo['extension'];
-
-        return asset('storage/photos/medium/'.$mediumFilename);
+        return Storage::disk($this->disk)->url('medium/'.$this->filename);
     }
 }

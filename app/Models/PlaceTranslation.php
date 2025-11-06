@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -57,18 +58,22 @@ class PlaceTranslation extends Model
 
     /**
      * Scope for published translations
+     *
+     * @param  Builder<PlaceTranslation>  $query
      */
-    public function scopePublished($query)
+    public function scopePublished(Builder $query): void
     {
-        return $query->where('status', 'published');
+        $query->where('status', 'published');
     }
 
     /**
      * Scope for specific locale
+     *
+     * @param  Builder<PlaceTranslation>  $query
      */
-    public function scopeForLocale($query, string $locale)
+    public function scopeForLocale(Builder $query, string $locale): void
     {
-        return $query->where('locale', $locale);
+        $query->where('locale', $locale);
     }
 
     /**

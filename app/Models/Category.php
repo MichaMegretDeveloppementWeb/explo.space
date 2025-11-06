@@ -37,18 +37,13 @@ class Category extends Model
 
     /**
      * Get translation for specific locale
+     *
+     * Note: Avoid using this method in loops or with eagerly loaded relations.
+     * Prefer accessing $model->translations->first() to use already loaded data.
      */
     public function translate(string $locale): ?CategoryTranslation
     {
         return $this->translations->firstWhere('locale', $locale);
-    }
-
-    /**
-     * Get translation for current app locale
-     */
-    public function getTranslationAttribute(): ?CategoryTranslation
-    {
-        return $this->translate(app()->getLocale());
     }
 
     /**

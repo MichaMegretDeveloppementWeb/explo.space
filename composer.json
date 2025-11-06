@@ -11,11 +11,14 @@
     "require": {
         "php": "^8.3",
         "blade-ui-kit/blade-heroicons": "^2.6",
+        "deeplcom/deepl-php": "^1.12",
+        "intervention/image": "^3.11",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.16",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.6",
         "laravel/boost": "^1.1",
@@ -24,7 +27,6 @@
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
-        "phpro/grumphp": "^2.15",
         "phpunit/phpunit": "^11.5.3",
         "rector/rector": "^2.1"
     },
@@ -33,7 +35,12 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/LocalHelper.php",
+            "app/Helpers/UploadHelper.php"
+        ]
+
     },
     "autoload-dev": {
         "psr-4": {
@@ -62,7 +69,7 @@
         ],
         "lint": "vendor/bin/pint -v",
         "fix": "vendor/bin/pint -v",
-        "stan": "vendor/bin/phpstan analyse",
+        "stan": "vendor/bin/phpstan analyse --memory-limit=256M",
         "test": "vendor/bin/phpunit",
         "qa": [
             "@lint",
@@ -81,8 +88,7 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true,
-            "phpro/grumphp": true
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "stable",

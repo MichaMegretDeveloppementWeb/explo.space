@@ -47,6 +47,33 @@ return [
             'report' => false,
         ],
 
+        'place_photos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/photos/places'),
+            'url' => env('APP_URL').'/storage/photos/places',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'place_request_photos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/photos/place-requests'),
+            'url' => env('APP_URL').'/storage/photos/place-requests',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'edit_request_photos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/photos/edit-requests'),
+            'url' => env('APP_URL').'/storage/photos/edit-requests',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

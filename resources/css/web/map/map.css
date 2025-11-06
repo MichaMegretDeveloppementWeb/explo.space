@@ -1,0 +1,317 @@
+/**
+ * Styles pour la carte Leaflet et les clusters
+ * Explo.space - Page d'exploration
+ */
+
+/* ========================================
+   Conteneur de la carte
+   ======================================== */
+
+#place-map {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 0;
+}
+
+/* ========================================
+   Clusters de marqueurs (Leaflet.markercluster)
+   ======================================== */
+
+/* Styles de base des clusters */
+.marker-cluster {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(59, 130, 246, 0.6); /* blue-500 avec transparence */
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.marker-cluster div {
+    width: 32px;
+    height: 32px;
+    margin-left: 0;
+    margin-top: 0;
+    text-align: center;
+    border-radius: 50%;
+    background-color: rgba(37, 99, 235, 0.8); /* blue-600 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.marker-cluster span {
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Clusters petits (< 10 marqueurs) */
+.marker-cluster-small {
+    width: 40px !important;
+    height: 40px !important;
+    background-color: rgba(59, 130, 246, 0.5);
+}
+
+.marker-cluster-small div {
+    width: 32px;
+    height: 32px;
+    background-color: rgba(37, 99, 235, 0.7);
+}
+
+/* Clusters moyens (10-100 marqueurs) */
+.marker-cluster-medium {
+    width: 44px !important;
+    height: 44px !important;
+    background-color: rgba(59, 130, 246, 0.6);
+}
+
+.marker-cluster-medium div {
+    width: 36px;
+    height: 36px;
+    background-color: rgba(37, 99, 235, 0.8);
+}
+
+.marker-cluster-medium span {
+    font-size: 14px;
+}
+
+/* Clusters grands (> 100 marqueurs) */
+.marker-cluster-large {
+    width: 48px !important;
+    height: 48px !important;
+    background-color: rgba(59, 130, 246, 0.7);
+}
+
+.marker-cluster-large div {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(29, 78, 216, 0.9); /* blue-700 */
+}
+
+.marker-cluster-large span {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* Animation au hover */
+.marker-cluster:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+/* ========================================
+   État de chargement de la carte
+   ======================================== */
+
+.map-loading-overlay {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    pointer-events: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.map-loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(59, 130, 246, 0.2);
+    border-top-color: #3b82f6; /* blue-500 */
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========================================
+   Highlight d'un élément de la liste
+   ======================================== */
+
+.highlight-place {
+    animation: highlightPulse 0.6s ease-in-out;
+    background-color: rgba(59, 130, 246, 0.1) !important; /* blue-500 */
+    border-color: #3b82f6 !important;
+}
+
+@keyframes highlightPulse {
+    0% {
+        transform: scale(1);
+        background-color: rgba(59, 130, 246, 0);
+    }
+    50% {
+        transform: scale(1.02);
+        background-color: rgba(59, 130, 246, 0.2);
+    }
+    100% {
+        transform: scale(1);
+        background-color: rgba(59, 130, 246, 0.1);
+    }
+}
+
+/* ========================================
+   Highlight d'un cluster
+   ======================================== */
+
+.cluster-highlighted {
+    animation: clusterPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes clusterPulse {
+    0%, 100% {
+        filter: brightness(1);
+        box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+    }
+    50% {
+        filter: brightness(1.2);
+        box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.3);
+    }
+}
+
+/* ========================================
+   Contrôles de zoom personnalisés (Leaflet)
+   ======================================== */
+
+.leaflet-control-zoom {
+    border: none !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+.leaflet-control-zoom a {
+    background-color: white !important;
+    color: #374151 !important; /* gray-700 */
+    border: none !important;
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background-color: #f3f4f6 !important; /* gray-100 */
+    color: #1f2937 !important; /* gray-800 */
+}
+
+/* ========================================
+   Attribution Leaflet personnalisée
+   ======================================== */
+
+.leaflet-control-attribution {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 11px !important;
+    padding: 2px 6px !important;
+}
+
+.leaflet-control-attribution a {
+    color: #3b82f6 !important; /* blue-500 */
+    text-decoration: none !important;
+}
+
+.leaflet-control-attribution a:hover {
+    text-decoration: underline !important;
+}
+
+/* ========================================
+   Responsive - Mobile
+   ======================================== */
+
+@media (max-width: 768px) {
+
+    .marker-cluster span {
+        font-size: 12px;
+    }
+
+    /* Contrôles de zoom plus petits */
+    .leaflet-control-zoom a {
+        width: 28px !important;
+        height: 28px !important;
+        line-height: 28px !important;
+        font-size: 16px !important;
+    }
+
+    /* Attribution plus discrète */
+    .leaflet-control-attribution {
+        font-size: 10px !important;
+        padding: 1px 4px !important;
+    }
+}
+
+/* ========================================
+   États d'erreur de la carte
+   ======================================== */
+
+.map-error-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 90%;
+    z-index: 1000;
+}
+
+.map-error-overlay h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #dc2626; /* red-600 */
+    margin-bottom: 8px;
+}
+
+.map-error-overlay p {
+    font-size: 14px;
+    color: #6b7280; /* gray-500 */
+    margin-bottom: 16px;
+}
+
+.map-error-overlay button {
+    background-color: #3b82f6; /* blue-500 */
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.map-error-overlay button:hover {
+    background-color: #2563eb; /* blue-600 */
+}
+
+/* ========================================
+   Accessibilité
+   ======================================== */
+
+/* Focus visible pour les marqueurs */
+.leaflet-marker-icon:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Rendre les clusters accessibles au clavier */
+.marker-cluster {
+    cursor: pointer;
+}
+
+.marker-cluster:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
