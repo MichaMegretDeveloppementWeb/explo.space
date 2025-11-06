@@ -11,7 +11,7 @@
             <p class="mt-1 text-sm text-gray-500">{{ $requests->count() }} demande(s) récente(s)</p>
         </div>
         @if($requests->isNotEmpty())
-            <a href="#" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700">
+            <a href="{{ route('admin.edit-requests.index') }}" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700">
                 Voir tout
                 <x-heroicon-o-chevron-right class="h-4 w-4" />
             </a>
@@ -51,9 +51,11 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 {{-- Icône selon le type --}}
-                                <div class="flex-shrink-0 w-10 h-10 {{ $request->type === 'edit' ? 'bg-blue-50' : 'bg-orange-50' }} rounded-lg flex items-center justify-center">
-                                    @if($request->type === 'edit')
+                                <div class="flex-shrink-0 w-10 h-10 {{ $request->type === 'modification' ? 'bg-blue-50' : ($request->type === 'photo_suggestion' ? 'bg-purple-50' : 'bg-orange-50') }} rounded-lg flex items-center justify-center">
+                                    @if($request->type === 'modification')
                                         <x-heroicon-o-pencil-square class="h-5 w-5 text-blue-600" />
+                                    @elseif($request->type === 'photo_suggestion')
+                                        <x-heroicon-o-photo class="h-5 w-5 text-purple-600" />
                                     @else
                                         <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-orange-600" />
                                     @endif
@@ -71,12 +73,19 @@
 
                         {{-- Type (caché sur mobile) --}}
                         <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap">
-                            @if($request->type === 'edit')
+                            @if($request->type === 'modification')
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-800 border border-blue-200">
                                     <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 8 8">
                                         <circle cx="4" cy="4" r="3"/>
                                     </svg>
                                     Modification
+                                </span>
+                            @elseif($request->type === 'photo_suggestion')
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-800 border border-purple-200">
+                                    <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 8 8">
+                                        <circle cx="4" cy="4" r="3"/>
+                                    </svg>
+                                    Photo
                                 </span>
                             @else
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-orange-50 text-orange-800 border border-orange-200">
@@ -119,7 +128,7 @@
                     <x-heroicon-o-inbox class="h-8 w-8 text-gray-400" />
                 </div>
                 <h3 class="text-sm font-medium text-gray-900 mb-1">Aucune demande de modification/signalement récente</h3>
-                <p class="text-sm text-gray-500">Les demandes de modification et signalements apparaîtront ici.</p>
+                <p class="text-sm text-gray-500">Les demandes de modification, signalements et suggestions de photos apparaîtront ici.</p>
             </div>
         @endif
     </div>

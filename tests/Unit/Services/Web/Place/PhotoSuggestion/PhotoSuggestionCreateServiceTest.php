@@ -12,6 +12,7 @@ use App\Services\Photo\PhotoProcessingService;
 use App\Services\Web\Place\PhotoSuggestion\PhotoSuggestionCreateService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PhotoSuggestionCreateServiceTest extends TestCase
@@ -35,7 +36,7 @@ class PhotoSuggestionCreateServiceTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_photo_suggestion_successfully(): void
     {
         // Arrange
@@ -96,7 +97,7 @@ class PhotoSuggestionCreateServiceTest extends TestCase
         $this->assertEquals($contactEmail, $result->contact_email);
     }
 
-    /** @test */
+    #[Test]
     public function it_rolls_back_photos_on_validation_exception(): void
     {
         // Arrange
@@ -143,7 +144,7 @@ class PhotoSuggestionCreateServiceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_rolls_back_photos_on_processing_exception(): void
     {
         // Arrange
@@ -171,7 +172,7 @@ class PhotoSuggestionCreateServiceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_wraps_unexpected_exceptions(): void
     {
         // Arrange
@@ -200,7 +201,7 @@ class PhotoSuggestionCreateServiceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_processes_multiple_photos_successfully(): void
     {
         // Arrange
@@ -241,7 +242,7 @@ class PhotoSuggestionCreateServiceTest extends TestCase
         $this->assertEquals(1, $result->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_correct_disk_and_path_for_photo_storage(): void
     {
         // Arrange

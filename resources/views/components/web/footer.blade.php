@@ -152,6 +152,12 @@
                     © {{ date('Y') }} {{ __('web/components/footer.brand.name') }}. {{ __('web/components/footer.copyright.text') }}
                     {{ __('web/components/footer.copyright.tagline') }}
                 </p>
+                <!-- Lien admin discret -->
+                <p class="mt-2">
+                    <a href="{{ route('admin.login') }}" class="text-[10px] text-gray-400 hover:text-gray-600 transition-colors opacity-50 hover:opacity-100 p-4">
+                        •
+                    </a>
+                </p>
             </div>
         </div>
     </div>

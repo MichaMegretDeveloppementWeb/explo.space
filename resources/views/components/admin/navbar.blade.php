@@ -54,7 +54,7 @@
                             <a href="{{ route('admin.place-requests.index') }}" class="block px-4 py-2 text-sm transition-colors @if(request()->routeIs('admin.place-requests.*')) text-indigo-600 bg-indigo-50 font-medium @else text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 @endif">
                                 Propositions de lieux
                             </a>
-                            <a href="#" class="block px-4 py-2 text-sm transition-colors @if(request()->routeIs('admin.edit-requests.*')) text-indigo-600 bg-indigo-50 font-medium @else text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 @endif">
+                            <a href="{{ route('admin.edit-requests.index') }}" class="block px-4 py-2 text-sm transition-colors @if(request()->routeIs('admin.edit-requests.*')) text-indigo-600 bg-indigo-50 font-medium @else text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 @endif">
                                 Modifications/Signalements
                             </a>
                         </div>
@@ -143,7 +143,7 @@
                         <a href="{{ route('admin.place-requests.index') }}" class="block px-3 py-2 rounded-md text-sm transition-colors @if(request()->routeIs('admin.place-requests.*')) text-indigo-600 bg-indigo-50 font-medium @else text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 @endif">
                             Propositions de lieux
                         </a>
-                        <a href="#" class="block px-3 py-2 rounded-md text-sm transition-colors @if(request()->routeIs('admin.edit-requests.*')) text-indigo-600 bg-indigo-50 font-medium @else text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 @endif">
+                        <a href="{{ route('admin.edit-requests.index') }}" class="block px-3 py-2 rounded-md text-sm transition-colors @if(request()->routeIs('admin.edit-requests.*')) text-indigo-600 bg-indigo-50 font-medium @else text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 @endif">
                             Modifications/Signalements
                         </a>
                     </div>

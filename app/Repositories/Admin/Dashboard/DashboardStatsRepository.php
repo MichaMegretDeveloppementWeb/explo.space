@@ -90,7 +90,6 @@ class DashboardStatsRepository implements DashboardStatsRepositoryInterface
     public function getRecentEditRequests(int $limit = 5): Collection
     {
         return EditRequest::with(['place.translations', 'processedByAdmin'])
-            ->whereIn('status', [RequestStatus::Submitted, RequestStatus::Pending])
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();

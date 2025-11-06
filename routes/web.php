@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
+use App\Http\Controllers\Admin\EditRequest\EditRequestListController;
 use App\Http\Controllers\Admin\Place\PlaceCreateController;
 use App\Http\Controllers\Admin\Place\PlaceDeleteController;
 use App\Http\Controllers\Admin\Place\PlaceEditController;
@@ -118,6 +119,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/propositions-lieux/{id}', [PlaceRequestShowController::class, 'show'])
             ->name('place-requests.show');
+
+        // Gestion des demandes de modification/signalement
+        Route::get('/modifications-signalements', [EditRequestListController::class, 'index'])
+            ->name('edit-requests.index');
 
     });
 });

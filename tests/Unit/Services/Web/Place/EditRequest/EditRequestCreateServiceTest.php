@@ -8,6 +8,7 @@ use App\DTO\Web\Place\PlaceDetailDTO;
 use App\Enums\RequestStatus;
 use App\Models\EditRequest;
 use App\Services\Web\Place\EditRequest\EditRequestCreateService;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class EditRequestCreateServiceTest extends TestCase
@@ -49,7 +50,7 @@ class EditRequestCreateServiceTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_signalement_edit_request_with_language_detection(): void
     {
         // Arrange
@@ -91,7 +92,7 @@ class EditRequestCreateServiceTest extends TestCase
         $this->assertInstanceOf(EditRequest::class, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_modification_with_suggested_changes(): void
     {
         // Arrange
@@ -140,7 +141,7 @@ class EditRequestCreateServiceTest extends TestCase
         $this->assertInstanceOf(EditRequest::class, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_detects_language_from_combined_texts(): void
     {
         // Arrange
@@ -174,7 +175,7 @@ class EditRequestCreateServiceTest extends TestCase
         $this->assertInstanceOf(EditRequest::class, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_unknown_when_text_too_short(): void
     {
         // Arrange
@@ -208,7 +209,7 @@ class EditRequestCreateServiceTest extends TestCase
         $this->assertInstanceOf(EditRequest::class, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_language_detection_exception(): void
     {
         // Arrange
@@ -242,7 +243,7 @@ class EditRequestCreateServiceTest extends TestCase
         $this->assertInstanceOf(EditRequest::class, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_builds_suggested_changes_with_field_labels(): void
     {
         // Arrange
@@ -284,7 +285,7 @@ class EditRequestCreateServiceTest extends TestCase
         $this->assertEquals('pending', $capturedData['suggested_changes'][0]['status']);
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_coordinates_modification(): void
     {
         // Arrange
@@ -332,7 +333,7 @@ class EditRequestCreateServiceTest extends TestCase
         ], $capturedData['suggested_changes'][0]['new_value']);
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_address_modification(): void
     {
         // Arrange
@@ -371,7 +372,7 @@ class EditRequestCreateServiceTest extends TestCase
         $this->assertEquals('New York, USA', $capturedData['suggested_changes'][0]['new_value']);
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_practical_info_modification(): void
     {
         // Arrange
@@ -410,7 +411,7 @@ class EditRequestCreateServiceTest extends TestCase
         $this->assertEquals('New practical information', $capturedData['suggested_changes'][0]['new_value']);
     }
 
-    /** @test */
+    #[Test]
     public function it_limits_text_to_50_characters_for_detection(): void
     {
         // Arrange
@@ -442,7 +443,7 @@ class EditRequestCreateServiceTest extends TestCase
         $this->assertInstanceOf(EditRequest::class, $result);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_with_default_submitted_status(): void
     {
         // Arrange

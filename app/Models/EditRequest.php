@@ -71,6 +71,11 @@ class EditRequest extends Model
         return $this->type === 'signalement';
     }
 
+    public function isPhotoSuggestion(): bool
+    {
+        return $this->type === 'photo_suggestion';
+    }
+
     public function isSubmitted(): bool
     {
         return $this->status === RequestStatus::Submitted;

@@ -7,6 +7,7 @@ use App\Models\EditRequest;
 use App\Models\Place;
 use App\Repositories\Web\Place\PhotoSuggestion\PhotoSuggestionCreateRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PhotoSuggestionCreateRepositoryTest extends TestCase
@@ -22,7 +23,7 @@ class PhotoSuggestionCreateRepositoryTest extends TestCase
         $this->repository = new PhotoSuggestionCreateRepository;
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_photo_suggestion_edit_request(): void
     {
         // Arrange
@@ -56,7 +57,7 @@ class PhotoSuggestionCreateRepositoryTest extends TestCase
         $this->assertEquals(['photos' => ['photo1.jpg', 'photo2.jpg']], $editRequest->suggested_changes);
     }
 
-    /** @test */
+    #[Test]
     public function it_stores_suggested_changes_as_json(): void
     {
         // Arrange
@@ -83,7 +84,7 @@ class PhotoSuggestionCreateRepositoryTest extends TestCase
         $this->assertEquals(['img1.jpg', 'img2.png', 'img3.webp'], $editRequest->suggested_changes['photos']);
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_default_status_to_submitted(): void
     {
         // Arrange
@@ -105,7 +106,7 @@ class PhotoSuggestionCreateRepositoryTest extends TestCase
         $this->assertEquals(RequestStatus::Submitted, $editRequest->status);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_with_empty_photos_array(): void
     {
         // Arrange
@@ -129,7 +130,7 @@ class PhotoSuggestionCreateRepositoryTest extends TestCase
         $this->assertEmpty($editRequest->suggested_changes['photos']);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_edit_request_instance(): void
     {
         // Arrange
@@ -153,7 +154,7 @@ class PhotoSuggestionCreateRepositoryTest extends TestCase
         $this->assertNotNull($result->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_preserves_all_provided_data(): void
     {
         // Arrange

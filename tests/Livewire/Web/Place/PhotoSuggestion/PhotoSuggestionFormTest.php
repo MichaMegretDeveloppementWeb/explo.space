@@ -16,6 +16,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PhotoSuggestionFormTest extends TestCase
@@ -50,7 +51,7 @@ class PhotoSuggestionFormTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_renders_successfully(): void
     {
         Livewire::test(PhotoSuggestionForm::class, ['place' => $this->placeDTO])
@@ -58,7 +59,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertViewIs('livewire.web.place.photo-suggestion.photo-suggestion-form');
     }
 
-    /** @test */
+    #[Test]
     public function it_initializes_with_form_hidden(): void
     {
         Livewire::test(PhotoSuggestionForm::class, ['place' => $this->placeDTO])
@@ -69,7 +70,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSet('recaptcha_token', '');
     }
 
-    /** @test */
+    #[Test]
     public function it_toggles_form_visibility(): void
     {
         Livewire::test(PhotoSuggestionForm::class, ['place' => $this->placeDTO])
@@ -80,7 +81,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSet('showForm', false);
     }
 
-    /** @test */
+    #[Test]
     public function it_resets_form_when_closing(): void
     {
         Livewire::test(PhotoSuggestionForm::class, ['place' => $this->placeDTO])
@@ -96,7 +97,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSet('recaptcha_token', '');
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_and_merges_pending_photos(): void
     {
         $photo1 = UploadedFile::fake()->image('photo1.jpg', 800, 600);
@@ -109,7 +110,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertHasNoErrors('pendingPhotos');
     }
 
-    /** @test */
+    #[Test]
     public function it_rejects_photos_exceeding_size_limit(): void
     {
         $maxSizeKB = config('upload.images.max_size_kb');
@@ -121,7 +122,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSet('pendingPhotos', []);
     }
 
-    /** @test */
+    #[Test]
     public function it_rejects_invalid_file_types(): void
     {
         $invalidFile = UploadedFile::fake()->create('document.pdf', 500);
@@ -132,7 +133,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSet('pendingPhotos', []);
     }
 
-    /** @test */
+    #[Test]
     public function it_enforces_maximum_photo_limit(): void
     {
         $maxFiles = config('upload.images.max_files');
@@ -154,7 +155,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSet('pendingPhotos', []);
     }
 
-    /** @test */
+    #[Test]
     public function it_accumulates_photos_across_multiple_uploads(): void
     {
         $photo1 = UploadedFile::fake()->image('photo1.jpg');
@@ -168,7 +169,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertCount('photos', 3);
     }
 
-    /** @test */
+    #[Test]
     public function it_removes_photo_by_index(): void
     {
         $photo1 = UploadedFile::fake()->image('photo1.jpg');
@@ -182,7 +183,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertCount('photos', 2);
     }
 
-    /** @test */
+    #[Test]
     public function it_reindexes_array_after_photo_removal(): void
     {
         $photo1 = UploadedFile::fake()->image('photo1.jpg');
@@ -198,7 +199,7 @@ class PhotoSuggestionFormTest extends TestCase
         $this->assertArrayNotHasKey(1, $photos);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_required_fields_on_submit(): void
     {
         Livewire::test(PhotoSuggestionForm::class, ['place' => $this->placeDTO])
@@ -206,7 +207,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertHasErrors(['contact_email', 'photos']);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_email_format(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');
@@ -218,7 +219,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertHasErrors('contact_email');
     }
 
-    /** @test */
+    #[Test]
     public function it_checks_place_existence_before_submission(): void
     {
         // Delete the place
@@ -234,7 +235,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSee(__('errors/photo-suggestion.place_not_found'));
     }
 
-    /** @test */
+    #[Test]
     public function it_submits_successfully_with_valid_data(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');
@@ -262,7 +263,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSessionHas('success', __('web/pages/place-show.photo_suggestion.success'));
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_photo_validation_exception(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');
@@ -282,7 +283,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSee(__('errors/photo-suggestion.photo_validation'));
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_photo_processing_exception(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');
@@ -302,7 +303,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSee(__('errors/photo-suggestion.photo_processing'));
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_unexpected_photo_exception(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');
@@ -322,7 +323,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSee(__('errors/photo-suggestion.unexpected_photo'));
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_database_exception(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');
@@ -347,7 +348,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSee(__('errors/photo-suggestion.database'));
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_unexpected_submit_exception(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');
@@ -367,7 +368,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSee(__('errors/photo-suggestion.unexpected'));
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_recaptcha_error_from_frontend(): void
     {
         Livewire::test(PhotoSuggestionForm::class, ['place' => $this->placeDTO])
@@ -376,7 +377,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSee('reCAPTCHA validation failed');
     }
 
-    /** @test */
+    #[Test]
     public function it_assigns_recaptcha_token_on_submit(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');
@@ -394,7 +395,7 @@ class PhotoSuggestionFormTest extends TestCase
             ->assertSet('recaptcha_token', 'test-recaptcha-token-123');
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_edit_request_with_correct_data(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');
@@ -412,7 +413,7 @@ class PhotoSuggestionFormTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_stores_photos_in_correct_disk(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');
@@ -432,7 +433,7 @@ class PhotoSuggestionFormTest extends TestCase
         Storage::disk('edit_request_photos')->assertExists($editRequest->id.'/'.$filename);
     }
 
-    /** @test */
+    #[Test]
     public function it_prevents_multiple_submissions_while_processing(): void
     {
         $photo = UploadedFile::fake()->image('photo.jpg');

@@ -10,6 +10,7 @@ use App\Models\Place;
 use App\Services\Web\Place\EditRequest\EditRequestCreateService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class EditRequestFormTest extends TestCase
@@ -42,7 +43,7 @@ class EditRequestFormTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_renders_successfully(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -50,7 +51,7 @@ class EditRequestFormTest extends TestCase
             ->assertViewIs('livewire.web.place.edit-request.edit-request-form');
     }
 
-    /** @test */
+    #[Test]
     public function it_initializes_with_form_hidden(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -62,7 +63,7 @@ class EditRequestFormTest extends TestCase
             ->assertSet('recaptcha_token', '');
     }
 
-    /** @test */
+    #[Test]
     public function it_initializes_current_values_from_place(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -74,7 +75,7 @@ class EditRequestFormTest extends TestCase
             ->assertSet('current_values.coordinates.lng', 2.3522);
     }
 
-    /** @test */
+    #[Test]
     public function it_prefills_new_values_with_current_values(): void
     {
         $component = Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO]);
@@ -85,7 +86,7 @@ class EditRequestFormTest extends TestCase
         $this->assertEquals($currentValues, $newValues);
     }
 
-    /** @test */
+    #[Test]
     public function it_opens_signalement_form(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -94,7 +95,7 @@ class EditRequestFormTest extends TestCase
             ->assertSet('type', 'signalement');
     }
 
-    /** @test */
+    #[Test]
     public function it_opens_modification_form(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -103,7 +104,7 @@ class EditRequestFormTest extends TestCase
             ->assertSet('type', 'modification');
     }
 
-    /** @test */
+    #[Test]
     public function it_toggles_form_visibility(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -114,7 +115,7 @@ class EditRequestFormTest extends TestCase
             ->assertSet('showForm', false);
     }
 
-    /** @test */
+    #[Test]
     public function it_resets_form_when_closing(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -131,7 +132,7 @@ class EditRequestFormTest extends TestCase
             ->assertSet('recaptcha_token', '');
     }
 
-    /** @test */
+    #[Test]
     public function it_restores_new_values_to_current_values_when_closing(): void
     {
         $component = Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -145,7 +146,7 @@ class EditRequestFormTest extends TestCase
         $this->assertEquals('Test Place', $newValues['title']);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_required_fields_for_signalement(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -154,7 +155,7 @@ class EditRequestFormTest extends TestCase
             ->assertHasErrors(['description', 'contact_email']);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_required_fields_for_modification(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -163,7 +164,7 @@ class EditRequestFormTest extends TestCase
             ->assertHasErrors(['description', 'contact_email', 'selected_fields']);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_email_format(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -174,7 +175,7 @@ class EditRequestFormTest extends TestCase
             ->assertHasErrors('contact_email');
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_selected_fields_for_modification(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -186,7 +187,7 @@ class EditRequestFormTest extends TestCase
             ->assertHasErrors('selected_fields');
     }
 
-    /** @test */
+    #[Test]
     public function it_submits_signalement_successfully(): void
     {
         // Mock the service
@@ -216,7 +217,7 @@ class EditRequestFormTest extends TestCase
             ->assertSessionHas('success');
     }
 
-    /** @test */
+    #[Test]
     public function it_submits_modification_successfully(): void
     {
         // Mock the service
@@ -249,7 +250,7 @@ class EditRequestFormTest extends TestCase
             ->assertSessionHas('success');
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_service_exception(): void
     {
         // Mock service to throw exception
@@ -267,7 +268,7 @@ class EditRequestFormTest extends TestCase
             ->assertHasErrors('submit');
     }
 
-    /** @test */
+    #[Test]
     public function it_assigns_recaptcha_token_on_submit(): void
     {
         // Mock the service
@@ -284,7 +285,7 @@ class EditRequestFormTest extends TestCase
             ->assertSet('recaptcha_token', 'test-recaptcha-token-123');
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_recaptcha_error_from_frontend(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -293,7 +294,7 @@ class EditRequestFormTest extends TestCase
             ->assertSee('reCAPTCHA validation failed');
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_edit_request_with_correct_data_in_database(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -311,7 +312,7 @@ class EditRequestFormTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_modification_with_suggested_changes_in_database(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -333,7 +334,7 @@ class EditRequestFormTest extends TestCase
         $this->assertEquals('Updated Title', $editRequest->suggested_changes[0]['new_value']);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_coordinates_format_for_modification(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -346,7 +347,7 @@ class EditRequestFormTest extends TestCase
             ->assertHasErrors('new_values.coordinates.lat');
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_multiple_field_modifications(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -365,7 +366,7 @@ class EditRequestFormTest extends TestCase
         $this->assertCount(3, $editRequest->suggested_changes);
     }
 
-    /** @test */
+    #[Test]
     public function it_stores_detected_language(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])
@@ -381,7 +382,7 @@ class EditRequestFormTest extends TestCase
         $this->assertContains($editRequest->detected_language, ['fr', 'en', 'unknown']);
     }
 
-    /** @test */
+    #[Test]
     public function it_resets_validation_when_opening_form(): void
     {
         Livewire::test(EditRequestForm::class, ['place' => $this->placeDTO])

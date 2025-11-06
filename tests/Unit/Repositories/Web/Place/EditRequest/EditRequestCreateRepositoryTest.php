@@ -8,6 +8,7 @@ use App\Models\Place;
 use App\Models\User;
 use App\Repositories\Web\Place\EditRequest\EditRequestCreateRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class EditRequestCreateRepositoryTest extends TestCase
@@ -28,7 +29,7 @@ class EditRequestCreateRepositoryTest extends TestCase
         $this->place = Place::factory()->create(['admin_id' => $admin->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_signalement_edit_request(): void
     {
         // Arrange
@@ -57,7 +58,7 @@ class EditRequestCreateRepositoryTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_modification_edit_request_with_suggested_changes(): void
     {
         // Arrange
@@ -106,7 +107,7 @@ class EditRequestCreateRepositoryTest extends TestCase
         $this->assertEquals('New Title', $editRequest->suggested_changes[0]['new_value']);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_photo_suggestion_edit_request(): void
     {
         // Arrange
@@ -136,7 +137,7 @@ class EditRequestCreateRepositoryTest extends TestCase
         $this->assertEquals(['photo1.jpg', 'photo2.jpg'], $editRequest->suggested_changes['photos']);
     }
 
-    /** @test */
+    #[Test]
     public function it_stores_detected_language(): void
     {
         // Arrange
@@ -160,7 +161,7 @@ class EditRequestCreateRepositoryTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_unknown_detected_language(): void
     {
         // Arrange
@@ -180,7 +181,7 @@ class EditRequestCreateRepositoryTest extends TestCase
         $this->assertEquals('unknown', $editRequest->detected_language);
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_default_status_to_submitted(): void
     {
         // Arrange
@@ -200,7 +201,7 @@ class EditRequestCreateRepositoryTest extends TestCase
         $this->assertEquals(RequestStatus::Submitted, $editRequest->status);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_edit_request_instance(): void
     {
         // Arrange
@@ -222,7 +223,7 @@ class EditRequestCreateRepositoryTest extends TestCase
         $this->assertNotNull($result->id);
     }
 
-    /** @test */
+    #[Test]
     public function it_preserves_all_provided_data(): void
     {
         // Arrange
@@ -259,7 +260,7 @@ class EditRequestCreateRepositoryTest extends TestCase
         $this->assertEquals('456 New Ave', $editRequest->suggested_changes[0]['new_value']);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_without_suggested_changes_for_signalement(): void
     {
         // Arrange

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Contracts\Repositories\Admin\Category\CategorySelectionRepositoryInterface;
 use App\Contracts\Repositories\Admin\Dashboard\DashboardStatsRepositoryInterface;
+use App\Contracts\Repositories\Admin\EditRequest\EditRequestListRepositoryInterface;
 use App\Contracts\Repositories\Admin\Place\Create\PlaceCreateRepositoryInterface;
 use App\Contracts\Repositories\Admin\Place\Detail\PlaceDetailRepositoryInterface as AdminPlaceDetailRepositoryInterface;
 use App\Contracts\Repositories\Admin\Place\Edit\PlaceUpdateRepositoryInterface;
@@ -23,6 +24,7 @@ use App\Contracts\Services\GeocodingServiceInterface;
 use App\Contracts\Translation\TranslationStrategyInterface;
 use App\Repositories\Admin\Category\CategorySelectionRepository;
 use App\Repositories\Admin\Dashboard\DashboardStatsRepository;
+use App\Repositories\Admin\EditRequest\EditRequestListRepository;
 use App\Repositories\Admin\Place\Create\PlaceCreateRepository;
 use App\Repositories\Admin\Place\Detail\PlaceDetailRepository as AdminPlaceDetailRepository;
 use App\Repositories\Admin\Place\Edit\PlaceUpdateRepository;
@@ -130,6 +132,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PlaceRequestListRepositoryInterface::class,
             PlaceRequestListRepository::class
+        );
+
+        $this->app->bind(
+            EditRequestListRepositoryInterface::class,
+            EditRequestListRepository::class
         );
 
         // Services
