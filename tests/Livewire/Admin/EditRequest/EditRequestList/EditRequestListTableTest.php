@@ -35,7 +35,7 @@ class EditRequestListTableTest extends TestCase
             'initialFilters' => array_merge([
                 'search' => '',
                 'type' => '',
-                'status' => '',
+                'status' => [],
             ], $initialFilters),
             'initialSorting' => array_merge([
                 'sortBy' => 'created_at',

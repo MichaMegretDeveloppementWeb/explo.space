@@ -119,7 +119,22 @@
                 </thead>
 
                 <tbody class="divide-y divide-gray-200 bg-white">
-                    @forelse($places as $place)
+                    @error('load-data')
+                        <tr>
+                            <td colspan="5" class="px-6 py-20 text-center">
+                                <div class="flex flex-col items-center justify-center">
+                                    <div class="rounded-full bg-red-100 p-3 mb-4">
+                                        <x-heroicon-o-exclamation-triangle class="h-8 w-8 text-red-600" />
+                                    </div>
+                                    <h3 class="text-sm font-medium text-red-900 mb-1">Erreur de chargement</h3>
+                                    <p class="text-xs text-red-600 max-w-sm">
+                                        {{ $message }}
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    @else
+                        @forelse($places as $place)
                         @php
                             // Sécuriser l'accès à la traduction dans la bonne locale
                             $translation = $place->translations->firstWhere('locale', $locale)
@@ -215,7 +230,8 @@
                                 </div>
                             </td>
                         </tr>
-                    @endforelse
+                        @endforelse
+                    @enderror
                 </tbody>
             </table>
         </div>

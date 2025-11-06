@@ -45,7 +45,7 @@ class EditRequestListRepositoryTest extends TestCase
             'contact_email' => 'test@example.com',
         ]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => ''];
+        $filters = ['search' => '', 'type' => '', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -85,7 +85,7 @@ class EditRequestListRepositoryTest extends TestCase
             'status' => 'submitted',
         ]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => ''];
+        $filters = ['search' => '', 'type' => '', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -125,7 +125,7 @@ class EditRequestListRepositoryTest extends TestCase
         $request1 = EditRequest::factory()->create(['place_id' => $place1->id, 'contact_email' => 'test@example.com']);
         EditRequest::factory()->create(['place_id' => $place2->id, 'contact_email' => 'other@example.com']);
 
-        $filters = ['search' => 'Kennedy', 'type' => '', 'status' => ''];
+        $filters = ['search' => 'Kennedy', 'type' => '', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -157,7 +157,7 @@ class EditRequestListRepositoryTest extends TestCase
             'contact_email' => 'jane.smith@example.com',
         ]);
 
-        $filters = ['search' => 'john.doe', 'type' => '', 'status' => ''];
+        $filters = ['search' => 'john.doe', 'type' => '', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -182,7 +182,7 @@ class EditRequestListRepositoryTest extends TestCase
 
         EditRequest::factory()->create(['place_id' => $place->id]);
 
-        $filters = ['search' => 'kennedy', 'type' => '', 'status' => ''];
+        $filters = ['search' => 'kennedy', 'type' => '', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -222,7 +222,7 @@ class EditRequestListRepositoryTest extends TestCase
             'type' => 'photo_suggestion',
         ]);
 
-        $filters = ['search' => '', 'type' => 'modification', 'status' => ''];
+        $filters = ['search' => '', 'type' => 'modification', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -251,7 +251,7 @@ class EditRequestListRepositoryTest extends TestCase
             'type' => 'signalement',
         ]);
 
-        $filters = ['search' => '', 'type' => 'signalement', 'status' => ''];
+        $filters = ['search' => '', 'type' => 'signalement', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -280,7 +280,7 @@ class EditRequestListRepositoryTest extends TestCase
             'type' => 'photo_suggestion',
         ]);
 
-        $filters = ['search' => '', 'type' => 'photo_suggestion', 'status' => ''];
+        $filters = ['search' => '', 'type' => 'photo_suggestion', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -313,7 +313,7 @@ class EditRequestListRepositoryTest extends TestCase
 
         EditRequest::factory()->create(['place_id' => $place->id, 'status' => 'pending']);
 
-        $filters = ['search' => '', 'type' => '', 'status' => 'submitted'];
+        $filters = ['search' => '', 'type' => '', 'status' => ['submitted']];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -342,7 +342,7 @@ class EditRequestListRepositoryTest extends TestCase
             'status' => 'pending',
         ]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => 'pending'];
+        $filters = ['search' => '', 'type' => '', 'status' => ['pending']];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -371,7 +371,7 @@ class EditRequestListRepositoryTest extends TestCase
             'status' => 'accepted',
         ]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => 'accepted'];
+        $filters = ['search' => '', 'type' => '', 'status' => ['accepted']];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -400,7 +400,7 @@ class EditRequestListRepositoryTest extends TestCase
             'status' => 'refused',
         ]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => 'refused'];
+        $filters = ['search' => '', 'type' => '', 'status' => ['refused']];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -436,7 +436,7 @@ class EditRequestListRepositoryTest extends TestCase
             'created_at' => now()->subDay(),
         ]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => ''];
+        $filters = ['search' => '', 'type' => '', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -468,7 +468,7 @@ class EditRequestListRepositoryTest extends TestCase
             'created_at' => now()->subDay(),
         ]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => ''];
+        $filters = ['search' => '', 'type' => '', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'asc'];
 
         // Act
@@ -505,7 +505,7 @@ class EditRequestListRepositoryTest extends TestCase
             'type' => 'signalement',
         ]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => ''];
+        $filters = ['search' => '', 'type' => '', 'status' => []];
         $sorting = ['column' => 'type', 'direction' => 'asc'];
 
         // Act
@@ -543,7 +543,7 @@ class EditRequestListRepositoryTest extends TestCase
         $requestZebra = EditRequest::factory()->create(['place_id' => $place1->id]);
         $requestAlpha = EditRequest::factory()->create(['place_id' => $place2->id]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => ''];
+        $filters = ['search' => '', 'type' => '', 'status' => []];
         $sorting = ['column' => 'place', 'direction' => 'asc'];
 
         // Act
@@ -575,7 +575,7 @@ class EditRequestListRepositoryTest extends TestCase
             'contact_email' => 'alpha@example.com',
         ]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => ''];
+        $filters = ['search' => '', 'type' => '', 'status' => []];
         $sorting = ['column' => 'contact_email', 'direction' => 'asc'];
 
         // Act
@@ -600,7 +600,7 @@ class EditRequestListRepositoryTest extends TestCase
         $submitted = EditRequest::factory()->create(['place_id' => $place->id, 'status' => 'submitted']);
         $pending = EditRequest::factory()->create(['place_id' => $place->id, 'status' => 'pending']);
 
-        $filters = ['search' => '', 'type' => '', 'status' => ''];
+        $filters = ['search' => '', 'type' => '', 'status' => []];
         $sorting = ['column' => 'status', 'direction' => 'asc'];
 
         // Act
@@ -650,7 +650,7 @@ class EditRequestListRepositoryTest extends TestCase
             'type' => 'signalement',  // Different type
         ]);
 
-        $filters = ['search' => 'Kennedy', 'type' => 'modification', 'status' => ''];
+        $filters = ['search' => 'Kennedy', 'type' => 'modification', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -692,7 +692,7 @@ class EditRequestListRepositoryTest extends TestCase
             'status' => 'pending',  // Different status
         ]);
 
-        $filters = ['search' => 'Kennedy', 'type' => 'modification', 'status' => 'submitted'];
+        $filters = ['search' => 'Kennedy', 'type' => 'modification', 'status' => ['submitted']];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -721,7 +721,7 @@ class EditRequestListRepositoryTest extends TestCase
         // Create 15 edit requests
         EditRequest::factory()->count(15)->create(['place_id' => $place->id]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => ''];
+        $filters = ['search' => '', 'type' => '', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act
@@ -746,7 +746,7 @@ class EditRequestListRepositoryTest extends TestCase
 
         EditRequest::factory()->count(25)->create(['place_id' => $place->id]);
 
-        $filters = ['search' => '', 'type' => '', 'status' => ''];
+        $filters = ['search' => '', 'type' => '', 'status' => []];
         $sorting = ['column' => 'created_at', 'direction' => 'desc'];
 
         // Act

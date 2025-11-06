@@ -24,7 +24,7 @@ class PlaceListPaginationValidationService
      *
      * @throws ValidationException
      */
-    public function validateAndClean(array $pagination): int
+    public function validate(array $pagination): int
     {
         $validator = Validator::make($pagination, [
             'perPage' => 'nullable|integer|in:'.implode(',', self::ALLOWED_PER_PAGE),

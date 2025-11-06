@@ -11,7 +11,7 @@ class EditRequestListRepository implements EditRequestListRepositoryInterface
     /**
      * Récupérer les demandes de modification/signalement paginées avec filtres, tri et eager loading
      *
-     * @param  array{search: string, type: string, status: string}  $filters
+     * @param  array{search: string, type: string, status: array<int, string>}  $filters
      * @param  array{column: string, direction: string}  $sorting
      * @return LengthAwarePaginator<int, \App\Models\EditRequest>
      */
@@ -43,9 +43,9 @@ class EditRequestListRepository implements EditRequestListRepositoryInterface
             $query->where('edit_requests.type', $filters['type']);
         }
 
-        // Filtrage par statut
+        // Filtrage par statut (peut contenir plusieurs statuts)
         if (! empty($filters['status'])) {
-            $query->where('edit_requests.status', $filters['status']);
+            $query->whereIn('edit_requests.status', $filters['status']);
         }
 
         // Tri

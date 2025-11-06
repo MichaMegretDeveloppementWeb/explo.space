@@ -28,13 +28,13 @@ class PlaceRequestListService
     public function getPaginatedPlaceRequests(array $filters, array $sorting, array $pagination): LengthAwarePaginator
     {
         // Valider et nettoyer les filtres
-        $cleanedFilters = $this->filterValidation->validateAndClean($filters);
+        $cleanedFilters = $this->filterValidation->validate($filters);
 
         // Valider et nettoyer le tri
-        $cleanedSorting = $this->sortingValidation->validateAndClean($sorting);
+        $cleanedSorting = $this->sortingValidation->validate($sorting);
 
         // Valider et nettoyer la pagination
-        $perPage = $this->paginationValidation->validateAndClean($pagination);
+        $perPage = $this->paginationValidation->validate($pagination);
 
         // Récupérer les propositions depuis le repository
         return $this->placeRequestListRepository->getPaginatedPlaceRequests(

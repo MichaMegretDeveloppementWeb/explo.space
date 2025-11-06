@@ -3,7 +3,7 @@
     {{-- Header avec bouton reset --}}
     <div class="mb-3 flex items-center justify-between">
         <h2 class="text-sm font-medium text-gray-700">Filtres</h2>
-        @if($search !== '' || $type !== '' || $status !== '')
+        @if($search !== '' || $type !== '' || count($status) > 0)
             <button type="button"
                     wire:click="resetFilters"
                     class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all">
@@ -13,12 +13,11 @@
         @endif
     </div>
 
-    {{-- Card de filtres - Layout horizontal compact --}}
+    {{-- Card de filtres --}}
     <div class="rounded-xl border border-gray-200 bg-white">
-        <div class="p-4">
-            {{-- Ligne unique de filtres avec séparateurs verticaux --}}
+        <div class="p-4 space-y-4">
+            {{-- Ligne 1: Recherche et Type avec séparateur vertical --}}
             <div class="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-0 lg:divide-x lg:divide-gray-200">
-
                 {{-- Section 1: Recherche (flex-1 pour étalement) --}}
                 <div class="lg:pr-4 flex-1">
                     <label for="search" class="block text-xs font-medium text-gray-700 mb-1.5">
@@ -37,7 +36,7 @@
                 </div>
 
                 {{-- Section 2: Type (width fixe) --}}
-                <div class="lg:px-4 lg:min-w-[180px] w-full lg:w-auto">
+                <div class="lg:pl-4 lg:min-w-[180px] w-full lg:w-auto flex-1">
                     <label for="type" class="block text-xs font-medium text-gray-700 mb-1.5">
                         Type
                     </label>
@@ -50,21 +49,33 @@
                         <option value="photo_suggestion">Photo</option>
                     </select>
                 </div>
+            </div>
 
-                {{-- Section 3: Statut (width fixe) --}}
-                <div class="lg:pl-4 lg:min-w-[180px] w-full lg:w-auto">
-                    <label for="status" class="block text-xs font-medium text-gray-700 mb-1.5">
-                        Statut
-                    </label>
-                    <select id="status"
-                            wire:model.live="status"
-                            class="block w-full rounded-lg border-0 py-2 px-3 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600">
-                        <option value="">Tous les statuts</option>
-                        <option value="submitted">Envoyé</option>
-                        <option value="pending">En attente</option>
-                        <option value="accepted">Accepté</option>
-                        <option value="refused">Refusé</option>
-                    </select>
+            {{-- Ligne 2: Statut (badges avec checkboxes) en pleine largeur --}}
+            <div class="pt-2 border-t border-gray-100">
+                <label class="block text-xs font-medium text-gray-700 mb-2">
+                    Statut <span class="text-gray-500 font-normal">({{ $statusCounts['all'] }} total)</span>
+                </label>
+                <div class="flex flex-wrap gap-2">
+                    @php
+                        use App\Enums\RequestStatus;
+                        $statuses = [RequestStatus::Submitted, RequestStatus::Pending, RequestStatus::Accepted, RequestStatus::Refused];
+                    @endphp
+                    @foreach($statuses as $requestStatus)
+                        <label class="inline-flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox"
+                                   value="{{ $requestStatus->value }}"
+                                   wire:model.live="status"
+                                   class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium border
+                                {{ in_array($requestStatus->value, $status) ? $requestStatus->badgeClasses() : 'bg-gray-50 text-gray-600 border-gray-200' }}">
+                                <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 8 8">
+                                    <circle cx="4" cy="4" r="3"/>
+                                </svg>
+                                {{ $requestStatus->label() }} ({{ $statusCounts[$requestStatus->value] }})
+                            </span>
+                        </label>
+                    @endforeach
                 </div>
             </div>
         </div>

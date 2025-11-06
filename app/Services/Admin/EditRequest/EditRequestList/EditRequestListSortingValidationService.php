@@ -33,7 +33,7 @@ class EditRequestListSortingValidationService
      *
      * @throws ValidationException
      */
-    public function validateAndClean(array $sorting): array
+    public function validate(array $sorting): array
     {
         $validator = Validator::make($sorting, [
             'sortBy' => 'nullable|string|in:'.implode(',', self::ALLOWED_COLUMNS),

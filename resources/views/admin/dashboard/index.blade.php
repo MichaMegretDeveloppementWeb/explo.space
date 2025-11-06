@@ -30,7 +30,7 @@
                 title="Modifications/Signalements en attente"
                 :value="$stats['pending_edit_requests']"
                 icon-color="orange"
-                link="#"
+                :link="route('admin.edit-requests.index', ['status' => ['submitted', 'pending']])"
             >
                 <x-slot name="icon">
                     <x-heroicon-o-pencil-square class="h-6 w-6" />

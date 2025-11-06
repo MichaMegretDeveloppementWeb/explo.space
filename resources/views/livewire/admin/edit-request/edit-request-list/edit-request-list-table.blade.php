@@ -128,7 +128,22 @@
                 </thead>
 
                 <tbody class="divide-y divide-gray-200 bg-white">
-                    @forelse($editRequests as $request)
+                    @error('load-data')
+                        <tr>
+                            <td colspan="5" class="px-6 py-20 text-center">
+                                <div class="flex flex-col items-center justify-center">
+                                    <div class="rounded-full bg-red-100 p-3 mb-4">
+                                        <x-heroicon-o-exclamation-triangle class="h-8 w-8 text-red-600" />
+                                    </div>
+                                    <h3 class="text-sm font-medium text-red-900 mb-1">Erreur de chargement</h3>
+                                    <p class="text-xs text-red-600 max-w-sm">
+                                        {{ $message }}
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    @else
+                        @forelse($editRequests as $request)
                         <tr class="group relative hover:bg-gray-50/50 transition-colors" wire:key="{{ $request->id }}">
                             {{-- Lieu avec lien stretched --}}
                             <td class="px-6 py-4">
@@ -208,22 +223,23 @@
                                 </div>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="px-6 py-20 text-center">
-                                <div class="flex flex-col items-center justify-center">
-                                    <div class="rounded-full bg-gray-100 p-3 mb-4">
-                                        <x-heroicon-o-inbox class="h-8 w-8 text-gray-400" />
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-20 text-center">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <div class="rounded-full bg-gray-100 p-3 mb-4">
+                                            <x-heroicon-o-inbox class="h-8 w-8 text-gray-400" />
+                                        </div>
+                                        <h3 class="text-sm font-medium text-gray-900 mb-1">Aucune demande trouvée</h3>
+                                        <p class="text-xs text-gray-500 max-w-sm">
+                                            Aucune demande ne correspond à vos critères de recherche.
+                                            Essayez de modifier vos filtres.
+                                        </p>
                                     </div>
-                                    <h3 class="text-sm font-medium text-gray-900 mb-1">Aucune demande trouvée</h3>
-                                    <p class="text-xs text-gray-500 max-w-sm">
-                                        Aucune demande ne correspond à vos critères de recherche.
-                                        Essayez de modifier vos filtres.
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
+                                </td>
+                            </tr>
+                        @endforelse
+                    @enderror
                 </tbody>
             </table>
         </div>

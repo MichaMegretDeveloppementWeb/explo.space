@@ -64,17 +64,17 @@ class PlaceRequestListServiceTest extends TestCase
         $validatedSorting = ['sortBy' => 'created_at', 'sortDirection' => 'desc'];
         $pagination = ['perPage' => 20];
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->once()
             ->with($rawFilters)
             ->andReturn($validatedFilters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->once()
             ->with($sorting)
             ->andReturn($validatedSorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->once()
             ->with($pagination)
             ->andReturn(20);
@@ -100,17 +100,17 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'title', 'sortDirection' => 'asc'];
         $pagination = ['perPage' => 30];
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->once()
             ->with($rawFilters)
             ->andReturn($validatedFilters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->once()
             ->with($sorting)
             ->andReturn($sorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->once()
             ->with($pagination)
             ->andReturn(30);
@@ -135,16 +135,16 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'created_at', 'sortDirection' => 'desc'];
         $pagination = ['perPage' => 20]; // Default value
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->once()
             ->andReturn($filters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->once()
             ->with($sorting)
             ->andReturn($sorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->once()
             ->with($pagination)
             ->andReturn(20);
@@ -169,16 +169,16 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'created_at', 'sortDirection' => 'desc'];
         $pagination = ['perPage' => 50];
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->once()
             ->andReturn($filters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->once()
             ->with($sorting)
             ->andReturn($sorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->once()
             ->with($pagination)
             ->andReturn(50);
@@ -205,7 +205,7 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'created_at', 'sortDirection' => 'desc'];
         $pagination = ['perPage' => 20];
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->once()
             ->with($filters)
             ->andThrow(new ValidationException(validator([], [])));
@@ -225,9 +225,9 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'title', 'sortDirection' => 'asc'];
         $pagination = ['perPage' => 20];
 
-        $this->filterValidation->shouldReceive('validateAndClean')->once()->andReturn($filters);
-        $this->sortingValidation->shouldReceive('validateAndClean')->once()->with($sorting)->andReturn($sorting);
-        $this->paginationValidation->shouldReceive('validateAndClean')->once()->with($pagination)->andReturn(20);
+        $this->filterValidation->shouldReceive('validate')->once()->andReturn($filters);
+        $this->sortingValidation->shouldReceive('validate')->once()->with($sorting)->andReturn($sorting);
+        $this->paginationValidation->shouldReceive('validate')->once()->with($pagination)->andReturn(20);
 
         $paginator = Mockery::mock(LengthAwarePaginator::class);
         $this->repository->shouldReceive('getPaginatedPlaceRequests')
@@ -249,9 +249,9 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'status', 'sortDirection' => 'desc'];
         $pagination = ['perPage' => 20];
 
-        $this->filterValidation->shouldReceive('validateAndClean')->once()->andReturn($filters);
-        $this->sortingValidation->shouldReceive('validateAndClean')->once()->with($sorting)->andReturn($sorting);
-        $this->paginationValidation->shouldReceive('validateAndClean')->once()->with($pagination)->andReturn(20);
+        $this->filterValidation->shouldReceive('validate')->once()->andReturn($filters);
+        $this->sortingValidation->shouldReceive('validate')->once()->with($sorting)->andReturn($sorting);
+        $this->paginationValidation->shouldReceive('validate')->once()->with($pagination)->andReturn(20);
 
         $paginator = Mockery::mock(LengthAwarePaginator::class);
         $this->repository->shouldReceive('getPaginatedPlaceRequests')
@@ -273,9 +273,9 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'created_at', 'sortDirection' => 'asc'];
         $pagination = ['perPage' => 20];
 
-        $this->filterValidation->shouldReceive('validateAndClean')->once()->andReturn($filters);
-        $this->sortingValidation->shouldReceive('validateAndClean')->once()->with($sorting)->andReturn($sorting);
-        $this->paginationValidation->shouldReceive('validateAndClean')->once()->with($pagination)->andReturn(20);
+        $this->filterValidation->shouldReceive('validate')->once()->andReturn($filters);
+        $this->sortingValidation->shouldReceive('validate')->once()->with($sorting)->andReturn($sorting);
+        $this->paginationValidation->shouldReceive('validate')->once()->with($pagination)->andReturn(20);
 
         $paginator = Mockery::mock(LengthAwarePaginator::class);
         $this->repository->shouldReceive('getPaginatedPlaceRequests')
@@ -301,9 +301,9 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'created_at', 'sortDirection' => 'desc'];
         $pagination = ['perPage' => 20];
 
-        $this->filterValidation->shouldReceive('validateAndClean')->once()->andReturn($filters);
-        $this->sortingValidation->shouldReceive('validateAndClean')->once()->with($sorting)->andReturn($sorting);
-        $this->paginationValidation->shouldReceive('validateAndClean')->once()->with($pagination)->andReturn(20);
+        $this->filterValidation->shouldReceive('validate')->once()->andReturn($filters);
+        $this->sortingValidation->shouldReceive('validate')->once()->with($sorting)->andReturn($sorting);
+        $this->paginationValidation->shouldReceive('validate')->once()->with($pagination)->andReturn(20);
 
         $paginator = Mockery::mock(LengthAwarePaginator::class);
         $this->repository->shouldReceive('getPaginatedPlaceRequests')
@@ -325,9 +325,9 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'created_at', 'sortDirection' => 'desc'];
         $pagination = ['perPage' => 20];
 
-        $this->filterValidation->shouldReceive('validateAndClean')->once()->andReturn($filters);
-        $this->sortingValidation->shouldReceive('validateAndClean')->once()->with($sorting)->andReturn($sorting);
-        $this->paginationValidation->shouldReceive('validateAndClean')->once()->with($pagination)->andReturn(20);
+        $this->filterValidation->shouldReceive('validate')->once()->andReturn($filters);
+        $this->sortingValidation->shouldReceive('validate')->once()->with($sorting)->andReturn($sorting);
+        $this->paginationValidation->shouldReceive('validate')->once()->with($pagination)->andReturn(20);
 
         $paginator = Mockery::mock(LengthAwarePaginator::class);
         $this->repository->shouldReceive('getPaginatedPlaceRequests')
@@ -349,9 +349,9 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'created_at', 'sortDirection' => 'desc'];
         $pagination = ['perPage' => 20];
 
-        $this->filterValidation->shouldReceive('validateAndClean')->once()->andReturn($filters);
-        $this->sortingValidation->shouldReceive('validateAndClean')->once()->with($sorting)->andReturn($sorting);
-        $this->paginationValidation->shouldReceive('validateAndClean')->once()->with($pagination)->andReturn(20);
+        $this->filterValidation->shouldReceive('validate')->once()->andReturn($filters);
+        $this->sortingValidation->shouldReceive('validate')->once()->with($sorting)->andReturn($sorting);
+        $this->paginationValidation->shouldReceive('validate')->once()->with($pagination)->andReturn(20);
 
         $paginator = Mockery::mock(LengthAwarePaginator::class);
         $this->repository->shouldReceive('getPaginatedPlaceRequests')
@@ -373,9 +373,9 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'created_at', 'sortDirection' => 'desc'];
         $pagination = ['perPage' => 20];
 
-        $this->filterValidation->shouldReceive('validateAndClean')->once()->andReturn($filters);
-        $this->sortingValidation->shouldReceive('validateAndClean')->once()->with($sorting)->andReturn($sorting);
-        $this->paginationValidation->shouldReceive('validateAndClean')->once()->with($pagination)->andReturn(20);
+        $this->filterValidation->shouldReceive('validate')->once()->andReturn($filters);
+        $this->sortingValidation->shouldReceive('validate')->once()->with($sorting)->andReturn($sorting);
+        $this->paginationValidation->shouldReceive('validate')->once()->with($pagination)->andReturn(20);
 
         $paginator = Mockery::mock(LengthAwarePaginator::class);
         $this->repository->shouldReceive('getPaginatedPlaceRequests')
@@ -401,9 +401,9 @@ class PlaceRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'created_at', 'sortDirection' => 'desc'];
         $pagination = ['perPage' => 20];
 
-        $this->filterValidation->shouldReceive('validateAndClean')->once()->andReturn($filters);
-        $this->sortingValidation->shouldReceive('validateAndClean')->once()->with($sorting)->andReturn($sorting);
-        $this->paginationValidation->shouldReceive('validateAndClean')->once()->with($pagination)->andReturn(20);
+        $this->filterValidation->shouldReceive('validate')->once()->andReturn($filters);
+        $this->sortingValidation->shouldReceive('validate')->once()->with($sorting)->andReturn($sorting);
+        $this->paginationValidation->shouldReceive('validate')->once()->with($pagination)->andReturn(20);
 
         $expectedPaginator = Mockery::mock(LengthAwarePaginator::class);
         $this->repository->shouldReceive('getPaginatedPlaceRequests')
@@ -428,19 +428,19 @@ class PlaceRequestListServiceTest extends TestCase
         $pagination = ['perPage' => 20];
 
         // Validation should be called first (ordered)
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->once()
             ->ordered()
             ->with($filters)
             ->andReturn($validatedFilters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->once()
             ->ordered()
             ->with($sorting)
             ->andReturn($validatedSorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->once()
             ->ordered()
             ->with($pagination)

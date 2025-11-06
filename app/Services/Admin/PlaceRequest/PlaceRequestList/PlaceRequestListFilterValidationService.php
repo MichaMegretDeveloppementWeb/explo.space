@@ -15,7 +15,7 @@ class PlaceRequestListFilterValidationService
      *
      * @throws ValidationException
      */
-    public function validateAndClean(array $filters): array
+    public function validate(array $filters): array
     {
         // Normaliser le statut AVANT validation
         if (isset($filters['status'])) {

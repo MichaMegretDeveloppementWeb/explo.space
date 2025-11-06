@@ -25,7 +25,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = [];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertIsArray($validated);
         $this->assertArrayHasKey('status', $validated);
@@ -36,7 +36,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => ['pending']];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals(['pending'], $validated['status']);
     }
@@ -45,7 +45,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => ['pending', 'submitted']];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals(['pending', 'submitted'], $validated['status']);
     }
@@ -54,7 +54,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => ['submitted', 'pending', 'accepted', 'refused']];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals(['submitted', 'pending', 'accepted', 'refused'], $validated['status']);
     }
@@ -67,7 +67,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => 'pending,submitted'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals(['pending', 'submitted'], $validated['status']);
     }
@@ -76,7 +76,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => 'pending'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals(['pending'], $validated['status']);
     }
@@ -85,7 +85,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => 'pending, submitted, accepted'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         // Should trim spaces
         $this->assertEquals(['pending', 'submitted', 'accepted'], $validated['status']);
@@ -95,7 +95,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => ''];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals([], $validated['status']);
     }
@@ -104,7 +104,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => 'all'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals([], $validated['status']);
     }
@@ -113,7 +113,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => 'pending,,submitted,,'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         // Should filter out empty strings
         $this->assertEquals(['pending', 'submitted'], $validated['status']);
@@ -129,7 +129,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
 
         $filters = ['status' => ['invalid_status']];
 
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     public function test_throws_exception_for_partially_invalid_statuses(): void
@@ -138,7 +138,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
 
         $filters = ['status' => ['pending', 'invalid', 'submitted']];
 
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     public function test_throws_exception_for_invalid_string_status(): void
@@ -147,7 +147,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
 
         $filters = ['status' => 'invalid'];
 
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     public function test_throws_exception_for_invalid_comma_separated_statuses(): void
@@ -156,7 +156,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
 
         $filters = ['status' => 'pending,invalid,submitted'];
 
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     // ========================================
@@ -207,7 +207,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => null];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals([], $validated['status']);
     }
@@ -216,7 +216,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => ['refused', 'accepted', 'pending', 'submitted']];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals(['refused', 'accepted', 'pending', 'submitted'], $validated['status']);
     }
@@ -225,7 +225,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => ['pending', 'pending', 'submitted']];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         // Should keep duplicates as-is (repository can handle this)
         $this->assertEquals(['pending', 'pending', 'submitted'], $validated['status']);
@@ -235,7 +235,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => 'pending,pending,submitted'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         // Should keep duplicates after normalization
         $this->assertEquals(['pending', 'pending', 'submitted'], $validated['status']);
@@ -249,7 +249,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['status' => ['pending']];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertIsArray($validated);
         $this->assertArrayHasKey('status', $validated);
@@ -263,7 +263,7 @@ class PlaceRequestListFilterValidationServiceTest extends TestCase
             'extra_key' => 'should_be_ignored',
         ];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertCount(1, $validated);
         $this->assertArrayHasKey('status', $validated);

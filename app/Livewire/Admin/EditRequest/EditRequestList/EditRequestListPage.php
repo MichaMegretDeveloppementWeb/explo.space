@@ -17,8 +17,11 @@ class EditRequestListPage extends Component
     #[Url(as: 'type')]
     public string $type = '';
 
+    /**
+     * @var array<int, string>|string
+     */
     #[Url(as: 'status')]
-    public string $status = '';
+    public array|string $status = [];
 
     /**
      * Paramètres de tri synchronisés avec l'URL
@@ -36,19 +39,35 @@ class EditRequestListPage extends Component
     public int $perPage = 20;
 
     /**
+     * Normaliser les propriétés après réhydratation depuis l'URL
+     */
+    public function hydrate(): void
+    {
+        // Normaliser $status en array si c'est une string
+        if (is_string($this->status)) {
+            $this->status = $this->status === '' ? [] : [$this->status];
+        }
+    }
+
+    /**
      * Initialiser les valeurs par défaut
      */
     public function mount(): void
     {
         // Les valeurs par défaut sont déjà définies ci-dessus
         // URL parameters override these defaults automatically via Livewire
+
+        // Normaliser $status après mount
+        $this->hydrate();
     }
 
     /**
      * Écouter les changements de filtres depuis EditRequestListFilters
+     *
+     * @param  array<int, string>  $status
      */
     #[On('filters:updated')]
-    public function updateFilters(string $search, string $type, string $status): void
+    public function updateFilters(string $search, string $type, array $status): void
     {
         $this->search = $search;
         $this->type = $type;

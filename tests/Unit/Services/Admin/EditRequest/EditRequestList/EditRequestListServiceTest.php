@@ -55,27 +55,27 @@ class EditRequestListServiceTest extends TestCase
     public function test_get_paginated_edit_requests_validates_and_delegates_to_repository(): void
     {
         // Arrange
-        $filters = ['search' => 'test', 'type' => 'modification', 'status' => 'pending'];
+        $filters = ['search' => '', 'type' => '', 'status' => ['pending']];
         $sorting = ['sortBy' => 'place', 'sortDirection' => 'asc'];
         $pagination = ['perPage' => 20];
 
-        $cleanedFilters = ['search' => 'test', 'type' => 'modification', 'status' => 'pending'];
+        $cleanedFilters = ['search' => '', 'type' => '', 'status' => ['pending']];
         $cleanedSorting = ['column' => 'place', 'direction' => 'asc'];
         $perPage = 20;
 
         $expectedPaginator = Mockery::mock(LengthAwarePaginator::class);
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->once()
             ->with($filters)
             ->andReturn($cleanedFilters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->once()
             ->with($sorting)
             ->andReturn($cleanedSorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->once()
             ->with($pagination)
             ->andReturn($perPage);
@@ -99,26 +99,26 @@ class EditRequestListServiceTest extends TestCase
         $sorting = [];
         $pagination = [];
 
-        $cleanedFilters = ['search' => '', 'type' => '', 'status' => ''];
+        $cleanedFilters = ['search' => '', 'type' => '', 'status' => []];
         $cleanedSorting = ['column' => 'created_at', 'direction' => 'desc'];
         $perPage = 20;
 
         $expectedPaginator = Mockery::mock(LengthAwarePaginator::class);
 
         // Set up ordered expectations
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->once()
             ->ordered()
             ->with($filters)
             ->andReturn($cleanedFilters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->once()
             ->ordered()
             ->with($sorting)
             ->andReturn($cleanedSorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->once()
             ->ordered()
             ->with($pagination)
@@ -143,21 +143,21 @@ class EditRequestListServiceTest extends TestCase
         $sorting = [];
         $pagination = [];
 
-        $cleanedFilters = ['search' => 'kennedy', 'type' => '', 'status' => ''];
+        $cleanedFilters = ['search' => 'kennedy', 'type' => '', 'status' => []];
         $cleanedSorting = ['column' => 'created_at', 'direction' => 'desc'];
         $perPage = 20;
 
         $expectedPaginator = Mockery::mock(LengthAwarePaginator::class);
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->with($filters)
             ->andReturn($cleanedFilters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->with($sorting)
             ->andReturn($cleanedSorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->with($pagination)
             ->andReturn($perPage);
 
@@ -179,21 +179,21 @@ class EditRequestListServiceTest extends TestCase
         $sorting = [];
         $pagination = [];
 
-        $cleanedFilters = ['search' => '', 'type' => 'photo_suggestion', 'status' => ''];
+        $cleanedFilters = ['search' => '', 'type' => 'photo_suggestion', 'status' => []];
         $cleanedSorting = ['column' => 'created_at', 'direction' => 'desc'];
         $perPage = 20;
 
         $expectedPaginator = Mockery::mock(LengthAwarePaginator::class);
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->with($filters)
             ->andReturn($cleanedFilters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->with($sorting)
             ->andReturn($cleanedSorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->with($pagination)
             ->andReturn($perPage);
 
@@ -215,21 +215,21 @@ class EditRequestListServiceTest extends TestCase
         $sorting = ['sortBy' => 'status', 'sortDirection' => 'asc'];
         $pagination = [];
 
-        $cleanedFilters = ['search' => '', 'type' => '', 'status' => ''];
+        $cleanedFilters = ['search' => '', 'type' => '', 'status' => []];
         $cleanedSorting = ['column' => 'status', 'direction' => 'asc'];
         $perPage = 20;
 
         $expectedPaginator = Mockery::mock(LengthAwarePaginator::class);
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->with($filters)
             ->andReturn($cleanedFilters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->with($sorting)
             ->andReturn($cleanedSorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->with($pagination)
             ->andReturn($perPage);
 
@@ -251,21 +251,21 @@ class EditRequestListServiceTest extends TestCase
         $sorting = [];
         $pagination = ['perPage' => 50];
 
-        $cleanedFilters = ['search' => '', 'type' => '', 'status' => ''];
+        $cleanedFilters = ['search' => '', 'type' => '', 'status' => []];
         $cleanedSorting = ['column' => 'created_at', 'direction' => 'desc'];
         $perPage = 50;
 
         $expectedPaginator = Mockery::mock(LengthAwarePaginator::class);
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->with($filters)
             ->andReturn($cleanedFilters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->with($sorting)
             ->andReturn($cleanedSorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->with($pagination)
             ->andReturn($perPage);
 

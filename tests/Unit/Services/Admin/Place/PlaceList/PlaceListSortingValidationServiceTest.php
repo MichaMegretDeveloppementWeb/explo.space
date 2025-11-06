@@ -25,7 +25,7 @@ class PlaceListSortingValidationServiceTest extends TestCase
         ];
 
         // Act
-        $result = $this->service->validateAndClean($sorting);
+        $result = $this->service->validate($sorting);
 
         // Assert
         $this->assertEquals('title', $result['column']);
@@ -38,7 +38,7 @@ class PlaceListSortingValidationServiceTest extends TestCase
         $sorting = [];
 
         // Act
-        $result = $this->service->validateAndClean($sorting);
+        $result = $this->service->validate($sorting);
 
         // Assert
         $this->assertEquals('created_at', $result['column']);
@@ -57,7 +57,7 @@ class PlaceListSortingValidationServiceTest extends TestCase
         $this->expectException(ValidationException::class);
 
         // Act
-        $this->service->validateAndClean($sorting);
+        $this->service->validate($sorting);
     }
 
     public function test_validate_and_clean_rejects_invalid_direction(): void
@@ -72,7 +72,7 @@ class PlaceListSortingValidationServiceTest extends TestCase
         $this->expectException(ValidationException::class);
 
         // Act
-        $this->service->validateAndClean($sorting);
+        $this->service->validate($sorting);
     }
 
     public function test_get_allowed_columns_returns_array(): void

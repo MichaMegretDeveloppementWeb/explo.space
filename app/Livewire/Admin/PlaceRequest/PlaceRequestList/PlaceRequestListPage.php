@@ -33,12 +33,11 @@ class PlaceRequestListPage extends Component
     public int $perPage = 20;
 
     /**
-     * Initialiser les valeurs par défaut
+     * Normaliser les propriétés après réhydratation depuis l'URL
      */
-    public function mount(): void
+    public function hydrate(): void
     {
         // Normaliser le statut en tableau si c'est une string depuis l'URL
-        // Ex: status=pending,submitted -> ['pending', 'submitted']
         if (is_string($this->status)) {
             if ($this->status === '' || $this->status === 'all') {
                 $this->status = [];
@@ -46,6 +45,15 @@ class PlaceRequestListPage extends Component
                 $this->status = array_filter(explode(',', $this->status));
             }
         }
+    }
+
+    /**
+     * Initialiser les valeurs par défaut
+     */
+    public function mount(): void
+    {
+        // Normaliser après mount
+        $this->hydrate();
     }
 
     /**

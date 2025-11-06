@@ -54,7 +54,7 @@ class EditRequestListFiltersTest extends TestCase
     public function test_mount_accepts_initial_filters_with_search(): void
     {
         Livewire::test(EditRequestListFilters::class, [
-            'initialFilters' => ['search' => 'test', 'type' => '', 'status' => ''],
+            'initialFilters' => ['search' => 'test', 'type' => '', 'status' => []],
         ])
             ->assertSet('search', 'test');
     }
@@ -62,7 +62,7 @@ class EditRequestListFiltersTest extends TestCase
     public function test_mount_accepts_initial_filters_with_type(): void
     {
         Livewire::test(EditRequestListFilters::class, [
-            'initialFilters' => ['search' => '', 'type' => 'modification', 'status' => ''],
+            'initialFilters' => ['search' => '', 'type' => 'modification', 'status' => []],
         ])
             ->assertSet('type', 'modification');
     }

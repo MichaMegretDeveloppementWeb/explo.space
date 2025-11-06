@@ -61,17 +61,17 @@ class PlaceListServiceTest extends TestCase
 
         $expectedPaginator = Mockery::mock(LengthAwarePaginator::class);
 
-        $this->filterValidation->shouldReceive('validateAndClean')
+        $this->filterValidation->shouldReceive('validate')
             ->once()
             ->with($filters)
             ->andReturn($cleanedFilters);
 
-        $this->sortingValidation->shouldReceive('validateAndClean')
+        $this->sortingValidation->shouldReceive('validate')
             ->once()
             ->with($sorting)
             ->andReturn($cleanedSorting);
 
-        $this->paginationValidation->shouldReceive('validateAndClean')
+        $this->paginationValidation->shouldReceive('validate')
             ->once()
             ->with($pagination)
             ->andReturn($perPage);

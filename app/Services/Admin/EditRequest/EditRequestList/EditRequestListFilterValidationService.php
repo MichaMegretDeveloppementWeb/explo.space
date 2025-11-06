@@ -10,17 +10,18 @@ class EditRequestListFilterValidationService
     /**
      * Valider et nettoyer les filtres
      *
-     * @param  array{search?: string, type?: string, status?: string}  $filters
-     * @return array{search: string, type: string, status: string}
+     * @param  array{search?: string, type?: string, status?: array<int, string>}  $filters
+     * @return array{search: string, type: string, status: array<int, string>}
      *
      * @throws ValidationException
      */
-    public function validateAndClean(array $filters): array
+    public function validate(array $filters): array
     {
         $validator = Validator::make($filters, [
             'search' => 'nullable|string|max:255',
             'type' => 'nullable|string|in:modification,signalement,photo_suggestion',
-            'status' => 'nullable|string|in:submitted,pending,accepted,refused',
+            'status' => 'nullable|array',
+            'status.*' => 'string|in:submitted,pending,accepted,refused',
         ]);
 
         if ($validator->fails()) {
@@ -32,14 +33,14 @@ class EditRequestListFilterValidationService
         return [
             'search' => trim($validated['search'] ?? ''),
             'type' => $validated['type'] ?? '',
-            'status' => $validated['status'] ?? '',
+            'status' => $validated['status'] ?? [],
         ];
     }
 
     /**
      * Vérifier si les filtres sont vides
      *
-     * @param  array{search: string, type: string, status: string}  $filters
+     * @param  array{search: string, type: string, status: array<int, string>}  $filters
      */
     public function areFiltersEmpty(array $filters): bool
     {

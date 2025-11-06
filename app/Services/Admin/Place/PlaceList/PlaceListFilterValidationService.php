@@ -15,7 +15,7 @@ class PlaceListFilterValidationService
      *
      * @throws ValidationException
      */
-    public function validateAndClean(array $filters): array
+    public function validate(array $filters): array
     {
         $validator = Validator::make($filters, [
             'search' => 'nullable|string|max:255',

@@ -25,7 +25,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = [];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertIsArray($validated);
         $this->assertArrayHasKey('search', $validated);
@@ -33,14 +33,14 @@ class EditRequestListFilterValidationServiceTest extends TestCase
         $this->assertArrayHasKey('status', $validated);
         $this->assertEquals('', $validated['search']);
         $this->assertEquals('', $validated['type']);
-        $this->assertEquals('', $validated['status']);
+        $this->assertEquals([], $validated['status']);
     }
 
     public function test_validates_search_filter(): void
     {
         $filters = ['search' => 'Centre Kennedy'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals('Centre Kennedy', $validated['search']);
     }
@@ -49,7 +49,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['type' => 'modification'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals('modification', $validated['type']);
     }
@@ -58,7 +58,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['type' => 'signalement'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals('signalement', $validated['type']);
     }
@@ -67,45 +67,45 @@ class EditRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['type' => 'photo_suggestion'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals('photo_suggestion', $validated['type']);
     }
 
     public function test_validates_status_submitted(): void
     {
-        $filters = ['status' => 'submitted'];
+        $filters = ['status' => ['submitted']];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
-        $this->assertEquals('submitted', $validated['status']);
+        $this->assertEquals(['submitted'], $validated['status']);
     }
 
     public function test_validates_status_pending(): void
     {
-        $filters = ['status' => 'pending'];
+        $filters = ['status' => ['pending']];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
-        $this->assertEquals('pending', $validated['status']);
+        $this->assertEquals(['pending'], $validated['status']);
     }
 
     public function test_validates_status_accepted(): void
     {
-        $filters = ['status' => 'accepted'];
+        $filters = ['status' => ['accepted']];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
-        $this->assertEquals('accepted', $validated['status']);
+        $this->assertEquals(['accepted'], $validated['status']);
     }
 
     public function test_validates_status_refused(): void
     {
-        $filters = ['status' => 'refused'];
+        $filters = ['status' => ['refused']];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
-        $this->assertEquals('refused', $validated['status']);
+        $this->assertEquals(['refused'], $validated['status']);
     }
 
     public function test_validates_all_filters_together(): void
@@ -113,14 +113,14 @@ class EditRequestListFilterValidationServiceTest extends TestCase
         $filters = [
             'search' => 'test@example.com',
             'type' => 'modification',
-            'status' => 'pending',
+            'status' => ['pending'],
         ];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals('test@example.com', $validated['search']);
         $this->assertEquals('modification', $validated['type']);
-        $this->assertEquals('pending', $validated['status']);
+        $this->assertEquals(['pending'], $validated['status']);
     }
 
     // ========================================
@@ -131,7 +131,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['search' => '  Centre Kennedy  '];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals('Centre Kennedy', $validated['search']);
     }
@@ -140,7 +140,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['search' => ''];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals('', $validated['search']);
     }
@@ -149,7 +149,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['search' => '   '];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals('', $validated['search']);
     }
@@ -164,7 +164,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
 
         $filters = ['type' => 'invalid_type'];
 
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     public function test_throws_exception_for_invalid_status(): void
@@ -173,7 +173,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
 
         $filters = ['status' => 'invalid_status'];
 
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     public function test_throws_exception_for_search_too_long(): void
@@ -182,7 +182,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
 
         $filters = ['search' => str_repeat('a', 256)];
 
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     public function test_throws_exception_for_non_string_search(): void
@@ -191,7 +191,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
 
         $filters = ['search' => 123];
 
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     public function test_throws_exception_for_non_string_type(): void
@@ -200,16 +200,16 @@ class EditRequestListFilterValidationServiceTest extends TestCase
 
         $filters = ['type' => ['modification']];
 
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
-    public function test_throws_exception_for_non_string_status(): void
+    public function test_throws_exception_for_invalid_status_value_in_array(): void
     {
         $this->expectException(ValidationException::class);
 
-        $filters = ['status' => ['pending']];
+        $filters = ['status' => ['invalid_status']];
 
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     // ========================================
@@ -260,7 +260,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
         $filters = [
             'search' => '',
             'type' => '',
-            'status' => 'pending',
+            'status' => ['pending'],
         ];
 
         $isEmpty = $this->service->areFiltersEmpty($filters);
@@ -273,7 +273,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
         $filters = [
             'search' => 'test',
             'type' => 'modification',
-            'status' => 'pending',
+            'status' => ['pending'],
         ];
 
         $isEmpty = $this->service->areFiltersEmpty($filters);
@@ -293,11 +293,11 @@ class EditRequestListFilterValidationServiceTest extends TestCase
             'status' => null,
         ];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertEquals('', $validated['search']);
         $this->assertEquals('', $validated['type']);
-        $this->assertEquals('', $validated['status']);
+        $this->assertEquals([], $validated['status']);
     }
 
     public function test_ignores_extra_keys(): void
@@ -305,11 +305,11 @@ class EditRequestListFilterValidationServiceTest extends TestCase
         $filters = [
             'search' => 'test',
             'type' => 'modification',
-            'status' => 'pending',
+            'status' => ['pending'],
             'extra_key' => 'should_be_ignored',
         ];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertCount(3, $validated);
         $this->assertArrayHasKey('search', $validated);
@@ -326,7 +326,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = ['search' => 'test'];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertIsArray($validated);
         $this->assertArrayHasKey('search', $validated);
@@ -338,7 +338,7 @@ class EditRequestListFilterValidationServiceTest extends TestCase
     {
         $filters = [];
 
-        $validated = $this->service->validateAndClean($filters);
+        $validated = $this->service->validate($filters);
 
         $this->assertCount(3, $validated);
         $this->assertArrayHasKey('search', $validated);

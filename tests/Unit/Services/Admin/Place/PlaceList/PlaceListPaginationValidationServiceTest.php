@@ -22,7 +22,7 @@ class PlaceListPaginationValidationServiceTest extends TestCase
         $pagination = ['perPage' => 20];
 
         // Act
-        $result = $this->service->validateAndClean($pagination);
+        $result = $this->service->validate($pagination);
 
         // Assert
         $this->assertEquals(20, $result);
@@ -34,7 +34,7 @@ class PlaceListPaginationValidationServiceTest extends TestCase
         $pagination = [];
 
         // Act
-        $result = $this->service->validateAndClean($pagination);
+        $result = $this->service->validate($pagination);
 
         // Assert
         $this->assertEquals(20, $result);
@@ -49,7 +49,7 @@ class PlaceListPaginationValidationServiceTest extends TestCase
         $this->expectException(ValidationException::class);
 
         // Act
-        $this->service->validateAndClean($pagination);
+        $this->service->validate($pagination);
     }
 
     public function test_get_allowed_values_returns_array(): void

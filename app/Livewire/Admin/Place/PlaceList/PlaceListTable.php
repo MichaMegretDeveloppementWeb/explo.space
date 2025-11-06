@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Admin\Place\PlaceList;
 
-use App\Services\Admin\Place\PlaceList\PlaceListService;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Livewire\Admin\Place\PlaceList\Concerns\ManagesLoadData;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class PlaceListTable extends Component
 {
+    use ManagesLoadData;
     use WithPagination;
 
     /**
@@ -117,28 +117,5 @@ class PlaceListTable extends Component
 
         // Dispatch vers parent pour sync URL
         $this->dispatch('pagination:updated', perPage: $this->perPage);
-    }
-
-    /**
-     * Charger les données depuis le service
-     *
-     * @return LengthAwarePaginator<int, \App\Models\Place>
-     */
-    private function loadPlaces(): LengthAwarePaginator
-    {
-        $service = app(PlaceListService::class);
-
-        return $service->getPaginatedPlaces(
-            [
-                'search' => $this->search,
-                'tags' => $this->tags,
-                'locale' => $this->locale,
-            ],
-            [
-                'sortBy' => $this->sortBy,
-                'sortDirection' => $this->sortDirection,
-            ],
-            ['perPage' => $this->perPage]
-        );
     }
 }

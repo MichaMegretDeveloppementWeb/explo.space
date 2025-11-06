@@ -28,7 +28,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'asc',
         ];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertEquals('place', $validated['column']);
         $this->assertEquals('asc', $validated['direction']);
@@ -41,7 +41,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'desc',
         ];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertEquals('type', $validated['column']);
         $this->assertEquals('desc', $validated['direction']);
@@ -54,7 +54,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'asc',
         ];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertEquals('contact_email', $validated['column']);
     }
@@ -66,7 +66,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'asc',
         ];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertEquals('status', $validated['column']);
     }
@@ -78,7 +78,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'desc',
         ];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertEquals('created_at', $validated['column']);
     }
@@ -87,7 +87,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
     {
         $sorting = [];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertEquals('created_at', $validated['column']);
         $this->assertEquals('desc', $validated['direction']);
@@ -100,7 +100,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'asc',
         ];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertEquals('created_at', $validated['column']);
         $this->assertEquals('asc', $validated['direction']);
@@ -113,7 +113,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => null,
         ];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertEquals('place', $validated['column']);
         $this->assertEquals('desc', $validated['direction']);
@@ -132,7 +132,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'asc',
         ];
 
-        $this->service->validateAndClean($sorting);
+        $this->service->validate($sorting);
     }
 
     public function test_throws_exception_for_invalid_sort_direction(): void
@@ -144,7 +144,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'invalid_direction',
         ];
 
-        $this->service->validateAndClean($sorting);
+        $this->service->validate($sorting);
     }
 
     public function test_throws_exception_for_non_string_sort_by(): void
@@ -156,7 +156,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'asc',
         ];
 
-        $this->service->validateAndClean($sorting);
+        $this->service->validate($sorting);
     }
 
     public function test_throws_exception_for_non_string_sort_direction(): void
@@ -168,7 +168,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 123,
         ];
 
-        $this->service->validateAndClean($sorting);
+        $this->service->validate($sorting);
     }
 
     public function test_throws_exception_for_uppercase_direction(): void
@@ -180,7 +180,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'ASC',
         ];
 
-        $this->service->validateAndClean($sorting);
+        $this->service->validate($sorting);
     }
 
     // ========================================
@@ -223,7 +223,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'extra_key' => 'should_be_ignored',
         ];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertCount(2, $validated);
         $this->assertArrayHasKey('column', $validated);
@@ -241,7 +241,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
             'sortDirection' => 'asc',
         ];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertIsArray($validated);
         $this->assertArrayHasKey('column', $validated);
@@ -252,7 +252,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
     {
         $sorting = [];
 
-        $validated = $this->service->validateAndClean($sorting);
+        $validated = $this->service->validate($sorting);
 
         $this->assertCount(2, $validated);
         $this->assertArrayHasKey('column', $validated);
@@ -273,7 +273,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
                 'sortDirection' => 'asc',
             ];
 
-            $validated = $this->service->validateAndClean($sorting);
+            $validated = $this->service->validate($sorting);
 
             $this->assertEquals($column, $validated['column'], "Column $column should be valid");
         }
@@ -289,7 +289,7 @@ class EditRequestListSortingValidationServiceTest extends TestCase
                 'sortDirection' => $direction,
             ];
 
-            $validated = $this->service->validateAndClean($sorting);
+            $validated = $this->service->validate($sorting);
 
             $this->assertEquals($direction, $validated['direction'], "Direction $direction should be valid");
         }

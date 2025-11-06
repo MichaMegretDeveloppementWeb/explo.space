@@ -26,7 +26,7 @@ class PlaceListFilterValidationServiceTest extends TestCase
         ];
 
         // Act
-        $result = $this->service->validateAndClean($filters);
+        $result = $this->service->validate($filters);
 
         // Assert
         $this->assertEquals('Kennedy', $result['search']);
@@ -44,7 +44,7 @@ class PlaceListFilterValidationServiceTest extends TestCase
         ];
 
         // Act
-        $result = $this->service->validateAndClean($filters);
+        $result = $this->service->validate($filters);
 
         // Assert
         $this->assertEquals('Kennedy', $result['search']);
@@ -56,7 +56,7 @@ class PlaceListFilterValidationServiceTest extends TestCase
         $filters = [];
 
         // Act
-        $result = $this->service->validateAndClean($filters);
+        $result = $this->service->validate($filters);
 
         // Assert
         $this->assertEquals('', $result['search']);
@@ -77,7 +77,7 @@ class PlaceListFilterValidationServiceTest extends TestCase
         $this->expectException(ValidationException::class);
 
         // Act
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     public function test_validate_and_clean_rejects_search_too_long(): void
@@ -93,7 +93,7 @@ class PlaceListFilterValidationServiceTest extends TestCase
         $this->expectException(ValidationException::class);
 
         // Act
-        $this->service->validateAndClean($filters);
+        $this->service->validate($filters);
     }
 
     public function test_are_filters_empty_returns_true_when_empty(): void

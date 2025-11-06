@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Admin\PlaceRequest\PlaceRequestList;
 
-use App\Services\Admin\PlaceRequest\PlaceRequestList\PlaceRequestListService;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Livewire\Admin\PlaceRequest\PlaceRequestList\Concerns\ManagesLoadData;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class PlaceRequestListTable extends Component
 {
+    use ManagesLoadData;
     use WithPagination;
 
     /**
@@ -109,26 +109,5 @@ class PlaceRequestListTable extends Component
 
         // Dispatch vers parent pour sync URL
         $this->dispatch('pagination:updated', perPage: $this->perPage);
-    }
-
-    /**
-     * Charger les données depuis le service
-     *
-     * @return LengthAwarePaginator<int, \App\Models\PlaceRequest>
-     */
-    private function loadPlaceRequests(): LengthAwarePaginator
-    {
-        $service = app(PlaceRequestListService::class);
-
-        return $service->getPaginatedPlaceRequests(
-            [
-                'status' => $this->status,
-            ],
-            [
-                'sortBy' => $this->sortBy,
-                'sortDirection' => $this->sortDirection,
-            ],
-            ['perPage' => $this->perPage]
-        );
     }
 }

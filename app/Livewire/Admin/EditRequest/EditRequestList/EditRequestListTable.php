@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Admin\EditRequest\EditRequestList;
 
-use App\Services\Admin\EditRequest\EditRequestList\EditRequestListService;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Livewire\Admin\EditRequest\EditRequestList\Concerns\ManagesLoadData;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class EditRequestListTable extends Component
 {
+    use ManagesLoadData;
     use WithPagination;
 
     /**
@@ -24,7 +24,10 @@ class EditRequestListTable extends Component
 
     public string $type = '';
 
-    public string $status = '';
+    /**
+     * @var array<int, string>
+     */
+    public array $status = [];
 
     /**
      * Tri appliqué
@@ -41,14 +44,14 @@ class EditRequestListTable extends Component
     /**
      * Initialiser depuis les props du parent
      *
-     * @param  array{search: string, type: string, status: string}  $initialFilters
+     * @param  array{search: string, type: string, status: array<int, string>}  $initialFilters
      * @param  array{sortBy: string, sortDirection: string}  $initialSorting
      */
     public function mount(array $initialFilters, array $initialSorting, int $initialPerPage): void
     {
         $this->search = $initialFilters['search'] ?? '';
         $this->type = $initialFilters['type'] ?? '';
-        $this->status = $initialFilters['status'] ?? '';
+        $this->status = $initialFilters['status'] ?? [];
 
         $this->sortBy = $initialSorting['sortBy'] ?? 'created_at';
         $this->sortDirection = $initialSorting['sortDirection'] ?? 'desc';
@@ -68,9 +71,11 @@ class EditRequestListTable extends Component
 
     /**
      * Écouter les changements de filtres
+     *
+     * @param  array<int, string>  $status
      */
     #[On('filters:updated')]
-    public function updateFiltersFromEvent(string $search, string $type, string $status): void
+    public function updateFiltersFromEvent(string $search, string $type, array $status): void
     {
         $this->search = $search;
         $this->type = $type;
@@ -113,28 +118,5 @@ class EditRequestListTable extends Component
 
         // Dispatch vers parent pour sync URL
         $this->dispatch('pagination:updated', perPage: $this->perPage);
-    }
-
-    /**
-     * Charger les données depuis le service
-     *
-     * @return LengthAwarePaginator<int, \App\Models\EditRequest>
-     */
-    private function loadEditRequests(): LengthAwarePaginator
-    {
-        $service = app(EditRequestListService::class);
-
-        return $service->getPaginatedEditRequests(
-            [
-                'search' => $this->search,
-                'type' => $this->type,
-                'status' => $this->status,
-            ],
-            [
-                'sortBy' => $this->sortBy,
-                'sortDirection' => $this->sortDirection,
-            ],
-            ['perPage' => $this->perPage]
-        );
     }
 }
