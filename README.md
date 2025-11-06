@@ -1,61 +1,353 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Explo.space
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Annuaire mondial collaboratif des lieux de la conquête spatiale et de l'exploration de l'univers.**
 
-## About Laravel
+Découvrez, explorez et contribuez à la cartographie mondiale des sites liés à la conquête spatiale : centres de lancement, observatoires, musées, sites historiques, et bien plus encore.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Fonctionnalités
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Pour les visiteurs
+- **Exploration interactive** : Carte mondiale avec clustering intelligent des lieux
+- **Double mode de recherche** :
+  - **Autour de moi** : Recherche par adresse ou géolocalisation avec rayon configurable (jusqu'à 1500 km)
+  - **Monde entier** : Exploration globale avec filtrage par thématiques
+- **Fiches détaillées** : Informations complètes, photos en carrousel, coordonnées GPS
+- **Système multilingue** : Interface et contenus en français et anglais avec traduction automatique
+- **Proposition de lieux** : Formulaire guidé pour suggérer de nouveaux sites
+- **Signalement** : Système de correction et signalement d'erreurs
 
-## Learning Laravel
+### Pour les administrateurs
+- **Interface d'administration** complète (tableau de bord, gestion des lieux, modération)
+- **Workflow de validation** : Modération des propositions et signalements avec notifications email
+- **Gestion multilingue** : Traduction automatique via DeepL API + édition manuelle
+- **Organisation interne** : Système de tags (publics) et catégories (usage interne)
+- **Gestion des photos** : Upload, réorganisation, miniatures automatiques
+- **Traçabilité** : Logs d'audit pour toutes les actions sensibles
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🛠️ Stack Technique
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Backend
+- **Laravel 12** : Framework PHP moderne
+- **Livewire 3** : Interactions temps réel sans API AJAX
+- **PHP 8.3+** : Typage strict, enums, readonly properties
+- **MySQL** : Base de données avec index spatiaux pour les coordonnées GPS
 
-## Laravel Sponsors
+### Frontend
+- **Blade** : Templates Laravel
+- **Alpine.js** : Interactions légères
+- **Tailwind CSS 4** : Framework utility-first
+- **Vite** : Build tool moderne
+- **Leaflet** + **OpenStreetMap** : Cartographie interactive
+- **Leaflet.markercluster** : Clustering des marqueurs
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Cartographie
+- **Tiles** : CartoDB Positron (fallback OpenStreetMap)
+- **Géocodage** : Nominatim (OSM) avec extensibilité vers Google Places
+- **Clustering** : Automatique pour zones denses (50+ marqueurs)
+- **Bounding box dynamique** : Chargement uniquement de la zone visible
 
-### Premium Partners
+### Architecture
+- **Pattern Repository** : Interfaces + implémentations pour persistence
+- **Services métier** : Logique applicative segmentée par action/page
+- **DTOs** : Objets de transfert typés entre couches
+- **Strategy Pattern** : Traduction (DeepL), géocodage (Nominatim/Google)
+- **SOLID** : Principes appliqués rigoureusement
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Qualité & Tests
+- **PHPUnit 11** : 947 tests (unitaires, intégration, fonctionnels)
+- **Laravel Pint** : Formatage automatique (PSR-12)
+- **PHPStan** / **Larastan** : Analyse statique niveau 6
+- **Rector** : Refactoring automatisé (mode prudent)
 
-## Contributing
+### Sécurité & RGPD
+- **Google reCAPTCHA v3** : Protection anti-bot sur tous les formulaires publics
+- **Policies** : Autorisation granulaire pour actions sensibles
+- **Validation stricte** : Form Requests pour toutes les entrées
+- **Hashage sécurisé** : Argon2/BCrypt pour mots de passe
+- **Journalisation** : Logs quotidiens + alertes email sur erreurs critiques
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 📋 Prérequis
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **PHP** >= 8.3
+- **Composer** >= 2.0
+- **Node.js** >= 20.x
+- **npm** >= 10.x
+- **MySQL** >= 8.0
+- **Extension PHP** : PDO, Mbstring, OpenSSL, Tokenizer, XML, Ctype, JSON, BCMath, GD
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## ⚙️ Installation
 
-## License
+### 1. Cloner le repository
+```bash
+git clone https://github.com/MichaMegretDeveloppementWeb/explo.space.git
+cd explo.space
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 2. Installer les dépendances PHP
+```bash
+composer install
+```
+
+### 3. Installer les dépendances JavaScript
+```bash
+npm install
+```
+
+### 4. Créer le fichier d'environnement
+```bash
+cp .env.example .env
+```
+
+### 5. Générer la clé d'application
+```bash
+php artisan key:generate
+```
+
+### 6. Configurer la base de données
+Modifier le fichier `.env` :
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=explo_space
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 7. Exécuter les migrations
+```bash
+php artisan migrate
+```
+
+### 8. Générer les données de test (optionnel)
+```bash
+php artisan db:seed
+```
+
+### 9. Compiler les assets
+```bash
+# Développement
+npm run dev
+
+# Production
+npm run build
+```
+
+### 10. Lancer le serveur de développement
+```bash
+php artisan serve
+```
+
+L'application est accessible à l'adresse : `http://localhost:8000`
+
+---
+
+## 🧪 Tests
+
+### Exécuter tous les tests
+```bash
+composer test
+# ou
+vendor/bin/phpunit
+```
+
+**947 tests** couvrant :
+- **Tests unitaires** : Services, DTOs, helpers, règles métier
+- **Tests d'intégration** : Repositories, relations Eloquent
+- **Tests fonctionnels** : Controllers, Livewire components, flux utilisateur
+
+### Analyse statique
+```bash
+composer stan
+# ou
+vendor/bin/phpstan analyse --memory-limit=256M
+```
+
+### Formatage du code
+```bash
+composer fix
+# ou
+vendor/bin/pint -v
+```
+
+### Vérification complète
+```bash
+composer qa
+# Exécute : Pint + PHPStan + PHPUnit
+```
+
+---
+
+## 📁 Structure du Projet
+
+```
+app/
+├── Contracts/                    # Interfaces (Repositories, Services)
+│   ├── Repositories/
+│   ├── Services/
+│   └── Translation/
+├── DTO/                          # Data Transfer Objects
+├── Domain/                       # Logique métier transversale
+│   └── Seo/                      # Stratégies SEO (hreflang, Open Graph)
+├── Enums/                        # Énumérations typées
+├── Exceptions/                   # Exceptions métier personnalisées
+├── Helpers/                      # Fonctions utilitaires
+├── Http/
+│   ├── Controllers/              # Controllers segmentés par entité/action
+│   ├── Middleware/               # SetLocale, Admin, etc.
+│   └── Requests/                 # Form Requests de validation
+├── Livewire/                     # Components Livewire
+│   ├── Admin/                    # Interface administration
+│   └── Web/                      # Interface publique
+├── Models/                       # Modèles Eloquent
+├── Repositories/                 # Implémentations repositories
+│   ├── Admin/
+│   └── Web/
+├── Services/                     # Services métier
+│   ├── Admin/
+│   └── Web/
+├── Strategies/                   # Pattern Strategy (traduction, géocodage)
+│   ├── Geocoding/
+│   └── Translation/
+└── Support/                      # Classes support (config, helpers)
+
+resources/
+├── css/
+│   ├── admin/                    # Styles administration
+│   └── web/                      # Styles publics
+├── js/
+│   ├── admin/                    # JavaScript administration
+│   └── web/                      # JavaScript publics (carte Leaflet)
+├── views/
+│   ├── admin/                    # Vues administration
+│   ├── components/               # Composants Blade réutilisables
+│   ├── layouts/                  # Layouts principaux
+│   ├── livewire/                 # Vues Livewire
+│   └── web/                      # Vues publiques
+
+database/
+├── migrations/                   # Migrations de base de données
+├── seeders/                      # Seeders pour données de test
+└── factories/                    # Factories pour tests
+
+tests/
+├── Feature/                      # Tests fonctionnels
+├── Livewire/                     # Tests Livewire components
+└── Unit/                         # Tests unitaires
+
+lang/
+├── en/                           # Traductions anglais
+└── fr/                           # Traductions français
+```
+
+---
+
+## 🌍 Système Multilingue
+
+### Fonctionnement
+- **URLs distinctes** : `/fr/lieux/{slug-fr}` vs `/en/places/{slug-en}`
+- **Segments traduits** : Chemins d'URL localisés (ex: `/fr/explorer` vs `/en/explore`)
+- **Slugs traduits** : Chaque entité a un slug spécifique par langue
+- **Détection automatique** : Langue du navigateur détectée à la première visite
+- **Cookie de persistance** : Préférence de langue sauvegardée (1 an)
+
+### Tables de traduction
+- `place_translations` : titre, description, slug, infos pratiques
+- `tag_translations` : nom, description, slug
+- `category_translations` : nom, description, slug
+
+### Traduction automatique
+- **DeepL API** : Traduction de haute qualité
+- **Interface admin** : Boutons "Traduire automatiquement" pour chaque champ
+- **Détection de langue** : Identification automatique de la langue source sur les propositions visiteurs
+
+### SEO multilingue
+- **Hreflang** : Balises `<link rel="alternate" hreflang="...">`
+- **Canonical** : URL canonique par langue
+- **Open Graph** : `og:locale` + `og:locale:alternate`
+- **JSON-LD** : Données structurées multilingues
+
+---
+
+## 🗺️ Configuration Cartographie
+
+### Tiles
+- **Principal** : CartoDB Positron (style épuré)
+- **Fallback** : OpenStreetMap standard
+- **Zoom** : Min 2, Max 19
+
+### Clustering
+- **Activation** : Si > 50 marqueurs
+- **Rayon** : 80 pixels
+- **Désactivation** : Au zoom 18
+- **Icônes** : Cercles colorés avec nombre de lieux
+
+### Performance
+- **Bounding box dynamique** : Chargement uniquement de la zone visible
+- **Debounce** : 300ms avant requête sur changement de vue
+- **Eager loading** : Relations chargées de manière optimisée
+- **Index spatiaux** : Sur coordonnées GPS
+
+---
+
+## 🔒 Sécurité & RGPD
+
+### Protection
+- **CSRF** : Tokens automatiques sur tous les formulaires
+- **XSS** : Échappement automatique Blade
+- **SQL Injection** : Requêtes paramétrées via Eloquent
+- **Validation** : Form Requests strictes sur toutes les entrées
+- **reCAPTCHA v3** : Sur tous les formulaires publics
+
+### RGPD
+- **Minimisation** : Collecte uniquement des données nécessaires
+- **Consentement** : Formulaires avec email de contact uniquement
+- **Transparence** : Pages légales (mentions légales, politique de confidentialité, CGU)
+- **Droits** : Contact RGPD via email configuré
+
+### Journalisation
+- **Logs quotidiens** : Rotation automatique
+- **Alertes email** : Sur erreurs critiques (500)
+- **Audit logs** : Traçabilité des actions administrateur
+
+---
+
+## 🤝 Contribution
+
+Ce projet suit les principes suivants :
+- **Conventional Commits** : `feat:`, `fix:`, `refactor:`, `test:`, `docs:`, etc.
+- **SOLID** : Architecture rigoureuse
+- **Tests** : Couverture maximale requise
+- **Qualité** : `composer qa` doit être au vert avant commit
+
+---
+
+## 📄 Licence
+
+Ce projet est la propriété de **Jeremie Roussel** et développé par **Micha Megret - Développement Web**.
+
+Tous droits réservés.
+
+---
+
+## 👤 Auteur
+
+**Micha Megret**
+Développeur Web Full Stack
+[https://github.com/MichaMegretDeveloppementWeb](https://github.com/MichaMegretDeveloppementWeb)
+
+---
+
+## 📞 Contact
+
+Pour toute question ou suggestion :
+- **Email** : (à configurer via `.env`)
+- **GitHub Issues** : [https://github.com/MichaMegretDeveloppementWeb/explo.space/issues](https://github.com/MichaMegretDeveloppementWeb/explo.space/issues)
