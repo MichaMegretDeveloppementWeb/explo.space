@@ -1,5 +1,5 @@
 {{-- Photo Suggestion Form Component --}}
-<div class="mt-8 border-t border-gray-200 pt-8">
+<div class="mt-0 max-w-7xl mx-auto ">
 
     <x-web.flash-messages/>
 
@@ -8,7 +8,7 @@
         <div class="flex justify-center">
             <button type="button"
                     wire:click="toggleForm"
-                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                    class="w-max sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 bg-white text-gray-900 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors cursor-pointer">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>

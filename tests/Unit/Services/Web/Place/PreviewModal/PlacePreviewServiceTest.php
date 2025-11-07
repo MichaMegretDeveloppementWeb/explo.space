@@ -39,6 +39,7 @@ class PlacePreviewServiceTest extends TestCase
             title: 'Test Place',
             descriptionExcerpt: 'Test description',
             mainPhotoUrl: 'https://example.com/photo.jpg',
+            isFeatured: false,
             tags: []
         );
 
@@ -120,6 +121,7 @@ class PlacePreviewServiceTest extends TestCase
                 title: "Place {$id}",
                 descriptionExcerpt: 'Test description',
                 mainPhotoUrl: null,
+                isFeatured: false,
                 tags: []
             );
 

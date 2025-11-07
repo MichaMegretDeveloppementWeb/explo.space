@@ -70,18 +70,20 @@ class PlaceExplorationRepositoryTest extends TestCase
         $this->assertInstanceOf(\Illuminate\Support\Collection::class, $result);
         $this->assertCount(2, $result);
 
-        // Each item should be simple array with only 3 keys
+        // Each item should be simple array with only 4 keys
         $place = $result->first();
         $this->assertIsArray($place);
         $this->assertArrayHasKey('id', $place);
         $this->assertArrayHasKey('latitude', $place);
         $this->assertArrayHasKey('longitude', $place);
-        $this->assertCount(3, $place);
+        $this->assertArrayHasKey('is_featured', $place);
+        $this->assertCount(4, $place);
 
         // Values should be correct types
         $this->assertIsInt($place['id']);
         $this->assertIsFloat($place['latitude']);
         $this->assertIsFloat($place['longitude']);
+        $this->assertIsBool($place['is_featured']);
     }
 
     /**

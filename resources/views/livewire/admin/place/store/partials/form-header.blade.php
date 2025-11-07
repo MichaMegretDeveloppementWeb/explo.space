@@ -1,5 +1,5 @@
 {{-- Header --}}
-<div class="mb-12">
+<div class="mb-6">
     {{-- Badge + Breadcrumb --}}
     <div class="flex items-center gap-2 mb-6">
         @if ($mode === 'create' && $placeRequestId)

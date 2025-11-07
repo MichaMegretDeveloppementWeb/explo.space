@@ -68,6 +68,10 @@ return [
         'filters_title' => 'Filtres',
         'clear_all_tags' => 'Effacer tout',
 
+        // Featured places filter
+        'featured_toggle_label' => 'Lieux emblématiques',
+        'featured_toggle_help' => 'Afficher uniquement les lieux sélectionnés par la rédaction',
+
         // Results header
         'results_title' => 'Résultats',
         'results_radius' => 'Dans un rayon de',

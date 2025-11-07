@@ -30,6 +30,11 @@ class PlaceQueryBuilder
             self::applyWorldwideMode($query, $filters);
         }
 
+        // Apply featured filter (common to all modes)
+        if (! empty($filters['featured'])) {
+            self::applyFeaturedFilter($query);
+        }
+
         return $query;
     }
 
@@ -89,7 +94,7 @@ class PlaceQueryBuilder
     }
 
     /**
-     * Apply worldwide mode filters (tags required)
+     * Apply worldwide mode filters (tags or featured required)
      *
      * @param  Builder<\App\Models\Place>  $query
      * @param  array<string, mixed>  $filters
@@ -98,13 +103,17 @@ class PlaceQueryBuilder
     private static function applyWorldwideMode(Builder $query, array $filters): Builder
     {
         $tags = $filters['tags'] ?? [];
+        $featured = $filters['featured'] ?? false;
 
-        // En mode worldwide, au moins un tag requis
-        if (empty($tags)) {
+        // En mode worldwide, au moins un tag OU featured requis
+        if (empty($tags) && ! $featured) {
             return $query->whereRaw('1 = 0');
         }
 
-        self::applyTagsFilter($query, $tags);
+        // Appliquer filtre tags si présents
+        if (! empty($tags)) {
+            self::applyTagsFilter($query, $tags);
+        }
 
         // Tri par date de création (plus récents en premier)
         $query->orderBy('created_at', 'desc');
@@ -188,5 +197,16 @@ class PlaceQueryBuilder
         });
 
         return $query;
+    }
+
+    /**
+     * Apply featured filter (show only featured places)
+     *
+     * @param  Builder<\App\Models\Place>  $query
+     * @return Builder<\App\Models\Place>
+     */
+    private static function applyFeaturedFilter(Builder $query): Builder
+    {
+        return $query->where('is_featured', true);
     }
 }

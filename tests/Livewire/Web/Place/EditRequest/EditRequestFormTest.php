@@ -35,6 +35,7 @@ class EditRequestFormTest extends TestCase
             latitude: 48.8566,
             longitude: 2.3522,
             address: 'Paris, France',
+            isFeatured: false,
             tags: [],
             photos: [],
             mainPhotoUrl: null,

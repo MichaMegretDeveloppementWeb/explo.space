@@ -68,7 +68,7 @@
         {{-- Lieu créé (si accepté) --}}
         @if($placeRequest->isAccepted() && $placeRequest->place)
             <x-admin.place.detail.attribute-row label="Lieu créé" type="link">
-                <a href="{{ route('admin.places.show', $placeRequest->place->id) }}"
+                <a href="{{ route('admin.places.show', ['id' => $placeRequest->place->id]) }}"
                    class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 hover:underline">
                     <span>Voir le lieu créé</span>
                     <x-heroicon-o-arrow-top-right-on-square class="h-4 w-4" />

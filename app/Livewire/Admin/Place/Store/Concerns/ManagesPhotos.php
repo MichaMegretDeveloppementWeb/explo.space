@@ -27,12 +27,13 @@ trait ManagesPhotos
         $maxFiles = config('upload.images.max_files');
         $existingCount = count($this->existingPhotos);
         $placeRequestCount = count($this->placeRequestPhotos);
+        $editRequestCount = count($this->editRequestPhotos);
         $currentPhotosCount = count($this->photos);
         $newCount = count($this->pendingPhotos);
-        $totalAfterAdd = $existingCount + $placeRequestCount + $currentPhotosCount + $newCount;
+        $totalAfterAdd = $existingCount + $placeRequestCount + $editRequestCount + $currentPhotosCount + $newCount;
 
         if ($totalAfterAdd > $maxFiles) {
-            $currentTotal = $existingCount + $placeRequestCount + $currentPhotosCount;
+            $currentTotal = $existingCount + $placeRequestCount + $editRequestCount + $currentPhotosCount;
             $this->addError('pendingPhotos', "Vous ne pouvez pas avoir plus de {$maxFiles} photos au total. Vous avez déjà {$currentTotal} photo(s).");
             $this->pendingPhotos = [];
 
@@ -88,6 +89,18 @@ trait ManagesPhotos
             unset($this->placeRequestPhotos[$index]);
             // Réindexer pour éviter les gaps
             $this->placeRequestPhotos = array_values($this->placeRequestPhotos);
+        }
+    }
+
+    /**
+     * Supprimer une photo de EditRequest de la liste
+     */
+    public function removeEditRequestPhoto(int $index): void
+    {
+        if (isset($this->editRequestPhotos[$index])) {
+            unset($this->editRequestPhotos[$index]);
+            // Réindexer pour éviter les gaps
+            $this->editRequestPhotos = array_values($this->editRequestPhotos);
         }
     }
 

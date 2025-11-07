@@ -181,6 +181,7 @@ class PlaceDetailServiceTest extends TestCase
         $place->latitude = 28.5728;
         $place->longitude = -80.6490;
         $place->address = 'Kennedy Space Center, FL';
+        $place->is_featured = false;
         $place->shouldReceive('setAttribute')->andReturn(true);
 
         $createdAt = now();
@@ -242,6 +243,7 @@ class PlaceDetailServiceTest extends TestCase
         $place->latitude = 28.5728;
         $place->longitude = -80.6490;
         $place->address = 'Kennedy Space Center, FL';
+        $place->is_featured = false;
         $place->shouldReceive('setAttribute')->andReturn(true);
 
         $createdAt = now();
@@ -279,6 +281,7 @@ class PlaceDetailServiceTest extends TestCase
         $place->latitude = 28.5728;
         $place->longitude = -80.6490;
         $place->address = 'Kennedy Space Center, FL';
+        $place->is_featured = false;
         $place->shouldReceive('setAttribute')->andReturn(true);
 
         $createdAt = now();
@@ -309,6 +312,7 @@ class PlaceDetailServiceTest extends TestCase
         $place->latitude = 28.5728;
         $place->longitude = -80.6490;
         $place->address = 'Kennedy Space Center, FL';
+        $place->is_featured = false;
         $place->shouldReceive('setAttribute')->andReturn(true);
 
         $createdAt = now();

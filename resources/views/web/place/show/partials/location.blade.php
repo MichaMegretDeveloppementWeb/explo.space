@@ -1,5 +1,5 @@
 {{-- Section Localisation - Carte + Coordonnées --}}
-<section class="bg-gray-50 py-20">
+<section class="bg-white py-20">
     <div class="max-w-4xl mx-auto px-6">
         <h2 class="text-3xl font-normal text-gray-900 mb-8 text-center">
             {{ __('web/pages/place-show.sections.location') }}

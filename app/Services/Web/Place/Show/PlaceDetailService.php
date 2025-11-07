@@ -75,6 +75,7 @@ class PlaceDetailService
             latitude: (float) $place->latitude,
             longitude: (float) $place->longitude,
             address: $place->address,
+            isFeatured: $place->is_featured,
             tags: $this->prepareTags($place->tags),
             photos: $this->preparePhotos($place->photos),
             mainPhotoUrl: $this->getMainPhotoUrl($place->photos),

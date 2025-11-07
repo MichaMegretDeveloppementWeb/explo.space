@@ -214,7 +214,7 @@ class PhotoProcessingService
      *
      * @throws PhotoProcessingException
      */
-    public function copyPhotoWithThumbnails(
+    public function copyPlaceRequestPhotoWithThumbnails(
         int $placeRequestPhotoId,
         string $sourceDisk,
         string $destinationDisk,
@@ -582,6 +582,85 @@ class PhotoProcessingService
 
             // Explicit memory cleanup
             unset($thumbnail);
+        }
+    }
+
+    /**
+     * Copy an existing EditRequest photo with thumbnail generation.
+     *
+     * @param  string  $sourceFilename  Raw filename (ex: 'photo.jpg')
+     * @param  int  $editRequestId  ID de l'EditRequest (utilisé pour construire le chemin source)
+     * @param  string  $sourceDisk  Disk source (ex: edit_request_photos)
+     * @param  string  $destinationDisk  Disk destination (ex: place_photos)
+     * @param  string  $destinationPath  Sous-dossier dans le disk destination
+     * @return array{filename: string, original_name: string, mime_type: string, size: int}
+     *
+     * @throws PhotoProcessingException
+     */
+    public function copyEditRequestPhotoWithThumbnails(
+        string $sourceFilename,
+        int $editRequestId,
+        string $sourceDisk,
+        string $destinationDisk,
+        string $destinationPath = ''
+    ): array {
+        $sourceStorage = Storage::disk($sourceDisk);
+        $destStorage = Storage::disk($destinationDisk);
+        $sourcePath = $editRequestId.'/'.$sourceFilename;
+
+        // Vérifier que le fichier source existe
+        if (! $sourceStorage->exists($sourcePath)) {
+            throw new PhotoProcessingException(
+                "Fichier source EditRequest introuvable: {$sourcePath}",
+                'photo.source_not_found'
+            );
+        }
+
+        try {
+            // Générer nouveau nom avec UUID pour éviter conflits
+            $newFilename = $this->generateShortFilename();
+
+            // Copier le fichier original
+            $sourceContent = $sourceStorage->get($sourcePath);
+            $destinationFullPath = $this->buildFullPath($destinationPath, $newFilename);
+            $destStorage->put($destinationFullPath, $sourceContent);
+
+            // Charger l'image pour générer les thumbnails
+            $image = $this->imageManager->read($sourceContent);
+
+            // Générer les miniatures
+            $this->generateAdaptiveThumbnails($image, $newFilename, $destinationDisk, $destinationPath);
+
+            // Cleanup
+            unset($image);
+            gc_collect_cycles();
+
+            // Récupérer les métadonnées du fichier copié
+            $fileSize = $destStorage->size($destinationFullPath);
+            $mimeType = $destStorage->mimeType($destinationFullPath) ?: 'image/webp';
+
+            return [
+                'filename' => $newFilename,
+                'original_name' => $sourceFilename,
+                'mime_type' => $mimeType,
+                'size' => $fileSize,
+            ];
+
+        } catch (\Throwable $e) {
+            Log::error('EditRequest photo copy failed', [
+                'source_filename' => $sourceFilename,
+                'edit_request_id' => $editRequestId,
+                'source_disk' => $sourceDisk,
+                'destination_disk' => $destinationDisk,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            throw new PhotoProcessingException(
+                "Erreur lors de la copie de la photo EditRequest: {$e->getMessage()}",
+                'photo.copy_failed',
+                $e
+            );
         }
     }
 

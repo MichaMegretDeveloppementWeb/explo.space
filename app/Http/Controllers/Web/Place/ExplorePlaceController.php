@@ -20,7 +20,7 @@ class ExplorePlaceController extends Controller
     {
         // Récupération des paramètres bruts (validation sera faite côté Livewire)
         $filters = $request->only([
-            'mode', 'lat', 'lng', 'radius', 'address', 'tags', 'page',
+            'mode', 'lat', 'lng', 'radius', 'address', 'tags', 'page', 'featured',
         ]);
 
         // Génération des données SEO

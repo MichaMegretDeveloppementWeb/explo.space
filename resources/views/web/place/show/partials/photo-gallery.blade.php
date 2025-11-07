@@ -1,8 +1,8 @@
 {{-- Galerie photos - Grid uniforme --}}
 @if(count($place->photos) > 0)
-    <section class="bg-gray-50 py-16">
+    <section class="bg-gray-50 pt-16">
         <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-normal text-gray-900 mb-8 text-center">
+            <h2 class="text-3xl font-normal text-gray-900 mb-16 text-center">
                 {{ __('web/pages/place-show.sections.photos') }}
             </h2>
 
@@ -27,4 +27,5 @@
             </div>
         </div>
     </section>
+
 @endif

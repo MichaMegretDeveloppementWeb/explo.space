@@ -69,7 +69,7 @@
                     </button>
 
                     <form id="delete-form-{{ $place->id }}"
-                          action="{{ route('admin.places.destroy', $place->id) }}"
+                          action="{{ route('admin.places.destroy', ['id' => $place->id]) }}"
                           method="POST"
                           class="hidden">
                         @csrf

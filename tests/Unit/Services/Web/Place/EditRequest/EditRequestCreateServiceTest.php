@@ -42,6 +42,7 @@ class EditRequestCreateServiceTest extends TestCase
             latitude: 48.8566,
             longitude: 2.3522,
             address: 'Paris, France',
+            isFeatured: false,
             tags: [],
             photos: [],
             mainPhotoUrl: null,
@@ -159,11 +160,12 @@ class EditRequestCreateServiceTest extends TestCase
         $editRequest = new EditRequest(['id' => 1]);
         $editRequest->id = 1;
 
-        // Mock language detection - should combine all texts
+        // Mock language detection - called 3 times:
+        // 1x for general language detection (combined text)
+        // 2x for per-field detection (title, practical_info)
         $this->translationStrategy
-            ->expects($this->once())
+            ->expects($this->exactly(3))
             ->method('detectLanguage')
-            ->with($this->stringContains('This is a description'))
             ->willReturn('en');
 
         $this->repository->method('create')->willReturn($editRequest);

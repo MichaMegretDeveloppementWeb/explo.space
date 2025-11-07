@@ -250,4 +250,211 @@ class PlaceStoreFormIntegrationTest extends TestCase
         $this->assertCount(2, $place->translations); // FR + EN
         $this->assertCount(1, $place->photos);
     }
+
+    // ========================================
+    // EditRequest Integration Tests
+    // ========================================
+
+    public function test_save_passes_selected_fields_to_service_when_edit_request_present(): void
+    {
+        $category = Category::factory()->create(['is_active' => true]);
+        $tag = Tag::factory()->create(['is_active' => true]);
+
+        $place = Place::factory()->create([
+            'latitude' => 28.5728,
+            'longitude' => -80.6490,
+            'is_featured' => false,
+        ]);
+
+        $place->categories()->attach($category->id);
+        $place->tags()->attach($tag->id);
+
+        PlaceTranslation::factory()->create([
+            'place_id' => $place->id,
+            'locale' => 'fr',
+            'title' => 'Old Title',
+            'slug' => 'old-title',
+            'description' => 'Old Description',
+        ]);
+
+        PlaceTranslation::factory()->create([
+            'place_id' => $place->id,
+            'locale' => 'en',
+            'title' => 'Old EN Title',
+            'slug' => 'old-en-title',
+            'description' => 'Old EN Description',
+        ]);
+
+        $editRequest = \App\Models\EditRequest::factory()->create([
+            'place_id' => $place->id,
+            'contact_email' => 'visitor@example.com',
+            'type' => 'modification',
+            'status' => 'submitted',
+        ]);
+
+        // Simuler la modification d'un lieu avec EditRequest
+        Livewire::test(PlaceStoreForm::class, [
+            'placeId' => $place->id,
+            'placeRequestId' => null,
+            'editRequestId' => $editRequest->id,
+        ])
+            ->set('categoryIds', [$category->id])
+            ->set('tagIds', [$tag->id])
+            ->set('selectedFields', ['title', 'description'])
+            ->set('selectedPhotos', [])
+            ->set('translations.fr.title', 'New Title')
+            ->set('translations.fr.description', 'New Description')
+            ->set('translations.en.title', 'New EN Title')
+            ->set('translations.en.description', 'New EN Description')
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertRedirect();
+
+        // Vérifier que l'EditRequest a été accepté avec applied_changes
+        $editRequest->refresh();
+        $this->assertEquals(\App\Enums\RequestStatus::Accepted, $editRequest->status);
+        $this->assertNotNull($editRequest->applied_changes);
+        $this->assertIsArray($editRequest->applied_changes);
+        $this->assertArrayHasKey('fields', $editRequest->applied_changes);
+        $this->assertArrayHasKey('photos', $editRequest->applied_changes);
+        $this->assertEquals(['title', 'description'], $editRequest->applied_changes['fields']);
+        $this->assertEquals([], $editRequest->applied_changes['photos']);
+    }
+
+    public function test_save_passes_selected_photos_to_service_when_edit_request_present(): void
+    {
+        $category = Category::factory()->create(['is_active' => true]);
+        $tag = Tag::factory()->create(['is_active' => true]);
+
+        $place = Place::factory()->create([
+            'latitude' => 28.5728,
+            'longitude' => -80.6490,
+            'is_featured' => false,
+        ]);
+
+        $place->categories()->attach($category->id);
+        $place->tags()->attach($tag->id);
+
+        PlaceTranslation::factory()->create([
+            'place_id' => $place->id,
+            'locale' => 'fr',
+            'title' => 'Title',
+            'slug' => 'title',
+        ]);
+
+        PlaceTranslation::factory()->create([
+            'place_id' => $place->id,
+            'locale' => 'en',
+            'title' => 'EN Title',
+            'slug' => 'en-title',
+        ]);
+
+        Photo::factory()->create([
+            'place_id' => $place->id,
+            'is_main' => true,
+            'sort_order' => 0,
+        ]);
+
+        Photo::factory()->create([
+            'place_id' => $place->id,
+            'is_main' => false,
+            'sort_order' => 1,
+        ]);
+
+        $editRequest = \App\Models\EditRequest::factory()->create([
+            'place_id' => $place->id,
+            'contact_email' => 'visitor@example.com',
+            'type' => 'photo_suggestion',
+            'status' => 'submitted',
+        ]);
+
+        // Simuler l'acceptation de photos suggérées
+        Livewire::test(PlaceStoreForm::class, [
+            'placeId' => $place->id,
+            'placeRequestId' => null,
+            'editRequestId' => $editRequest->id,
+        ])
+            ->set('categoryIds', [$category->id])
+            ->set('tagIds', [$tag->id])
+            ->set('selectedFields', [])
+            ->set('selectedPhotos', [0, 1])  // Accepter les 2 photos
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertRedirect();
+
+        // Vérifier que l'EditRequest a été accepté avec applied_changes
+        $editRequest->refresh();
+        $this->assertEquals(\App\Enums\RequestStatus::Accepted, $editRequest->status);
+        $this->assertNotNull($editRequest->applied_changes);
+        $this->assertIsArray($editRequest->applied_changes);
+        $this->assertEquals([], $editRequest->applied_changes['fields']);
+        $this->assertEquals([0, 1], $editRequest->applied_changes['photos']);
+    }
+
+    public function test_save_passes_both_selected_fields_and_photos_to_service(): void
+    {
+        $category = Category::factory()->create(['is_active' => true]);
+        $tag = Tag::factory()->create(['is_active' => true]);
+
+        $place = Place::factory()->create([
+            'latitude' => 28.5728,
+            'longitude' => -80.6490,
+            'is_featured' => false,
+        ]);
+
+        $place->categories()->attach($category->id);
+        $place->tags()->attach($tag->id);
+
+        PlaceTranslation::factory()->create([
+            'place_id' => $place->id,
+            'locale' => 'fr',
+            'title' => 'Old Title',
+            'slug' => 'old-title',
+            'description' => 'Old Description',
+        ]);
+
+        PlaceTranslation::factory()->create([
+            'place_id' => $place->id,
+            'locale' => 'en',
+            'title' => 'Old EN Title',
+            'slug' => 'old-en-title',
+            'description' => 'Old EN Description',
+        ]);
+
+        Photo::factory()->create([
+            'place_id' => $place->id,
+            'is_main' => true,
+            'sort_order' => 0,
+        ]);
+
+        $editRequest = \App\Models\EditRequest::factory()->create([
+            'place_id' => $place->id,
+            'contact_email' => 'visitor@example.com',
+            'type' => 'modification',
+            'status' => 'submitted',
+        ]);
+
+        // Simuler une modification mixte (champs + photos)
+        Livewire::test(PlaceStoreForm::class, [
+            'placeId' => $place->id,
+            'placeRequestId' => null,
+            'editRequestId' => $editRequest->id,
+        ])
+            ->set('categoryIds', [$category->id])
+            ->set('tagIds', [$tag->id])
+            ->set('selectedFields', ['title'])
+            ->set('selectedPhotos', [0])
+            ->set('translations.fr.title', 'New Title')
+            ->set('translations.en.title', 'New EN Title')
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertRedirect();
+
+        // Vérifier que l'EditRequest a été accepté avec les deux types de données
+        $editRequest->refresh();
+        $this->assertEquals(\App\Enums\RequestStatus::Accepted, $editRequest->status);
+        $this->assertNotNull($editRequest->applied_changes);
+        $this->assertEquals(['title'], $editRequest->applied_changes['fields']);
+        $this->assertEquals([0], $editRequest->applied_changes['photos']);
+    }
 }

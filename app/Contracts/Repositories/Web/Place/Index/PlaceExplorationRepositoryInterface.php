@@ -10,14 +10,14 @@ use Illuminate\Support\Collection;
 interface PlaceExplorationRepositoryInterface
 {
     /**
-     * Get coordinates only (id, lat, lng) within bounding box
+     * Get coordinates only (id, lat, lng, is_featured) within bounding box
      * Used by PlaceMap component for marker display
      *
      * Critical: Uses bounding box to limit query size for 100K+ places
      *
      * @param  array<string, mixed>  $filters  Applied filters (mode, tags, radius, etc.)
      * @param  array<string, float|null>|null  $boundingBox  ['north' => float, 'south' => float, 'east' => float, 'west' => float]
-     * @return Collection<int, array{id: int, latitude: float, longitude: float}>
+     * @return Collection<int, array{id: int, latitude: float, longitude: float, is_featured: bool}>
      */
     public function getPlacesCoordinates(array $filters, ?array $boundingBox = null): Collection;
 

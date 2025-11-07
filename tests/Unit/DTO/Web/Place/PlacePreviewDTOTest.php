@@ -15,6 +15,7 @@ class PlacePreviewDTOTest extends TestCase
             title: 'Test Place',
             descriptionExcerpt: 'This is a test description that is exactly 200 characters long...',
             mainPhotoUrl: 'https://example.com/photo.jpg',
+            isFeatured: true,
             tags: [
                 ['name' => 'NASA', 'slug' => 'nasa', 'color' => '#FF0000'],
                 ['name' => 'SpaceX', 'slug' => 'spacex', 'color' => '#0000FF'],
@@ -26,6 +27,7 @@ class PlacePreviewDTOTest extends TestCase
         $this->assertEquals('Test Place', $dto->title);
         $this->assertEquals('This is a test description that is exactly 200 characters long...', $dto->descriptionExcerpt);
         $this->assertEquals('https://example.com/photo.jpg', $dto->mainPhotoUrl);
+        $this->assertTrue($dto->isFeatured);
         $this->assertCount(2, $dto->tags);
     }
 
@@ -37,10 +39,12 @@ class PlacePreviewDTOTest extends TestCase
             title: 'Test Place',
             descriptionExcerpt: 'Test description',
             mainPhotoUrl: null,
+            isFeatured: false,
             tags: []
         );
 
         $this->assertNull($dto->mainPhotoUrl);
+        $this->assertFalse($dto->isFeatured);
     }
 
     public function test_dto_can_be_instantiated_with_empty_tags(): void
@@ -51,6 +55,7 @@ class PlacePreviewDTOTest extends TestCase
             title: 'Test Place',
             descriptionExcerpt: 'Test description',
             mainPhotoUrl: 'https://example.com/photo.jpg',
+            isFeatured: false,
             tags: []
         );
 
@@ -65,6 +70,7 @@ class PlacePreviewDTOTest extends TestCase
             title: 'Test Place',
             descriptionExcerpt: 'Test description',
             mainPhotoUrl: null,
+            isFeatured: false,
             tags: []
         );
 
@@ -80,6 +86,7 @@ class PlacePreviewDTOTest extends TestCase
             title: 'Test Place',
             descriptionExcerpt: 'Test description',
             mainPhotoUrl: 'https://example.com/photo.jpg',
+            isFeatured: true,
             tags: [
                 ['name' => 'NASA', 'slug' => 'nasa', 'color' => '#FF0000'],
             ]
@@ -93,6 +100,7 @@ class PlacePreviewDTOTest extends TestCase
         $this->assertArrayHasKey('title', $serialized);
         $this->assertArrayHasKey('descriptionExcerpt', $serialized);
         $this->assertArrayHasKey('mainPhotoUrl', $serialized);
+        $this->assertArrayHasKey('isFeatured', $serialized);
         $this->assertArrayHasKey('tags', $serialized);
 
         $this->assertEquals(1, $serialized['id']);
@@ -100,6 +108,7 @@ class PlacePreviewDTOTest extends TestCase
         $this->assertEquals('Test Place', $serialized['title']);
         $this->assertEquals('Test description', $serialized['descriptionExcerpt']);
         $this->assertEquals('https://example.com/photo.jpg', $serialized['mainPhotoUrl']);
+        $this->assertTrue($serialized['isFeatured']);
         $this->assertCount(1, $serialized['tags']);
     }
 
@@ -111,6 +120,7 @@ class PlacePreviewDTOTest extends TestCase
             'title' => 'Test Place',
             'descriptionExcerpt' => 'Test description',
             'mainPhotoUrl' => 'https://example.com/photo.jpg',
+            'isFeatured' => false,
             'tags' => [
                 ['name' => 'NASA', 'slug' => 'nasa', 'color' => '#FF0000'],
             ],
@@ -124,6 +134,7 @@ class PlacePreviewDTOTest extends TestCase
         $this->assertEquals('Test Place', $dto->title);
         $this->assertEquals('Test description', $dto->descriptionExcerpt);
         $this->assertEquals('https://example.com/photo.jpg', $dto->mainPhotoUrl);
+        $this->assertFalse($dto->isFeatured);
         $this->assertCount(1, $dto->tags);
     }
 
@@ -135,6 +146,7 @@ class PlacePreviewDTOTest extends TestCase
             'title' => 'Test Place',
             'descriptionExcerpt' => 'Test description',
             'mainPhotoUrl' => null,
+            'isFeatured' => false,
             // tags is missing intentionally
         ];
 
@@ -151,6 +163,7 @@ class PlacePreviewDTOTest extends TestCase
             title: 'Kennedy Space Center',
             descriptionExcerpt: 'The Kennedy Space Center is one of the most famous space launch facilities...',
             mainPhotoUrl: 'https://example.com/ksc.jpg',
+            isFeatured: true,
             tags: [
                 ['name' => 'NASA', 'slug' => 'nasa', 'color' => '#FF0000'],
                 ['name' => 'USA', 'slug' => 'usa', 'color' => '#0000FF'],
@@ -165,6 +178,7 @@ class PlacePreviewDTOTest extends TestCase
         $this->assertEquals($original->title, $deserialized->title);
         $this->assertEquals($original->descriptionExcerpt, $deserialized->descriptionExcerpt);
         $this->assertEquals($original->mainPhotoUrl, $deserialized->mainPhotoUrl);
+        $this->assertEquals($original->isFeatured, $deserialized->isFeatured);
         $this->assertEquals($original->tags, $deserialized->tags);
     }
 }

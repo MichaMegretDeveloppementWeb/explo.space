@@ -137,6 +137,11 @@
                     @include('livewire.web.place.index.partials.filters.tag-search')
                 </div>
             </div>
+
+            {{-- Featured places toggle --}}
+            <div class="filters-featured mt-4">
+                @include('livewire.web.place.index.partials.filters.featured-toggle')
+            </div>
         </div>
 
     </div>

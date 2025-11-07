@@ -9,5 +9,7 @@
 @section('content')
     <livewire:admin.place.store.place-store-form
         :place-id="$place->id"
-        :place-request-id="null" />
+        :place-request-id="null"
+        :edit-request-id="$editRequestId"
+    />
 @endsection

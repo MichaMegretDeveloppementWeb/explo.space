@@ -19,7 +19,9 @@ export class LocationMap {
         this.containerId = containerId;
         this.map = null;
         this.marker = null;
+        this.oldMarker = null; // Marker pour anciennes coordonnées (EditRequest)
         this.initialCoords = null;
+        this.originalCoords = null; // Anciennes coordonnées (EditRequest)
         this.latInput = null;
         this.lngInput = null;
 
@@ -72,6 +74,14 @@ export class LocationMap {
     getInitialCoordinatesFromContainer(container) {
         const lat = parseFloat(container.dataset.latitude) || 0;
         const lng = parseFloat(container.dataset.longitude) || 0;
+
+        // Récupérer également les anciennes coordonnées (EditRequest)
+        const originalLat = parseFloat(container.dataset.originalLatitude);
+        const originalLng = parseFloat(container.dataset.originalLongitude);
+
+        if (!isNaN(originalLat) && !isNaN(originalLng) && originalLat !== 0 && originalLng !== 0) {
+            this.originalCoords = { lat: originalLat, lng: originalLng };
+        }
 
         return { lat, lng };
     }
@@ -157,17 +167,92 @@ export class LocationMap {
      * Set marker on map
      */
     setMarker(lat, lng) {
-        // Remove existing marker
+        // Remove existing new marker
         if (this.marker) {
             this.map.removeLayer(this.marker);
         }
 
-        // Add new marker (draggable)
-        this.marker = L.marker([lat, lng], {
+        // Si nous avons des anciennes coordonnées (EditRequest), créer le marker ancien
+        if (this.originalCoords && !this.oldMarker) {
+            // Marker ANCIEN (gris, style pin comme carte exploration)
+            const oldIconSvg = `
+                <svg width="27" height="42" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                          fill="#9CA3AF"
+                          stroke="#ffffff"
+                          stroke-width="1.5"/>
+                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                </svg>
+            `;
+
+            const oldIcon = L.divIcon({
+                className: 'old-marker-icon',
+                html: oldIconSvg,
+                iconSize: [27, 42],
+                iconAnchor: [13.5, 42],
+                popupAnchor: [0, -37],
+            });
+
+            this.oldMarker = L.marker([this.originalCoords.lat, this.originalCoords.lng], {
+                icon: oldIcon,
+                draggable: false,
+            }).addTo(this.map);
+
+            // Popup ancienne position - toujours ouvert
+            this.oldMarker.bindPopup('Ancienne position', {
+                closeButton: false,
+                closeOnClick: false,
+                autoClose: false,
+                className: 'simple-marker-popup'
+            }).openPopup();
+        }
+
+        // Marker NOUVEAU (bleu, style pin comme carte exploration)
+        const markerOptions = {
             draggable: true,
-        }).addTo(this.map);
+        };
+
+        // Ajouter l'icône custom uniquement si nous avons des anciennes coordonnées
+        if (this.originalCoords) {
+            const newIconSvg = `
+                <svg width="27" height="42" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                          fill="#3b82f6"
+                          stroke="#ffffff"
+                          stroke-width="1.5"/>
+                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                </svg>
+            `;
+
+            markerOptions.icon = L.divIcon({
+                className: 'new-marker-icon',
+                html: newIconSvg,
+                iconSize: [27, 42],
+                iconAnchor: [13.5, 42],
+                popupAnchor: [0, -37],
+            });
+        }
+
+        this.marker = L.marker([lat, lng], markerOptions).addTo(this.map);
+
+        if (this.originalCoords) {
+            // Popup nouvelle position - toujours ouvert initialement
+            this.marker.bindPopup('Nouvelle position', {
+                closeButton: false,
+                closeOnClick: false,
+                autoClose: false,
+                className: 'simple-marker-popup'
+            }).openPopup();
+        }
 
         // Handle marker drag
+        this.marker.on('dragstart', (e) => {
+            // Fermer le popup au début du drag
+            if (this.originalCoords && this.marker.getPopup()) {
+                this.marker.closePopup();
+            }
+        });
+
         this.marker.on('dragend', (e) => {
             const position = e.target.getLatLng();
 
@@ -180,7 +265,14 @@ export class LocationMap {
             }
         });
 
-        // Ne pas forcer le zoom/pan (garde la vue actuelle)
+        // Si double marker, fit bounds pour montrer les deux
+        if (this.originalCoords) {
+            const bounds = L.latLngBounds(
+                [this.originalCoords.lat, this.originalCoords.lng],
+                [lat, lng]
+            );
+            this.map.fitBounds(bounds, { padding: [50, 50] });
+        }
     }
 
     /**

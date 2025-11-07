@@ -204,6 +204,8 @@ class PlaceCreateService
     /**
      * Copy photos from PlaceRequest to Place with thumbnail generation.
      *
+     * Avec rollback pattern : en cas d'erreur, supprime toutes les photos déjà copiées.
+     *
      * @param  array<int, array{id: int, url: string, medium_url: string, source: string}>  $placeRequestPhotos
      * @return int Next sort_order value (nombre de photos copiées)
      *
@@ -212,12 +214,13 @@ class PlaceCreateService
     private function copyPlaceRequestPhotos(Place $place, array $placeRequestPhotos): int
     {
         $photoData = [];
+        $storedFilenames = [];
         $sortOrder = 0;
 
         foreach ($placeRequestPhotos as $prPhoto) {
             try {
                 // Copier la photo depuis place_request_photos vers place_photos
-                $processedData = $this->photoService->copyPhotoWithThumbnails(
+                $processedData = $this->photoService->copyPlaceRequestPhotoWithThumbnails(
                     $prPhoto['id'],
                     'place_request_photos',
                     'place_photos',
@@ -234,23 +237,32 @@ class PlaceCreateService
                     'sort_order' => $sortOrder,
                 ];
 
+                $storedFilenames[] = $processedData['filename'];
                 $sortOrder++;
 
             } catch (PhotoProcessingException $e) {
+                // Exception attendue : rollback + propagation
+                $this->rollbackStoredPhotos($storedFilenames);
+
                 Log::warning('PlaceRequest photo copy failed', [
                     'place_id' => $place->id,
                     'place_request_photo_id' => $prPhoto['id'],
                     'message' => $e->getMessage(),
+                    'photos_rolled_back' => count($storedFilenames),
                 ]);
 
                 throw $e;
             } catch (\Throwable $e) {
+                // Exception imprévue : rollback + log critique + wrapper
+                $this->rollbackStoredPhotos($storedFilenames);
+
                 Log::critical('Unexpected error copying PlaceRequest photo', [
                     'place_id' => $place->id,
                     'place_request_photo_id' => $prPhoto['id'],
                     'exception_type' => get_class($e),
                     'message' => $e->getMessage(),
                     'trace' => $e->getTraceAsString(),
+                    'photos_rolled_back' => count($storedFilenames),
                 ]);
 
                 throw new UnexpectedPhotoException(

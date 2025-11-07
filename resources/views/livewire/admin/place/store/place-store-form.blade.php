@@ -22,6 +22,30 @@
 
     @include('livewire.admin.place.store.partials.form-header')
 
+    {{-- Message informatif pour EditRequest --}}
+    @if($editRequestId)
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg mb-6">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <x-heroicon-o-information-circle class="h-5 w-5 text-blue-400" />
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-blue-800">
+                        Édition suite à une demande de modification
+                    </h3>
+                    <div class="mt-2 text-sm text-blue-700">
+                        <p class="py-1">
+                            Ce formulaire contient les modifications proposées par un visiteur. Les champs modifiés sont identifiés et affichent l'ancienne valeur pour faciliter la comparaison.
+                        </p>
+                        <p class="py-1">
+                            Pensez à appliquer la traduction pour les champs modifiés si nécessaire.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <form wire:submit="save" novalidate class="space-y-6">
 
         {{-- Section 2: Traductions --}}

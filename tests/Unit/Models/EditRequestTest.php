@@ -192,4 +192,65 @@ class EditRequestTest extends TestCase
         $this->assertEquals($viewedAt->timestamp, $editRequest->viewed_at->timestamp);
         $this->assertEquals($processedAt->timestamp, $editRequest->processed_at->timestamp);
     }
+
+    public function test_edit_request_casts_applied_changes_to_array(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $place = Place::factory()->create(['admin_id' => $admin->id]);
+
+        $appliedChangesData = [
+            'fields' => ['title', 'description'],
+            'photos' => [0, 2],
+        ];
+
+        $editRequest = EditRequest::factory()->create([
+            'contact_email' => 'visitor@example.com',
+            'place_id' => $place->id,
+            'status' => 'accepted',
+            'applied_changes' => $appliedChangesData,
+        ]);
+
+        $this->assertIsArray($editRequest->applied_changes);
+        $this->assertArrayHasKey('fields', $editRequest->applied_changes);
+        $this->assertArrayHasKey('photos', $editRequest->applied_changes);
+        $this->assertEquals(['title', 'description'], $editRequest->applied_changes['fields']);
+        $this->assertEquals([0, 2], $editRequest->applied_changes['photos']);
+    }
+
+    public function test_edit_request_applied_changes_is_nullable(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $place = Place::factory()->create(['admin_id' => $admin->id]);
+
+        $editRequest = EditRequest::factory()->create([
+            'contact_email' => 'visitor@example.com',
+            'place_id' => $place->id,
+            'applied_changes' => null,
+        ]);
+
+        $this->assertNull($editRequest->applied_changes);
+    }
+
+    public function test_edit_request_can_update_applied_changes(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $place = Place::factory()->create(['admin_id' => $admin->id]);
+
+        $editRequest = EditRequest::factory()->create([
+            'contact_email' => 'visitor@example.com',
+            'place_id' => $place->id,
+            'applied_changes' => null,
+        ]);
+
+        $appliedChanges = [
+            'fields' => ['title'],
+            'photos' => [1, 3],
+        ];
+
+        $editRequest->update(['applied_changes' => $appliedChanges]);
+        $editRequest->refresh();
+
+        $this->assertIsArray($editRequest->applied_changes);
+        $this->assertEquals($appliedChanges, $editRequest->applied_changes);
+    }
 }

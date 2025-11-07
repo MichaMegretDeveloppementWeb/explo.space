@@ -22,7 +22,7 @@
                             </span>
                             <x-admin.place.detail.status-badge :status="$translation->status" />
                         </div>
-                        <a href="{{ route('admin.places.edit', $place) }}#translation-{{ $translation->locale }}"
+                        <a href="{{ route('admin.places.edit', ['id' => $place->id]) }}#translation-{{ $translation->locale }}"
                            class="text-sm text-blue-600 hover:text-blue-800">
                             Modifier
                         </a>

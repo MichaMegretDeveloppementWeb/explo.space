@@ -58,6 +58,15 @@ enum RequestStatus: string
     }
 
     /**
+     * Vérifie si la proposition peut être acceptée
+     * Exclut Accepted pour éviter d'accepter une proposition déjà acceptée
+     */
+    public function canBeAccepted(): bool
+    {
+        return in_array($this, [self::Submitted, self::Pending]);
+    }
+
+    /**
      * Vérifie si la proposition peut être refusée
      * Exclut Refused pour éviter de refuser une proposition déjà refusée
      */

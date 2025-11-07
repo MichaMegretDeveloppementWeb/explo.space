@@ -27,6 +27,10 @@ return [
     'view_detail' => 'View details',
     'back' => 'Back',
 
+    // Featured places
+    'featured_place' => 'Featured place',
+    'featured_place_badge' => 'Featured place',
+
     // Loading
     'loading_map' => 'Loading map...',
 ];

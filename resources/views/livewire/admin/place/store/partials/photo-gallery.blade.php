@@ -247,11 +247,11 @@
         </div>
     </div>
 
-    {{-- Galerie unifiée: Photos PlaceRequest + Photos uploadées --}}
-    @if (count($placeRequestPhotos) > 0 || count($photos) > 0)
+    {{-- Galerie unifiée: Photos PlaceRequest + Photos EditRequest + Photos uploadées --}}
+    @if (count($placeRequestPhotos) > 0 || count($editRequestPhotos) > 0 || count($photos) > 0)
         <div>
             <h3 class="text-sm font-medium text-gray-700 mb-3">
-                Photos sélectionnées ({{ count($placeRequestPhotos) + count($photos) }})
+                Photos sélectionnées ({{ count($placeRequestPhotos) + count($editRequestPhotos) + count($photos) }})
             </h3>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -277,6 +277,38 @@
                         <div class="absolute top-2 right-2">
                             <button type="button"
                                     wire:click="removePlaceRequestPhoto({{ $index }})"
+                                    title="Retirer cette photo"
+                                    class="p-1.5 bg-white/95 backdrop-blur-sm rounded-md shadow-sm hover:bg-white hover:shadow-md hover:bg-red-50 transition-all group/btn">
+                                <svg class="w-4 h-4 text-gray-600 group-hover/btn:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                @endforeach
+
+                {{-- Photos EditRequest --}}
+                @foreach ($editRequestPhotos as $index => $erPhoto)
+                    <div class="relative group" wire:key="er-photo-{{ $erPhoto['id'] }}">
+                        {{-- Preview --}}
+                        <div class="aspect-square rounded-lg overflow-hidden bg-gray-100 border-2 border-purple-200 transition-all">
+                            <img src="{{ $erPhoto['url'] }}"
+                                 alt="Photo proposée (EditRequest)"
+                                 class="w-full h-full object-cover">
+                        </div>
+
+                        {{-- Overlay léger au hover --}}
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200 rounded-lg pointer-events-none"></div>
+
+                        {{-- Badge "Proposition" en violet (coin supérieur gauche) --}}
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-purple-600 text-white text-xs font-semibold rounded shadow-lg">
+                            Proposition
+                        </div>
+
+                        {{-- Action Button (coin supérieur droit) --}}
+                        <div class="absolute top-2 right-2">
+                            <button type="button"
+                                    wire:click="removeEditRequestPhoto({{ $index }})"
                                     title="Retirer cette photo"
                                     class="p-1.5 bg-white/95 backdrop-blur-sm rounded-md shadow-sm hover:bg-white hover:shadow-md hover:bg-red-50 transition-all group/btn">
                                 <svg class="w-4 h-4 text-gray-600 group-hover/btn:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -327,7 +359,7 @@
                     <div class="ml-3">
                         <p class="text-sm text-blue-800">
                             @if ($mode === 'create')
-                                @if (count($placeRequestPhotos) > 0)
+                                @if (count($placeRequestPhotos) > 0 || count($editRequestPhotos) > 0)
                                     Ces photos seront enregistrées avec le lieu. La première photo de la proposition sera définie comme photo principale.
                                 @else
                                     Ces photos seront enregistrées avec le lieu. La première sera définie comme photo principale.

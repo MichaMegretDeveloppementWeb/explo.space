@@ -27,6 +27,10 @@ return [
     'view_detail' => 'Voir le détail',
     'back' => 'Retour',
 
+    // Featured places
+    'featured_place' => 'Lieu emblématique',
+    'featured_place_badge' => 'Lieu emblématique',
+
     // Chargement
     'loading_map' => 'Chargement de la carte...',
 ];

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Contracts\Repositories\Admin\Category\CategorySelectionRepositoryInterface;
 use App\Contracts\Repositories\Admin\Dashboard\DashboardStatsRepositoryInterface;
+use App\Contracts\Repositories\Admin\EditRequest\Detail\EditRequestDetailRepositoryInterface;
 use App\Contracts\Repositories\Admin\EditRequest\EditRequestListRepositoryInterface;
 use App\Contracts\Repositories\Admin\Place\Create\PlaceCreateRepositoryInterface;
 use App\Contracts\Repositories\Admin\Place\Detail\PlaceDetailRepositoryInterface as AdminPlaceDetailRepositoryInterface;
@@ -20,10 +21,12 @@ use App\Contracts\Repositories\Web\Place\PreviewModal\PlacePreviewRepositoryInte
 use App\Contracts\Repositories\Web\Place\Show\PlaceDetailRepositoryInterface as WebPlaceDetailRepositoryInterface;
 use App\Contracts\Repositories\Web\Tag\TagSelectionRepositoryInterface as WebTagSelectionRepositoryInterface;
 use App\Contracts\Services\Admin\Auth\AdminAuthenticationServiceInterface;
+use App\Contracts\Services\Admin\EditRequest\Detail\EditRequestTranslationServiceInterface;
 use App\Contracts\Services\GeocodingServiceInterface;
 use App\Contracts\Translation\TranslationStrategyInterface;
 use App\Repositories\Admin\Category\CategorySelectionRepository;
 use App\Repositories\Admin\Dashboard\DashboardStatsRepository;
+use App\Repositories\Admin\EditRequest\Detail\EditRequestDetailRepository;
 use App\Repositories\Admin\EditRequest\EditRequestListRepository;
 use App\Repositories\Admin\Place\Create\PlaceCreateRepository;
 use App\Repositories\Admin\Place\Detail\PlaceDetailRepository as AdminPlaceDetailRepository;
@@ -40,6 +43,7 @@ use App\Repositories\Web\Place\PreviewModal\PlacePreviewRepository;
 use App\Repositories\Web\Place\Show\PlaceDetailRepository as WebPlaceDetailRepository;
 use App\Repositories\Web\Tag\TagSelectionRepository as WebTagSelectionRepository;
 use App\Services\Admin\Auth\AdminAuthenticationService;
+use App\Services\Admin\EditRequest\Detail\EditRequestTranslationService;
 use App\Strategies\Geocoding\GeocodingResolver;
 use App\Strategies\Translation\TranslationResolver;
 use Illuminate\Support\Facades\Schema;
@@ -135,6 +139,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            EditRequestDetailRepositoryInterface::class,
+            EditRequestDetailRepository::class
+        );
+
+        $this->app->bind(
             EditRequestListRepositoryInterface::class,
             EditRequestListRepository::class
         );
@@ -143,6 +152,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AdminAuthenticationServiceInterface::class,
             AdminAuthenticationService::class
+        );
+
+        $this->app->bind(
+            EditRequestTranslationServiceInterface::class,
+            EditRequestTranslationService::class
         );
 
         // Geocoding Strategy Pattern

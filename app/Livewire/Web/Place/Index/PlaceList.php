@@ -187,6 +187,7 @@ class PlaceList extends Component
                 'longitude' => $this->currentFilters['longitude'] ?? null,
                 'radius' => $this->currentFilters['radius'] ?? PlaceSearchConfig::RADIUS_DEFAULT,
                 'tags' => $this->currentFilters['tags'] ?? [],
+                'featured' => $this->currentFilters['featured'] ?? false,
             ];
 
             // Charger les lieux sous forme de tableaux (20 résultats)
@@ -243,6 +244,7 @@ class PlaceList extends Component
                 'longitude' => $this->currentFilters['longitude'] ?? null,
                 'radius' => $this->currentFilters['radius'] ?? PlaceSearchConfig::RADIUS_DEFAULT,
                 'tags' => $this->currentFilters['tags'] ?? [],
+                'featured' => $this->currentFilters['featured'] ?? false,
             ];
 
             // Charger la page suivante sous forme de tableaux (20 nouveaux lieux)
@@ -297,9 +299,12 @@ class PlaceList extends Component
             return ! empty($this->currentFilters['latitude']) && ! empty($this->currentFilters['longitude']);
         }
 
-        // Mode worldwide : nécessite au moins 1 tag
+        // Mode worldwide : nécessite au moins 1 tag OU featured=true
         if ($mode === 'worldwide') {
-            return ! empty($this->currentFilters['tags']) && count($this->currentFilters['tags']) > 0;
+            $hasTags = ! empty($this->currentFilters['tags']) && count($this->currentFilters['tags']) > 0;
+            $hasFeatured = ! empty($this->currentFilters['featured']);
+
+            return $hasTags || $hasFeatured;
         }
 
         return false;

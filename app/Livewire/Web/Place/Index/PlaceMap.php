@@ -52,7 +52,7 @@ class PlaceMap extends Component
      *
      * NOTE: Doit être public pour être persisté entre les requêtes Livewire
      *
-     * @var array{mode: string, latitude: float|null, longitude: float|null, radius: int, tags: array<int, string>}
+     * @var array{mode: string, latitude: float|null, longitude: float|null, radius: int, tags: array<int, string>, featured: bool}
      */
     public array $previousFilters = [
         'mode' => PlaceSearchConfig::SEARCH_MODE_DEFAULT,
@@ -60,6 +60,7 @@ class PlaceMap extends Component
         'longitude' => null,
         'radius' => PlaceSearchConfig::RADIUS_DEFAULT,
         'tags' => [],
+        'featured' => false,
     ];
 
     // ========================================
@@ -80,6 +81,7 @@ class PlaceMap extends Component
             'longitude' => $initialFilters['longitude'] ?? null,
             'radius' => $initialFilters['radius'] ?? PlaceSearchConfig::RADIUS_DEFAULT,
             'tags' => $initialFilters['tags'] ?? [],
+            'featured' => $initialFilters['featured'] ?? false,
         ];
 
         // Lire configuration du système de bounding box
@@ -152,6 +154,7 @@ class PlaceMap extends Component
                 'longitude' => $validatedData['longitude'] ?? null,
                 'radius' => $validatedData['radius'] ?? PlaceSearchConfig::RADIUS_DEFAULT,
                 'tags' => $validatedData['tags'] ?? [],
+                'featured' => $validatedData['featured'] ?? false,
             ];
 
             // Charger les coordonnées si mode statique
@@ -382,6 +385,7 @@ class PlaceMap extends Component
                 'longitude' => $this->currentFilters['longitude'] ?? null,
                 'radius' => $this->currentFilters['radius'] ?? PlaceSearchConfig::RADIUS_DEFAULT,
                 'tags' => $this->currentFilters['tags'] ?? [],
+                'featured' => $this->currentFilters['featured'] ?? false,
             ];
 
             // Appeler le service avec bounding box

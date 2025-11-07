@@ -63,7 +63,8 @@ class PlaceExplorationFiltersValidationService
             longitude: $correctedLongitude,
             radius: $correctedRadius,
             address: $dto->address,
-            tags: $correctedTags
+            tags: $correctedTags,
+            featured: $dto->featured
         );
     }
 

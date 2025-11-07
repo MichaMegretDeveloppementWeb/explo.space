@@ -7,7 +7,7 @@
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button wire:click="openSignalementForm"
                     type="button"
-                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors">
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors cursor-pointer">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
@@ -16,7 +16,7 @@
 
             <button wire:click="openModificationForm"
                     type="button"
-                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-900 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors">
+                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-900 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors cursor-pointer">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                 </svg>
@@ -152,7 +152,7 @@
                                                 <div>
                                                     <label class="block text-xs text-gray-600 mb-1">Latitude</label>
                                                     <input type="number"
-                                                           wire:model.live="new_values.coordinates.lat"
+                                                           wire:model.live.debounce.500ms="new_values.coordinates.lat"
                                                            step="0.000001"
                                                            class="block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm">
                                                     @error('new_values.coordinates.lat')
@@ -162,7 +162,7 @@
                                                 <div>
                                                     <label class="block text-xs text-gray-600 mb-1">Longitude</label>
                                                     <input type="number"
-                                                           wire:model.live="new_values.coordinates.lng"
+                                                           wire:model.live.debounce.500ms="new_values.coordinates.lng"
                                                            step="0.000001"
                                                            class="block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm">
                                                     @error('new_values.coordinates.lng')
@@ -173,11 +173,17 @@
 
                                             {{-- Carte Leaflet --}}
                                             <div class="mt-3">
-                                                <div id="edit-request-map"
-                                                     wire:ignore
-                                                     class="h-64 rounded-lg border border-gray-300"
+                                                {{-- Élément de données pour synchronisation (mis à jour par Livewire) --}}
+                                                <div id="edit-request-map-data"
+                                                     class="hidden"
                                                      data-lat="{{ $new_values['coordinates']['lat'] ?? $current_values['coordinates']['lat'] }}"
                                                      data-lng="{{ $new_values['coordinates']['lng'] ?? $current_values['coordinates']['lng'] }}">
+                                                </div>
+
+                                                {{-- Conteneur de la carte (wire:ignore pour Leaflet) --}}
+                                                <div id="edit-request-map"
+                                                     wire:ignore
+                                                     class="h-64 rounded-lg border border-gray-300">
                                                 </div>
                                             </div>
                                         </div>

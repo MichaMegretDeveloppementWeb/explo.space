@@ -46,6 +46,8 @@ class PlaceFilters extends Component
 
     public string $selectedTagsSlugs = '';
 
+    public bool $showFeaturedOnly = false;
+
     // ========================================
     // PROPRIÉTÉS UI - ADDRESS AUTOCOMPLETE
     // ========================================
@@ -107,6 +109,9 @@ class PlaceFilters extends Component
             // Convertir le tableau de tags en string
             $tags = $initialFilters['tags'] ?? [];
             $this->selectedTagsSlugs = is_array($tags) ? implode(',', $tags) : '';
+
+            // Initialiser le filtre featured
+            $this->showFeaturedOnly = $initialFilters['featured'] ?? false;
         }
 
         // Initialiser le système de tags
@@ -116,6 +121,18 @@ class PlaceFilters extends Component
     public function render(): \Illuminate\Contracts\View\View
     {
         return view('livewire.web.place.index.place-filters');
+    }
+
+    // ========================================
+    // PROPERTY UPDATES
+    // ========================================
+
+    /**
+     * Called when showFeaturedOnly changes
+     */
+    public function updatedShowFeaturedOnly(): void
+    {
+        $this->emitFiltersChanged();
     }
 
     // ========================================
@@ -145,6 +162,7 @@ class PlaceFilters extends Component
             'radius' => $this->radius,
             'address' => $this->address,
             'tags' => collect($this->selectedTags)->pluck('slug')->toArray(),
+            'featured' => $this->showFeaturedOnly,
         ]);
 
         try {

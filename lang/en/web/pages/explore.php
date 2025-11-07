@@ -68,6 +68,10 @@ return [
         'filters_title' => 'Filters',
         'clear_all_tags' => 'Clear all',
 
+        // Featured places filter
+        'featured_toggle_label' => 'Featured places',
+        'featured_toggle_help' => 'Show only places selected by the editorial team',
+
         // Results header
         'results_title' => 'Results',
         'results_radius' => 'Within a radius of',

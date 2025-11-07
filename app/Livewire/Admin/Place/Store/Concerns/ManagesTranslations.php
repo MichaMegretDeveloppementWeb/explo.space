@@ -16,8 +16,10 @@ use Illuminate\Support\Str;
  * pas dans le trait. Ce trait utilise les propriétés suivantes qui doivent être définies dans PlaceStoreForm:
  * - public array $pendingTranslations = []
  * - public bool $showTranslationConfirmation = false
+ * - public string $translationSourceLocale = ''
  * - public string $translationTargetLocale = ''
  * - public array $fieldsToOverwrite = []
+ * - public array $selectedFieldsToOverwrite = []
  * - public bool $hasEmptyFieldsToTranslate = false
  */
 trait ManagesTranslations
@@ -111,17 +113,122 @@ trait ManagesTranslations
     }
 
     /**
-     * Initiate automatic translation for target locale
+     * Traduire un champ individuel depuis sa langue détectée vers le français
+     * Utilisé pour les EditRequest avec des champs en langues "autres" (ni FR ni EN)
      */
-    public function initiateTranslation(string $targetLocale): void
+    public function translateFieldFromSource(string $field): void
+    {
+        // Sécurité: Vérifier que nous sommes bien en mode édition depuis EditRequest
+        if (! $this->editRequestId) {
+            $this->addError('translation', 'Action non autorisée.');
+
+            return;
+        }
+
+        // Vérifier que le champ a une langue détectée
+        if (! isset($this->fieldLanguages[$field])) {
+            $this->addError('translation', 'Langue du champ non détectée.');
+
+            return;
+        }
+
+        $sourceLang = $this->fieldLanguages[$field];
+
+        // Vérifier que c'est bien une langue "autre" (ni fr ni en)
+        if ($sourceLang === 'fr' || $sourceLang === 'en' || $sourceLang === 'unknown' || $sourceLang === 'none') {
+            $this->addError('translation', 'Ce champ ne nécessite pas de traduction.');
+
+            return;
+        }
+
+        // Récupérer le texte actuel du champ dans l'onglet FR
+        $sourceText = $this->translations['fr'][$field] ?? '';
+
+        if (empty($sourceText)) {
+            $this->addError('translation', 'Aucun contenu à traduire.');
+
+            return;
+        }
+
+        try {
+            // Utiliser le service Strategy existant
+            $translationService = app(\App\Contracts\Translation\TranslationStrategyInterface::class);
+
+            // Vérifier l'usage DeepL
+            $translationService->checkUsage();
+
+            // Traduire le texte
+            $translatedText = $translationService->translate(
+                $sourceText,
+                $sourceLang,
+                'fr'
+            );
+
+            if (! empty($translatedText)) {
+                // Remplacer le champ FR avec la traduction
+                $this->translations['fr'][$field] = $translatedText;
+
+                // Auto-generate slug from title si c'est le titre
+                if ($field === 'title') {
+                    $this->translations['fr']['slug'] = \Illuminate\Support\Str::slug($translatedText);
+                }
+
+                // Marquer le champ comme traduit
+                $this->fieldTranslatedFrom[$field] = $sourceLang;
+
+                // Récupérer le nom de la langue depuis la config
+                $languageNames = config(
+                    'translation.providers.'.config('translation.default_provider').'.language_names'
+                );
+                $languageName = $languageNames[$sourceLang] ?? strtoupper($sourceLang);
+
+                session()->flash('translation_success',
+                    "Champ traduit avec succès depuis {$languageName}."
+                );
+            } else {
+                $this->addError('translation', 'La traduction a échoué.');
+            }
+
+        } catch (\App\Exceptions\Translation\TranslationException $e) {
+            \Illuminate\Support\Facades\Log::warning('Field translation from source language failed', [
+                'edit_request_id' => $this->editRequestId,
+                'field' => $field,
+                'detected_language' => $sourceLang,
+                'technical_error' => $e->getTechnicalMessage(),
+                'error' => $e->getMessage(),
+            ]);
+
+            $this->addError('translation', $e->getDisplayMessage());
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Unexpected field translation error', [
+                'edit_request_id' => $this->editRequestId,
+                'field' => $field,
+                'detected_language' => $sourceLang,
+                'error' => $e->getMessage(),
+            ]);
+
+            $this->addError('translation',
+                'Une erreur inattendue est survenue lors de la traduction. Les données originales ont été conservées.'
+            );
+        }
+    }
+
+    /**
+     * Initiate automatic translation from current locale to target locale
+     *
+     * Logique inversée : on traduit DEPUIS la locale actuelle VERS l'autre locale
+     */
+    public function initiateTranslation(string $sourceLocale): void
     {
         $this->resetErrorBag('translation');
+        $this->translationSourceLocale = $sourceLocale;
+
+        // Determine target locale (the other one)
+        $targetLocale = $sourceLocale === 'fr' ? 'en' : 'fr';
         $this->translationTargetLocale = $targetLocale;
 
-        // Determine source locale (the other one)
-        $sourceLocale = $targetLocale === 'fr' ? 'en' : 'fr';
-
-        // Get source texts (only non-empty fields)
+        // Get source texts (only non-empty fields from SOURCE locale)
         $sourceTexts = $this->getSourceTexts($sourceLocale);
 
         if (empty($sourceTexts)) {
@@ -152,12 +259,16 @@ trait ManagesTranslations
             $this->hasEmptyFieldsToTranslate = ! empty($emptyFields);
 
             if (! empty($fieldsToOverwrite)) {
-                // Show confirmation modal
+                // Show confirmation modal with checkboxes
                 $this->fieldsToOverwrite = $fieldsToOverwrite;
+                $this->selectedFieldsToOverwrite = []; // Tous décochés par défaut
                 $this->showTranslationConfirmation = true;
             } else {
-                // Apply translations directly (all fields are empty)
+                // Apply translations directly (all target fields are empty)
                 $this->applyTranslations();
+
+                // Switch to target locale tab after translation
+                $this->activeTranslationTab = $targetLocale;
             }
 
         } catch (TranslationException $e) {
@@ -179,21 +290,29 @@ trait ManagesTranslations
     }
 
     /**
-     * Confirm and apply translations (replace all - after modal confirmation)
+     * Confirm and apply translations to selected fields + all empty fields
      */
     public function confirmTranslation(): void
     {
         $this->showTranslationConfirmation = false;
-        $this->applyTranslations(replaceAll: true);
+        $targetLocale = $this->translationTargetLocale;
+        $this->applyTranslations();
+
+        // Switch to target locale tab after translation
+        $this->activeTranslationTab = $targetLocale;
     }
 
     /**
-     * Apply translations only to empty fields (skip filled fields)
+     * Apply translations only to empty fields (skip all filled fields)
      */
     public function confirmTranslationOnlyEmpty(): void
     {
         $this->showTranslationConfirmation = false;
-        $this->applyTranslations(replaceAll: false);
+        $targetLocale = $this->translationTargetLocale;
+        $this->applyTranslations(onlyEmpty: true);
+
+        // Switch to target locale tab after translation
+        $this->activeTranslationTab = $targetLocale;
     }
 
     /**
@@ -204,58 +323,68 @@ trait ManagesTranslations
         $this->showTranslationConfirmation = false;
         $this->pendingTranslations = [];
         $this->fieldsToOverwrite = [];
+        $this->selectedFieldsToOverwrite = [];
     }
 
     /**
      * Apply pending translations to target locale fields
      *
-     * @param  bool  $replaceAll  If true, replace all fields (even filled ones). If false, only fill empty fields.
+     * @param  bool  $onlyEmpty  Si true, ne traduit QUE les champs vides (ignore la sélection)
+     *
+     * Logique normale ($onlyEmpty = false) :
+     * - Tous les champs VIDES sont automatiquement traduits
+     * - Les champs REMPLIS ne sont traduits QUE s'ils sont dans $selectedFieldsToOverwrite
+     *
+     * Logique "champs vides uniquement" ($onlyEmpty = true) :
+     * - SEULEMENT les champs VIDES sont traduits
+     * - Les champs REMPLIS sont ignorés (même s'ils sont sélectionnés)
      */
-    private function applyTranslations(bool $replaceAll = true): void
+    private function applyTranslations(bool $onlyEmpty = false): void
     {
         $targetLocale = $this->translationTargetLocale;
         $successCount = 0;
-        $skippedCount = 0;
         $failedFields = [];
 
         foreach ($this->pendingTranslations as $field => $translation) {
-            // Check if field should be skipped (only when replaceAll = false)
-            if (! $replaceAll) {
-                $currentValue = $this->translations[$targetLocale][$field] ?? '';
-                if (! empty(trim($currentValue))) {
-                    // Skip this field, it's already filled
-                    $skippedCount++;
+            $currentValue = $this->translations[$targetLocale][$field] ?? '';
+            $isFieldEmpty = empty(trim($currentValue));
+            $isFieldSelected = in_array($field, $this->selectedFieldsToOverwrite);
 
-                    continue;
-                }
+            // Déterminer si on doit traduire ce champ
+            $shouldTranslate = false;
+
+            if ($onlyEmpty) {
+                // Mode "champs vides uniquement" : traduire SEULEMENT les champs vides
+                $shouldTranslate = $isFieldEmpty;
+            } else {
+                // Mode normal : traduire les champs vides OU les champs sélectionnés
+                $shouldTranslate = $isFieldEmpty || $isFieldSelected;
             }
 
-            // Apply translation
-            if (! empty($translation)) {
-                $this->translations[$targetLocale][$field] = $translation;
+            if ($shouldTranslate) {
+                if (! empty($translation)) {
+                    $this->translations[$targetLocale][$field] = $translation;
 
-                // Auto-generate slug from title
-                if ($field === 'title') {
-                    $this->translations[$targetLocale]['slug'] = Str::slug($translation);
+                    // Auto-generate slug from title
+                    if ($field === 'title') {
+                        $this->translations[$targetLocale]['slug'] = Str::slug($translation);
+                    }
+
+                    $successCount++;
+                } else {
+                    $failedFields[] = $field;
                 }
-
-                $successCount++;
-            } else {
-                $failedFields[] = $field;
             }
         }
 
         // Reset pending state
         $this->pendingTranslations = [];
         $this->fieldsToOverwrite = [];
+        $this->selectedFieldsToOverwrite = [];
 
         // Show appropriate message
         if ($successCount > 0 && empty($failedFields)) {
-            $message = "{$successCount} champ(s) traduit(s) avec succès.";
-            if ($skippedCount > 0) {
-                $message .= " {$skippedCount} champ(s) rempli(s) conservé(s).";
-            }
-            session()->flash('success', $message);
+            session()->flash('success', "{$successCount} champ(s) traduit(s) avec succès.");
         } elseif ($successCount > 0 && ! empty($failedFields)) {
             $fieldsList = implode(', ', $failedFields);
             session()->flash('warning', "{$successCount} champ(s) traduit(s). Échec pour : {$fieldsList}");

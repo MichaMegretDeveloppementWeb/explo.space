@@ -111,11 +111,15 @@ class EditRequestCreateService
         ];
 
         foreach ($selectedFields as $field) {
+            $newValue = $newValues[$field] ?? null;
+
             $change = [
                 'field' => $field,
                 'field_label' => $fieldLabels[$field] ?? $field,
                 'old_value' => $this->getOldValue($field, $place),
-                'new_value' => $newValues[$field] ?? null,
+                'new_value' => $newValue,
+                'detected_language' => $this->detectFieldLanguage($field, $newValue),
+                'translated_value' => null,
                 'status' => 'pending',
             ];
 
@@ -123,6 +127,42 @@ class EditRequestCreateService
         }
 
         return $suggestedChanges;
+    }
+
+    /**
+     * Détecter la langue d'un champ spécifique
+     *
+     * @param  mixed  $value
+     */
+    private function detectFieldLanguage(string $field, $value): string
+    {
+        // Les coordonnées n'ont pas de langue
+        if ($field === 'coordinates') {
+            return 'none';
+        }
+
+        // Si la valeur est vide ou n'est pas une chaîne, retourner 'unknown'
+        if (empty($value) || ! is_string($value)) {
+            return 'unknown';
+        }
+
+        // Minimum 5 caractères pour détecter
+        if (mb_strlen($value) < 5) {
+            return 'unknown';
+        }
+
+        // Détecter via Strategy
+        try {
+            return $this->translationStrategy->detectLanguage(mb_substr($value, 0, 100));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::warning('Language detection failed for EditRequest field', [
+                'error' => $e->getMessage(),
+                'field' => $field,
+                'value_sample' => mb_substr($value, 0, 50),
+            ]);
+
+            return 'unknown';
+        }
     }
 
     /**

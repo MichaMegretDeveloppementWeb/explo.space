@@ -51,7 +51,7 @@ class PlacePreviewRepository implements PlacePreviewRepositoryInterface
                     ->select('id', 'tag_id', 'locale', 'name', 'slug');
             },
         ])
-            ->select('id', 'latitude', 'longitude')
+            ->select('id', 'latitude', 'longitude', 'is_featured')
             ->find($placeId);
 
         if (! $place) {
@@ -80,6 +80,7 @@ class PlacePreviewRepository implements PlacePreviewRepositoryInterface
             title: $translation->title,
             descriptionExcerpt: $descriptionExcerpt,
             mainPhotoUrl: $mainPhotoUrl,
+            isFeatured: $place->is_featured,
             tags: $tags
         );
     }

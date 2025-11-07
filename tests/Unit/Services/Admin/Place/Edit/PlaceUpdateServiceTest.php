@@ -699,4 +699,179 @@ class PlaceUpdateServiceTest extends TestCase
             'main_photo_id' => null,
         ];
     }
+
+    // ========================================
+    // Tests acceptation EditRequest avec applied_changes
+    // ========================================
+
+    public function test_update_saves_applied_changes_when_edit_request_accepted(): void
+    {
+        // Arrange
+        $place = $this->createBasicPlace();
+        $editRequest = \App\Models\EditRequest::factory()->create([
+            'place_id' => $place->id,
+            'contact_email' => 'visitor@example.com',
+            'type' => 'modification',
+            'status' => 'submitted',
+        ]);
+
+        $data = $this->getBasicUpdateData();
+        $data['admin_id'] = $this->admin->id;
+        $data['edit_request_id'] = $editRequest->id;
+        $data['selected_fields'] = ['title', 'description'];
+        $data['selected_photos'] = [0, 2];
+
+        // Act
+        $updated = $this->service->update($place->id, $data);
+
+        // Assert
+        $editRequest->refresh();
+        $this->assertEquals(\App\Enums\RequestStatus::Accepted, $editRequest->status);
+        $this->assertNotNull($editRequest->applied_changes);
+        $this->assertIsArray($editRequest->applied_changes);
+        $this->assertArrayHasKey('fields', $editRequest->applied_changes);
+        $this->assertArrayHasKey('photos', $editRequest->applied_changes);
+        $this->assertEquals(['title', 'description'], $editRequest->applied_changes['fields']);
+        $this->assertEquals([0, 2], $editRequest->applied_changes['photos']);
+    }
+
+    public function test_update_saves_empty_arrays_when_no_fields_or_photos_selected(): void
+    {
+        // Arrange
+        $place = $this->createBasicPlace();
+        $editRequest = \App\Models\EditRequest::factory()->create([
+            'place_id' => $place->id,
+            'contact_email' => 'visitor@example.com',
+            'type' => 'signalement',
+            'status' => 'submitted',
+        ]);
+
+        $data = $this->getBasicUpdateData();
+        $data['admin_id'] = $this->admin->id;
+        $data['edit_request_id'] = $editRequest->id;
+        $data['selected_fields'] = [];
+        $data['selected_photos'] = [];
+
+        // Act
+        $updated = $this->service->update($place->id, $data);
+
+        // Assert
+        $editRequest->refresh();
+        $this->assertEquals(\App\Enums\RequestStatus::Accepted, $editRequest->status);
+        $this->assertNotNull($editRequest->applied_changes);
+        $this->assertIsArray($editRequest->applied_changes);
+        $this->assertEquals([], $editRequest->applied_changes['fields']);
+        $this->assertEquals([], $editRequest->applied_changes['photos']);
+    }
+
+    public function test_update_sets_processed_by_admin_and_processed_at(): void
+    {
+        // Arrange
+        $place = $this->createBasicPlace();
+        $editRequest = \App\Models\EditRequest::factory()->create([
+            'place_id' => $place->id,
+            'contact_email' => 'visitor@example.com',
+            'type' => 'modification',
+            'status' => 'submitted',
+            'processed_by_admin_id' => null,
+            'processed_at' => null,
+        ]);
+
+        $data = $this->getBasicUpdateData();
+        $data['admin_id'] = $this->admin->id;
+        $data['edit_request_id'] = $editRequest->id;
+        $data['selected_fields'] = ['title'];
+        $data['selected_photos'] = [];
+
+        // Act
+        $beforeUpdate = now();
+        $updated = $this->service->update($place->id, $data);
+        $afterUpdate = now();
+
+        // Assert
+        $editRequest->refresh();
+        $this->assertEquals($this->admin->id, $editRequest->processed_by_admin_id);
+        $this->assertNotNull($editRequest->processed_at);
+        $this->assertGreaterThanOrEqual($beforeUpdate->timestamp, $editRequest->processed_at->timestamp);
+        $this->assertLessThanOrEqual($afterUpdate->timestamp, $editRequest->processed_at->timestamp);
+    }
+
+    public function test_update_does_not_modify_edit_request_if_not_provided(): void
+    {
+        // Arrange
+        $place = $this->createBasicPlace();
+        $editRequest = \App\Models\EditRequest::factory()->create([
+            'place_id' => $place->id,
+            'contact_email' => 'visitor@example.com',
+            'type' => 'modification',
+            'status' => 'submitted',
+        ]);
+
+        $data = $this->getBasicUpdateData();
+        // No edit_request_id provided
+
+        // Act
+        $updated = $this->service->update($place->id, $data);
+
+        // Assert
+        $editRequest->refresh();
+        $this->assertEquals(\App\Enums\RequestStatus::Submitted, $editRequest->status);
+        $this->assertNull($editRequest->applied_changes);
+        $this->assertNull($editRequest->processed_by_admin_id);
+        $this->assertNull($editRequest->processed_at);
+    }
+
+    public function test_update_handles_selected_fields_without_selected_photos(): void
+    {
+        // Arrange
+        $place = $this->createBasicPlace();
+        $editRequest = \App\Models\EditRequest::factory()->create([
+            'place_id' => $place->id,
+            'contact_email' => 'visitor@example.com',
+            'type' => 'modification',
+            'status' => 'submitted',
+        ]);
+
+        $data = $this->getBasicUpdateData();
+        $data['admin_id'] = $this->admin->id;
+        $data['edit_request_id'] = $editRequest->id;
+        $data['selected_fields'] = ['title', 'description', 'practical_info'];
+        // No selected_photos key
+
+        // Act
+        $updated = $this->service->update($place->id, $data);
+
+        // Assert
+        $editRequest->refresh();
+        $this->assertEquals(\App\Enums\RequestStatus::Accepted, $editRequest->status);
+        $this->assertEquals(['title', 'description', 'practical_info'], $editRequest->applied_changes['fields']);
+        $this->assertEquals([], $editRequest->applied_changes['photos']);
+    }
+
+    public function test_update_handles_selected_photos_without_selected_fields(): void
+    {
+        // Arrange
+        $place = $this->createBasicPlace();
+        $editRequest = \App\Models\EditRequest::factory()->create([
+            'place_id' => $place->id,
+            'contact_email' => 'visitor@example.com',
+            'type' => 'photo_suggestion',
+            'status' => 'submitted',
+        ]);
+
+        $data = $this->getBasicUpdateData();
+        $data['admin_id'] = $this->admin->id;
+        $data['edit_request_id'] = $editRequest->id;
+        $data['selected_photos'] = [1, 3, 5];
+        // No selected_fields key
+
+        // Act
+        $updated = $this->service->update($place->id, $data);
+
+        // Assert
+        $editRequest->refresh();
+        $this->assertEquals(\App\Enums\RequestStatus::Accepted, $editRequest->status);
+        $this->assertEquals([], $editRequest->applied_changes['fields']);
+        $this->assertEquals([1, 3, 5], $editRequest->applied_changes['photos']);
+    }
 }

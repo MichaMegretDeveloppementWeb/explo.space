@@ -35,12 +35,12 @@ class PlaceExplorationRepository implements PlaceExplorationRepositoryInterface
      *
      * @param  array<string, mixed>  $filters
      * @param  array<string, float|null>|null  $boundingBox
-     * @return Collection<int, array{id: int, latitude: float, longitude: float}>
+     * @return Collection<int, array{id: int, latitude: float, longitude: float, is_featured: bool}>
      */
     public function getPlacesCoordinates(array $filters, ?array $boundingBox = null): Collection
     {
 
-        $query = Place::select('id', 'latitude', 'longitude');
+        $query = Place::select('id', 'latitude', 'longitude', 'is_featured');
 
         // Apply all filters (mode, tags, proximity, etc.)
         PlaceQueryBuilder::applyFilters($query, $filters);
@@ -59,6 +59,7 @@ class PlaceExplorationRepository implements PlaceExplorationRepositoryInterface
             'id' => $place->id,
             'latitude' => (float) $place->latitude,
             'longitude' => (float) $place->longitude,
+            'is_featured' => (bool) $place->is_featured,
         ]);
     }
 
@@ -107,7 +108,7 @@ class PlaceExplorationRepository implements PlaceExplorationRepositoryInterface
 
         // Charger les tags selon le mode d'exploration
         if ($mode === 'worldwide') {
-            // Mode worldwide : charger UNIQUEMENT les tags sélectionnés
+            // Mode worldwide : charger UNIQUEMENT les tags sélectionnés si filtres présents
             if ($hasTagFilters) {
                 $query->with([
                     'tags' => function ($q) use ($filters, $locale) {
@@ -116,6 +117,13 @@ class PlaceExplorationRepository implements PlaceExplorationRepositoryInterface
                                 ->where('locale', $locale);
                         });
                     },
+                    'tags.translations' => function ($q) use ($locale) {
+                        $q->where('locale', $locale);
+                    },
+                ]);
+            } else {
+                // Pas de filtres tags (cas featured seul) : charger TOUS les tags pour éviter N+1
+                $query->with([
                     'tags.translations' => function ($q) use ($locale) {
                         $q->where('locale', $locale);
                     },
@@ -154,6 +162,7 @@ class PlaceExplorationRepository implements PlaceExplorationRepositoryInterface
                 'latitude' => (float) $place->latitude,
                 'longitude' => (float) $place->longitude,
                 'address' => $place->address,
+                'is_featured' => (bool) $place->is_featured,
                 'distance' => isset($place->distance) ? (float) $place->distance : null,
 
                 // Translation (première de la locale)

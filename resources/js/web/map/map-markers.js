@@ -24,6 +24,61 @@ export class PlaceMapMarkers {
         this.regularMarkerGroup = null;
         this.options = MAP_CONFIG;
         this.useClusteringCurrently = false;
+
+        // Initialiser les définitions SVG globales
+        this.initSvgDefs();
+    }
+
+    /**
+     * Initialise les définitions SVG globales (filtres, dégradés, etc.)
+     * Une seule fois pour éviter la duplication
+     */
+    initSvgDefs() {
+        // Vérifier si les defs existent déjà
+        if (document.getElementById('explo-map-svg-defs')) {
+            return;
+        }
+
+        // Créer un élément SVG caché avec toutes les définitions
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('id', 'explo-map-svg-defs');
+        svg.style.position = 'absolute';
+        svg.style.width = '0';
+        svg.style.height = '0';
+        svg.style.visibility = 'hidden';
+
+        svg.innerHTML = `
+            <defs>
+                <!-- Filtre d'ombre portée pour marqueurs featured -->
+                <filter id="marker-shadow-featured" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+                    <feOffset dx="0" dy="1" result="offsetblur"/>
+                    <feComponentTransfer>
+                        <feFuncA type="linear" slope="0.3"/>
+                    </feComponentTransfer>
+                    <feMerge>
+                        <feMergeNode/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+
+                <!-- Filtre d'ombre portée pour marqueurs normaux -->
+                <filter id="marker-shadow-normal" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+                    <feOffset dx="0" dy="1" result="offsetblur"/>
+                    <feComponentTransfer>
+                        <feFuncA type="linear" slope="0.3"/>
+                    </feComponentTransfer>
+                    <feMerge>
+                        <feMergeNode/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+        `;
+
+        // Ajouter au body
+        document.body.appendChild(svg);
     }
 
     /**
@@ -65,7 +120,7 @@ export class PlaceMapMarkers {
             spiderfyOnMaxZoom: this.options.clustering.spiderfyOnMaxZoom,
             showCoverageOnHover: this.options.clustering.showCoverageOnHover,
             zoomToBoundsOnClick: this.options.clustering.zoomToBoundsOnClick,
-            iconCreateFunction: this.options.clustering.iconCreateFunction,
+            iconCreateFunction: (cluster) => this.createClusterIcon(cluster),
         });
 
         // Ajouter les marqueurs au groupe
@@ -105,9 +160,194 @@ export class PlaceMapMarkers {
     }
 
     /**
+     * Crée une icône pour un cluster
+     *
+     * @param {L.MarkerCluster} cluster
+     * @returns {L.DivIcon}
+     */
+    createClusterIcon(cluster) {
+        const count = cluster.getChildCount();
+        let size = 'small';
+        let circleSize = 40;
+        let fontSize = '13px';
+        let innerSize = 34;
+
+        if (count > 100) {
+            size = 'large';
+            circleSize = 56;
+            fontSize = '17px';
+            innerSize = 48;
+        } else if (count > 10) {
+            size = 'medium';
+            circleSize = 48;
+            fontSize = '15px';
+            innerSize = 40;
+        }
+
+        // Vérifier si le cluster contient au moins un lieu emblématique
+        const hasFeatured = cluster.getAllChildMarkers().some(marker =>
+            marker.placeData && marker.placeData.is_featured
+        );
+
+        // Couleurs selon le type
+        const mainColor = hasFeatured ? '#9333ea' : '#3b82f6';
+        const lightColor = hasFeatured ? '#a855f7' : '#60a5fa';
+        const darkColor = hasFeatured ? '#7c3aed' : '#2563eb';
+
+        // Badge étoile élégant si featured
+        const starBadge = hasFeatured ? `
+            <div style="
+                position: absolute;
+                top: -3px;
+                right: -3px;
+                background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+                border: 2.5px solid white;
+                border-radius: 50%;
+                width: 22px;
+                height: 22px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+            ">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+            </div>
+        ` : '';
+
+        const html = `
+            <div style="position: relative; width: ${circleSize}px; height: ${circleSize}px;">
+                <!-- Cercle extérieur avec dégradé -->
+                <div style="
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(135deg, ${lightColor} 0%, ${mainColor} 100%);
+                    border-radius: 50%;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 0 0 3px rgba(255, 255, 255, 0.3);
+                "></div>
+
+                <!-- Cercle intérieur avec le nombre -->
+                <div style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: ${innerSize}px;
+                    height: ${innerSize}px;
+                    background: ${darkColor};
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-weight: 700;
+                    font-size: ${fontSize};
+                    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+                ">
+                    ${count}
+                </div>
+
+                ${starBadge}
+            </div>
+        `;
+
+        return L.divIcon({
+            html: html,
+            className: 'marker-cluster-custom',
+            iconSize: L.point(circleSize, circleSize),
+        });
+    }
+
+    /**
+     * Récupère l'icône appropriée selon le type de lieu
+     *
+     * @param {Object} place - { id, latitude, longitude, is_featured }
+     * @returns {L.Icon}
+     */
+    getMarkerIcon(place) {
+        // Marqueur violet avec étoile pour les lieux emblématiques
+        if (place.is_featured) {
+            return this.createFeaturedIcon(27, 42);
+        }
+
+        // Marqueur bleu avec point blanc pour les lieux normaux
+        return this.createNormalIcon(27, 42);
+    }
+
+    /**
+     * Crée une icône bleue avec point blanc pour les lieux normaux
+     *
+     * @param {number} width - Largeur de l'icône
+     * @param {number} height - Hauteur de l'icône
+     * @returns {L.DivIcon}
+     */
+    createNormalIcon(width, height) {
+        const svg = `
+            <svg width="${width}" height="${height}" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
+                <!-- Pin bleu -->
+                <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                      fill="#3b82f6"
+                      stroke="#ffffff00"
+                      stroke-width="1.5"
+                      filter="url(#marker-shadow-normal)"/>
+
+                <!-- Point blanc au centre -->
+                <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+            </svg>
+        `;
+
+        return L.divIcon({
+            html: svg,
+            className: 'normal-marker-icon',
+            iconSize: [width, height],
+            iconAnchor: [width/2, height],
+            popupAnchor: [0, -height + 5],
+        });
+    }
+
+    /**
+     * Crée une icône violette avec étoile blanche pour les lieux emblématiques
+     *
+     * @param {number} width - Largeur de l'icône
+     * @param {number} height - Hauteur de l'icône
+     * @returns {L.DivIcon}
+     */
+    createFeaturedIcon(width, height) {
+        const svg = `
+            <svg width="${width}" height="${height}" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
+                <!-- Pin violet -->
+                <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                      fill="#9333ea"
+                      stroke="#ffffff00"
+                      stroke-width="1.5"
+                      filter="url(#marker-shadow-featured)"/>
+
+                <!-- Cercle blanc au centre pour contraste -->
+                <circle cx="12.5" cy="12.5" r="7" fill="white"/>
+
+                <!-- Étoile violette au centre -->
+                <path d="M12.5 7.5 L13.8 11.2 L17.8 11.2 L14.5 13.5 L15.8 17.2 L12.5 14.9 L9.2 17.2 L10.5 13.5 L7.2 11.2 L11.2 11.2 Z"
+                      fill="#9333ea"
+                      stroke="#6b21a8"
+                      stroke-width="0.5"/>
+            </svg>
+        `;
+
+        return L.divIcon({
+            html: svg,
+            className: 'featured-marker-icon',
+            iconSize: [width, height],
+            iconAnchor: [width/2, height],
+            popupAnchor: [0, -height + 5],
+        });
+    }
+
+    /**
      * Crée un marqueur individuel
      *
-     * @param {Object} place - { id, latitude, longitude, title }
+     * @param {Object} place - { id, latitude, longitude, is_featured }
      * @returns {L.Marker|null}
      */
     createMarker(place) {
@@ -116,17 +356,9 @@ export class PlaceMapMarkers {
             return null;
         }
 
-        // Utiliser l'icône Leaflet par défaut
+        // Créer le marqueur avec l'icône appropriée
         const marker = L.marker([place.latitude, place.longitude], {
-            icon: L.icon({
-                iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-                iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41],
-            }),
+            icon: this.getMarkerIcon(place),
         });
 
         // Stocker les données du lieu dans le marqueur

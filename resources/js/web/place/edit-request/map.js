@@ -30,9 +30,16 @@ const TILE_CONFIG = {
  * @param {HTMLElement} container - Conteneur de la carte
  */
 export function initEditRequestMap(container) {
-    // Récupérer les coordonnées initiales depuis les attributs data
-    const initialLat = parseFloat(container.dataset.lat);
-    const initialLng = parseFloat(container.dataset.lng);
+    // Récupérer l'élément de données (séparé du container avec wire:ignore)
+    const dataElement = document.getElementById('edit-request-map-data');
+    if (!dataElement) {
+        console.error('Map data element not found');
+        return;
+    }
+
+    // Récupérer les coordonnées initiales depuis l'élément de données
+    const initialLat = parseFloat(dataElement.dataset.lat);
+    const initialLng = parseFloat(dataElement.dataset.lng);
 
     // Vérifier que les coordonnées sont valides
     if (isNaN(initialLat) || isNaN(initialLng)) {
@@ -69,8 +76,8 @@ export function initEditRequestMap(container) {
         updateLivewireCoordinates(position.lat, position.lng);
     });
 
-    // Écouter les changements depuis les inputs Livewire
-    listenToLivewireChanges(map, marker, container);
+    // Écouter les changements depuis les inputs Livewire (observer l'élément de données)
+    listenToLivewireChanges(map, marker, dataElement);
 
     // Invalider la taille au cas où le conteneur change de dimension
     setTimeout(() => {
@@ -113,7 +120,7 @@ function addTileLayer(map) {
 }
 
 /**
- * Mettre à jour les coordonnées dans Livewire
+ * Mettre à jour les coordonnées dans Livewire via événement
  * @param {number} lat - Latitude
  * @param {number} lng - Longitude
  */
@@ -122,46 +129,65 @@ function updateLivewireCoordinates(lat, lng) {
     const roundedLat = Math.round(lat * 1000000) / 1000000;
     const roundedLng = Math.round(lng * 1000000) / 1000000;
 
-    // Utiliser Livewire pour mettre à jour les valeurs
-    if (window.Livewire) {
-        // Trouver le composant Livewire parent
-        const component = window.Livewire.find(
-            document.querySelector('[wire\\:id]').getAttribute('wire:id')
-        );
-
-        if (component) {
-            component.set('new_values.coordinates.lat', roundedLat);
-            component.set('new_values.coordinates.lng', roundedLng);
-        }
-    }
+    // Dispatch événement Livewire pour appeler la méthode du composant
+    window.Livewire.dispatch('update-coordinates-from-map', {
+        lat: roundedLat,
+        lng: roundedLng
+    });
 }
 
 /**
  * Écouter les changements depuis les inputs Livewire et mettre à jour le marqueur
  * @param {L.Map} map - Instance de la carte
  * @param {L.Marker} marker - Marqueur draggable
- * @param {HTMLElement} container - Conteneur de la carte
+ * @param {HTMLElement} dataElement - Élément de données (mis à jour par Livewire)
  */
-function listenToLivewireChanges(map, marker, container) {
-    // Créer un MutationObserver pour détecter les changements d'attributs data
+function listenToLivewireChanges(map, marker, dataElement) {
+    // Écouter les événements Livewire hooks pour détecter les mises à jour du composant
+    document.addEventListener('livewire:update', (event) => {
+        // Après chaque mise à jour Livewire, vérifier si les coordonnées ont changé
+        const newLat = parseFloat(dataElement.dataset.lat);
+        const newLng = parseFloat(dataElement.dataset.lng);
+
+        if (!isNaN(newLat) && !isNaN(newLng)) {
+            const currentPosition = marker.getLatLng();
+
+            // Mettre à jour uniquement si les coordonnées ont réellement changé
+            // (pour éviter boucle infinie avec drag marker)
+            if (Math.abs(currentPosition.lat - newLat) > 0.000001 ||
+                Math.abs(currentPosition.lng - newLng) > 0.000001) {
+                const newPosition = L.latLng(newLat, newLng);
+                marker.setLatLng(newPosition);
+                map.panTo(newPosition);
+            }
+        }
+    });
+
+    // Aussi utiliser MutationObserver en backup pour les navigateurs qui ne supportent pas bien Livewire hooks
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             if (mutation.type === 'attributes' &&
                 (mutation.attributeName === 'data-lat' || mutation.attributeName === 'data-lng')) {
 
-                const newLat = parseFloat(container.dataset.lat);
-                const newLng = parseFloat(container.dataset.lng);
+                const newLat = parseFloat(dataElement.dataset.lat);
+                const newLng = parseFloat(dataElement.dataset.lng);
 
                 if (!isNaN(newLat) && !isNaN(newLng)) {
-                    const newPosition = L.latLng(newLat, newLng);
-                    marker.setLatLng(newPosition);
-                    map.panTo(newPosition);
+                    const currentPosition = marker.getLatLng();
+
+                    // Mettre à jour uniquement si les coordonnées ont réellement changé
+                    if (Math.abs(currentPosition.lat - newLat) > 0.000001 ||
+                        Math.abs(currentPosition.lng - newLng) > 0.000001) {
+                        const newPosition = L.latLng(newLat, newLng);
+                        marker.setLatLng(newPosition);
+                        map.panTo(newPosition);
+                    }
                 }
             }
         });
     });
 
-    observer.observe(container, {
+    observer.observe(dataElement, {
         attributes: true,
         attributeFilter: ['data-lat', 'data-lng'],
     });

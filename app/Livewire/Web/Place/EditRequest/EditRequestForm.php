@@ -5,6 +5,7 @@ namespace App\Livewire\Web\Place\EditRequest;
 use App\DTO\Web\Place\PlaceDetailDTO;
 use App\Http\Requests\Web\Place\EditRequestStoreRequest;
 use App\Services\Web\Place\EditRequest\EditRequestCreateService;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class EditRequestForm extends Component
@@ -58,6 +59,16 @@ class EditRequestForm extends Component
     public function render(): \Illuminate\View\View
     {
         return view('livewire.web.place.edit-request.edit-request-form');
+    }
+
+    /**
+     * Mettre à jour les coordonnées depuis la carte (marker drag)
+     */
+    #[On('update-coordinates-from-map')]
+    public function updateCoordinatesFromMap(float $lat, float $lng): void
+    {
+        $this->new_values['coordinates']['lat'] = round($lat, 6);
+        $this->new_values['coordinates']['lng'] = round($lng, 6);
     }
 
     /**

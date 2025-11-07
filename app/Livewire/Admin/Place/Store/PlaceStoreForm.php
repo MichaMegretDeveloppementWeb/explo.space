@@ -33,6 +33,28 @@ class PlaceStoreForm extends Component
 
     public ?int $placeRequestId = null;
 
+    public ?int $editRequestId = null;
+
+    // EditRequest-specific properties
+    /** @var array<int, string> */
+    public array $highlightedFields = []; // Champs sélectionnés à mettre en évidence
+
+    /** @var array<string, mixed> */
+    public array $oldValues = []; // Valeurs originales pour comparaison visuelle
+
+    public ?float $originalLatitude = null; // Pour double marker GPS
+
+    public ?float $originalLongitude = null; // Pour double marker GPS
+
+    /** @var array<int, array{id: int, url: string, medium_url: string, source: string}> */
+    public array $editRequestPhotos = []; // Photos from EditRequest (edit mode only)
+
+    /** @var array<int, string> */
+    public array $selectedFields = []; // Champs sélectionnés par admin depuis EditRequestDetail
+
+    /** @var array<int, int> */
+    public array $selectedPhotos = []; // Photos sélectionnées par admin depuis EditRequestDetail
+
     // Active translation tab (synchronized with Alpine via @entangle)
     public string $activeTranslationTab = 'fr';
 
@@ -55,10 +77,15 @@ class PlaceStoreForm extends Component
 
     public bool $showTranslationConfirmation = false;
 
+    public string $translationSourceLocale = '';
+
     public string $translationTargetLocale = '';
 
     /** @var array<int, string> */
     public array $fieldsToOverwrite = [];
+
+    /** @var array<int, string> */
+    public array $selectedFieldsToOverwrite = [];
 
     public bool $hasEmptyFieldsToTranslate = false;
 
@@ -72,6 +99,13 @@ class PlaceStoreForm extends Component
     public bool $isTranslatedFromSource = false;
 
     public bool $showSpecialTranslateButton = false;
+
+    // EditRequest per-field language detection
+    /** @var array<string, string> Map field -> detected_language (ex: ['title' => 'en', 'description' => 'fr']) */
+    public array $fieldLanguages = [];
+
+    /** @var array<string, string> Map field -> original language for translated fields (ex: ['practical_info' => 'pl']) */
+    public array $fieldTranslatedFrom = [];
 
     // Relations
     /** @var array<int, int> */
@@ -121,11 +155,13 @@ class PlaceStoreForm extends Component
     public function mount(
         ?int $placeId,
         ?int $placeRequestId,
+        ?int $editRequestId,
         CategorySelectionRepositoryInterface $categoryRepository,
         TagSelectionRepositoryInterface $tagRepository
     ): void {
         $this->placeId = $placeId;
         $this->placeRequestId = $placeRequestId;
+        $this->editRequestId = $editRequestId;
 
         // Load available options with all translations
         $this->availableCategories = $categoryRepository->getAll();
@@ -147,6 +183,15 @@ class PlaceStoreForm extends Component
             // Edit mode
             $this->mode = 'edit';
             $this->loadPlaceForEdit($placeId);
+
+            // Apply EditRequest overlay if present
+            if ($editRequestId) {
+                // Récupérer selectedFields et selectedPhotos depuis la query string
+                $selectedFields = request()->query('selected_fields', []);
+                $selectedPhotos = request()->query('selected_photos', []);
+
+                $this->loadFromEditRequest($editRequestId, $selectedFields, $selectedPhotos);
+            }
         } elseif ($placeRequestId) {
             // Create from PlaceRequest
             $this->loadFromPlaceRequest($placeRequestId);

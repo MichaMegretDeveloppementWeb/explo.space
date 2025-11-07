@@ -27,6 +27,7 @@ class PlaceExplorationFiltersDTO
      * @param  int  $radius  Rayon de recherche en mètres (200km à 1500km)
      * @param  string|null  $address  Adresse textuelle
      * @param  array<int, string>  $tags  Slugs des tags sélectionnés
+     * @param  bool  $featured  Afficher uniquement les lieux emblématiques
      * @param  int  $page  Numéro de page pour pagination
      */
     public function __construct(
@@ -36,6 +37,7 @@ class PlaceExplorationFiltersDTO
         public readonly int $radius,
         public readonly ?string $address,
         public readonly array $tags,
+        public readonly bool $featured = false,
         public readonly int $page = 1,
     ) {}
 
@@ -55,6 +57,7 @@ class PlaceExplorationFiltersDTO
             radius: isset($urlParams['radius']) ? (int) $urlParams['radius'] : PlaceSearchConfig::RADIUS_DEFAULT,
             address: $urlParams['address'] ?? null,
             tags: self::parseTags($urlParams['tags'] ?? []),
+            featured: isset($urlParams['featured']) ? filter_var($urlParams['featured'], FILTER_VALIDATE_BOOLEAN) : false,
             page: isset($urlParams['page']) ? (int) $urlParams['page'] : PlaceSearchConfig::PAGE_DEFAULT,
         );
     }
@@ -75,6 +78,7 @@ class PlaceExplorationFiltersDTO
             radius: $componentData['radius'] ?? PlaceSearchConfig::RADIUS_DEFAULT,
             address: $componentData['address'] ?? null,
             tags: self::parseTags($componentData['tags'] ?? []),
+            featured: $componentData['featured'] ?? false,
             page: $componentData['page'] ?? PlaceSearchConfig::PAGE_DEFAULT,
         );
     }
@@ -95,6 +99,7 @@ class PlaceExplorationFiltersDTO
             'radius' => $this->radius,
             'address' => $this->address,
             'tags' => $this->tags,
+            'featured' => $this->featured,
             'page' => $this->page,
         ];
     }
@@ -115,6 +120,7 @@ class PlaceExplorationFiltersDTO
             'radius' => $this->radius,
             'address' => $this->address,
             'tags' => $this->tags,
+            'featured' => $this->featured,
             'page' => $this->page,
         ];
     }

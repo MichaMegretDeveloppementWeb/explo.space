@@ -18,89 +18,19 @@
    Clusters de marqueurs (Leaflet.markercluster)
    ======================================== */
 
-/* Styles de base des clusters */
-.marker-cluster {
-    width: 40px;
-    height: 40px;
-    background-color: rgba(59, 130, 246, 0.6); /* blue-500 avec transparence */
-    border-radius: 50%;
-    text-align: center;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Reset des styles par défaut de Leaflet.markercluster */
+.marker-cluster-custom {
+    background: transparent !important;
 }
 
-.marker-cluster div {
-    width: 32px;
-    height: 32px;
-    margin-left: 0;
-    margin-top: 0;
-    text-align: center;
-    border-radius: 50%;
-    background-color: rgba(37, 99, 235, 0.8); /* blue-600 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.marker-cluster-custom * {
+    margin: 0;
+    padding: 0;
 }
 
-.marker-cluster span {
-    color: white;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-/* Clusters petits (< 10 marqueurs) */
-.marker-cluster-small {
-    width: 40px !important;
-    height: 40px !important;
-    background-color: rgba(59, 130, 246, 0.5);
-}
-
-.marker-cluster-small div {
-    width: 32px;
-    height: 32px;
-    background-color: rgba(37, 99, 235, 0.7);
-}
-
-/* Clusters moyens (10-100 marqueurs) */
-.marker-cluster-medium {
-    width: 44px !important;
-    height: 44px !important;
-    background-color: rgba(59, 130, 246, 0.6);
-}
-
-.marker-cluster-medium div {
-    width: 36px;
-    height: 36px;
-    background-color: rgba(37, 99, 235, 0.8);
-}
-
-.marker-cluster-medium span {
-    font-size: 14px;
-}
-
-/* Clusters grands (> 100 marqueurs) */
-.marker-cluster-large {
-    width: 48px !important;
-    height: 48px !important;
-    background-color: rgba(59, 130, 246, 0.7);
-}
-
-.marker-cluster-large div {
-    width: 40px;
-    height: 40px;
-    background-color: rgba(29, 78, 216, 0.9); /* blue-700 */
-}
-
-.marker-cluster-large span {
-    font-size: 15px;
-    font-weight: 700;
-}
-
-/* Animation au hover */
-.marker-cluster:hover {
-    transform: scale(1.1);
+/* Animation au hover pour les clusters personnalisés */
+.marker-cluster-custom:hover {
+    transform: scale(1.05);
     transition: transform 0.2s ease;
 }
 
@@ -164,21 +94,36 @@
 }
 
 /* ========================================
-   Highlight d'un cluster
+   Highlight d'un cluster - Halo pulsant
    ======================================== */
 
 .cluster-highlighted {
-    animation: clusterPulse 1.5s ease-in-out infinite;
+    position: relative;
 }
 
-@keyframes clusterPulse {
-    0%, 100% {
-        filter: brightness(1);
-        box-shadow: 0 0 0 rgba(59, 130, 246, 0);
+.cluster-highlighted::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.8);
+    animation: clusterHaloPulse 1.25s ease-out infinite;
+    pointer-events: none;
+}
+
+@keyframes clusterHaloPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.8);
     }
     50% {
-        filter: brightness(1.2);
-        box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 0 18px rgba(59, 130, 246, 0);
     }
 }
 
@@ -231,10 +176,6 @@
    ======================================== */
 
 @media (max-width: 768px) {
-
-    .marker-cluster span {
-        font-size: 12px;
-    }
 
     /* Contrôles de zoom plus petits */
     .leaflet-control-zoom a {
@@ -307,11 +248,35 @@
 }
 
 /* Rendre les clusters accessibles au clavier */
-.marker-cluster {
+.marker-cluster-custom {
     cursor: pointer;
 }
 
-.marker-cluster:focus {
+.marker-cluster-custom:focus {
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
+}
+
+/* Focus pour les marqueurs featured */
+.featured-marker-icon:focus {
+    outline: 2px solid #9333ea;
+    outline-offset: 2px;
+}
+
+/* Focus pour les marqueurs normaux */
+.normal-marker-icon:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Transition smooth pour tous les marqueurs */
+.featured-marker-icon,
+.normal-marker-icon {
+    transition: transform 0.2s ease;
+}
+
+/* Effet hover pour tous les marqueurs */
+.featured-marker-icon:hover,
+.normal-marker-icon:hover {
+    transform: scale(1.05);
 }

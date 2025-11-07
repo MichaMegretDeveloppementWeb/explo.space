@@ -18,6 +18,7 @@ class PlaceDetailDTOTest extends TestCase
             latitude: 28.5728,
             longitude: -80.6490,
             address: 'Kennedy Space Center, FL 32899, USA',
+            isFeatured: true,
             tags: [['name' => 'NASA', 'slug' => 'nasa', 'color' => '#FF0000']],
             photos: [['url' => 'https://example.com/photo.jpg', 'medium_url' => 'https://example.com/photo-medium.jpg']],
             mainPhotoUrl: 'https://example.com/photo.jpg',
@@ -33,6 +34,7 @@ class PlaceDetailDTOTest extends TestCase
         $this->assertEquals(28.5728, $dto->latitude);
         $this->assertEquals(-80.6490, $dto->longitude);
         $this->assertEquals('Kennedy Space Center, FL 32899, USA', $dto->address);
+        $this->assertTrue($dto->isFeatured);
         $this->assertCount(1, $dto->tags);
         $this->assertCount(1, $dto->photos);
         $this->assertEquals('https://example.com/photo.jpg', $dto->mainPhotoUrl);
@@ -51,6 +53,7 @@ class PlaceDetailDTOTest extends TestCase
             latitude: 0.0,
             longitude: 0.0,
             address: 'Test address',
+            isFeatured: false,
             tags: [],
             photos: [],
             mainPhotoUrl: null,
@@ -62,6 +65,7 @@ class PlaceDetailDTOTest extends TestCase
         $this->assertNull($dto->mainPhotoUrl);
         $this->assertEmpty($dto->tags);
         $this->assertEmpty($dto->photos);
+        $this->assertFalse($dto->isFeatured);
     }
 
     public function test_dto_properties_are_readonly(): void
@@ -75,6 +79,7 @@ class PlaceDetailDTOTest extends TestCase
             latitude: 0.0,
             longitude: 0.0,
             address: 'Test',
+            isFeatured: false,
             tags: [],
             photos: [],
             mainPhotoUrl: null,
@@ -97,6 +102,7 @@ class PlaceDetailDTOTest extends TestCase
             latitude: 0.0,
             longitude: 0.0,
             address: 'Test',
+            isFeatured: false,
             tags: [
                 ['name' => 'NASA', 'slug' => 'nasa', 'color' => '#FF0000'],
                 ['name' => 'SpaceX', 'slug' => 'spacex', 'color' => '#0000FF'],
@@ -124,6 +130,7 @@ class PlaceDetailDTOTest extends TestCase
             latitude: 0.0,
             longitude: 0.0,
             address: 'Test',
+            isFeatured: false,
             tags: [],
             photos: [
                 ['url' => 'https://example.com/1.jpg', 'medium_url' => 'https://example.com/1-medium.jpg'],
@@ -150,6 +157,7 @@ class PlaceDetailDTOTest extends TestCase
             latitude: 28.5728,
             longitude: -80.6490,
             address: 'Test',
+            isFeatured: false,
             tags: [],
             photos: [],
             mainPhotoUrl: null,
@@ -172,6 +180,7 @@ class PlaceDetailDTOTest extends TestCase
             latitude: 0.0,
             longitude: 0.0,
             address: 'Test',
+            isFeatured: false,
             tags: [],
             photos: [],
             mainPhotoUrl: null,

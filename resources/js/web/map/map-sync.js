@@ -130,27 +130,77 @@ export class PlaceMapSync {
         this.originalIcon = marker.getIcon();
         this.highlightedMarker = marker;
 
-        // Créer une icône agrandie pour le highlight
-        const highlightIcon = L.icon({
-            iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-            iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-            shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-            iconSize: [32, 52], // Plus grand que l'original (25, 41)
-            iconAnchor: [16, 52],
-            popupAnchor: [1, -44],
-            shadowSize: [52, 52],
-        });
+        // Vérifier si c'est un lieu emblématique (via placeData stocké)
+        const isFeatured = marker.placeData && marker.placeData.is_featured;
+
+        let highlightIcon;
+
+        if (isFeatured) {
+            // Créer une version agrandie de l'icône featured
+            const svg = `
+                <svg width="32" height="52" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Pin violet -->
+                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                          fill="#9333ea"
+                          stroke="#ffffff00"
+                          stroke-width="1.5"
+                          filter="url(#marker-shadow-featured)"/>
+
+                    <!-- Cercle blanc au centre pour contraste -->
+                    <circle cx="12.5" cy="12.5" r="7" fill="white"/>
+
+                    <!-- Étoile violette au centre -->
+                    <path d="M12.5 7.5 L13.8 11.2 L17.8 11.2 L14.5 13.5 L15.8 17.2 L12.5 14.9 L9.2 17.2 L10.5 13.5 L7.2 11.2 L11.2 11.2 Z"
+                          fill="#9333ea"
+                          stroke="#6b21a8"
+                          stroke-width="0.5"/>
+                </svg>
+            `;
+
+            highlightIcon = L.divIcon({
+                html: svg,
+                className: 'featured-marker-icon highlighted',
+                iconSize: [32, 52],
+                iconAnchor: [16, 52],
+                popupAnchor: [0, -47],
+            });
+        } else {
+            // Créer une version agrandie de l'icône normale (bleue)
+            const svg = `
+                <svg width="32" height="52" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Pin bleu -->
+                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                          fill="#3b82f6"
+                          stroke="#ffffff00"
+                          stroke-width="1.5"
+                          filter="url(#marker-shadow-normal)"/>
+
+                    <!-- Point blanc au centre -->
+                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                </svg>
+            `;
+
+            highlightIcon = L.divIcon({
+                html: svg,
+                className: 'normal-marker-icon highlighted',
+                iconSize: [32, 52],
+                iconAnchor: [16, 52],
+                popupAnchor: [0, -47],
+            });
+        }
 
         marker.setIcon(highlightIcon);
 
         // Faire "rebondir" légèrement le marqueur avec setZIndexOffset
         marker.setZIndexOffset(1000);
 
-        // Ajouter une surbrillance visuelle (outline + shadow)
+        // Ajouter une surbrillance visuelle subtile
         const markerIcon = marker._icon;
         if (markerIcon) {
             markerIcon.classList.add('marker-highlighted');
-            markerIcon.style.filter = 'drop-shadow(0 0 10px rgba(59, 130, 246, 1))';
+            // Utiliser une ombre portée plus nette et définie (moins de flou)
+            const shadowColor = isFeatured ? 'rgba(147, 51, 234, 0.6)' : 'rgba(59, 130, 246, 0.6)';
+            markerIcon.style.filter = `drop-shadow(0 3px 6px ${shadowColor})`;
         }
     }
 
@@ -170,12 +220,8 @@ export class PlaceMapSync {
         const clusterIcon = cluster._icon;
 
         if (clusterIcon) {
-            // Ajouter une classe CSS pour le highlight (pulsation + shadow via CSS)
+            // Ajouter une classe CSS pour l'animation de halo pulsant
             clusterIcon.classList.add('cluster-highlighted');
-
-            // Ajouter un outline pour renforcer le highlight visuel
-            clusterIcon.style.outline = '3px solid rgba(59, 130, 246, 0.6)';
-            clusterIcon.style.outlineOffset = '2px';
             clusterIcon.style.zIndex = '1000';
         }
     }
@@ -207,8 +253,6 @@ export class PlaceMapSync {
             if (clusterIcon) {
                 // Retirer les effets de highlight
                 clusterIcon.classList.remove('cluster-highlighted');
-                clusterIcon.style.outline = '';
-                clusterIcon.style.outlineOffset = '';
                 clusterIcon.style.zIndex = '';
             }
 

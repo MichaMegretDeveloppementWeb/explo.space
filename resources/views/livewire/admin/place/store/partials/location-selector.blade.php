@@ -84,6 +84,8 @@
              id="admin-location-map"
              data-latitude="{{ $latitude }}"
              data-longitude="{{ $longitude }}"
+             data-original-latitude="{{ $originalLatitude }}"
+             data-original-longitude="{{ $originalLongitude }}"
              class="h-96 w-full rounded-lg border-2 border-gray-300 shadow-sm overflow-hidden"
              style="min-height: 400px;z-index: 2">
         </div>
@@ -93,6 +95,23 @@
     </div>
 
     {{-- Manual Coordinates --}}
+    @if($originalLatitude && $originalLongitude)
+        <div class="mb-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+            <div class="flex items-start gap-2">
+                <svg class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <div class="flex-1">
+                    <p class="text-xs font-medium text-amber-800">Anciennes coordonnées :</p>
+                    <p class="text-sm text-amber-700 mt-1">
+                        Latitude: {{ number_format($originalLatitude, 6) }} / Longitude: {{ number_format($originalLongitude, 6) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <x-admin.form.input
             label="Latitude"

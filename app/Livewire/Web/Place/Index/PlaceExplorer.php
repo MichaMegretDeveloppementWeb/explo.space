@@ -35,6 +35,9 @@ class PlaceExplorer extends Component
     #[Url(as: 'tags')]
     public string $selectedTagsSlugs = '';
 
+    #[Url(as: 'featured')]
+    public bool $showFeaturedOnly = false;
+
     // ========================================
     // PROPRIÉTÉS POUR ENFANTS
     // ========================================
@@ -67,6 +70,7 @@ class PlaceExplorer extends Component
         $this->radius = $validatedDto->radius;
         $this->address = $validatedDto->address;
         $this->selectedTagsSlugs = ! empty($validatedDto->tags) ? implode(',', $validatedDto->tags) : '';
+        $this->showFeaturedOnly = $validatedDto->featured;
 
         // Préparer filtres initiaux pour composants enfants
         $this->initialFilters = $validatedDto->toComponentData();
@@ -95,6 +99,7 @@ class PlaceExplorer extends Component
     #[On('filters-updated')]
     public function syncUrlParams(array $filters): void
     {
+
         // Créer DTO depuis données composant (format long : latitude, longitude)
         $rawDto = PlaceExplorationFiltersDTO::fromComponentData($filters);
 
@@ -109,6 +114,7 @@ class PlaceExplorer extends Component
         $this->radius = $validatedDto->radius;
         $this->address = $validatedDto->address;
         $this->selectedTagsSlugs = ! empty($validatedDto->tags) ? implode(',', $validatedDto->tags) : '';
+        $this->showFeaturedOnly = $validatedDto->featured;
 
         $this->skipRender();
     }

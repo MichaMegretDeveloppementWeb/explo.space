@@ -125,6 +125,14 @@ trait ManagesSaving
         $data['photo_order'] = $this->photoOrder;
         $data['main_photo_id'] = $this->mainPhotoId;
 
+        // Ajouter les données EditRequest si présentes
+        if ($this->editRequestId !== null) {
+            $data['edit_request_id'] = $this->editRequestId;
+            $data['edit_request_photos'] = $this->editRequestPhotos;
+            $data['selected_fields'] = $this->selectedFields;
+            $data['selected_photos'] = $this->selectedPhotos;
+        }
+
         // Note: On utilise app() au lieu d'injecter le service en propriété pour éviter
         // la sérialisation du service à chaque cycle Livewire (impact performance).
         // Les services sont instanciés à la demande uniquement quand nécessaire.

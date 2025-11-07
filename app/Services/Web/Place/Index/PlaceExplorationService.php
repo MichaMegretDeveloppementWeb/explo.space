@@ -24,7 +24,7 @@ class PlaceExplorationService
     /**
      * @param  array<string, mixed>  $filters
      * @param  array<string, float|null>|null  $boundingBox
-     * @return array{coordinates: \Illuminate\Support\Collection<int, array{id: int, latitude: float, longitude: float}>, count: int, bounding_box: array<string, float|null>|null}
+     * @return array{coordinates: \Illuminate\Support\Collection<int, array{id: int, latitude: float, longitude: float, is_featured: bool}>, count: int, bounding_box: array<string, float|null>|null}
      */
     public function getPlacesForMap(array $filters, ?array $boundingBox = null): array
     {
@@ -107,6 +107,7 @@ class PlaceExplorationService
             'longitude' => isset($filters['longitude']) ? (float) $filters['longitude'] : null,
             'radius' => isset($filters['radius']) ? (int) $filters['radius'] : PlaceSearchConfig::RADIUS_DEFAULT,
             'tags' => $this->parseTags($filters['tags'] ?? []),
+            'featured' => $filters['featured'] ?? false,
         ];
     }
 

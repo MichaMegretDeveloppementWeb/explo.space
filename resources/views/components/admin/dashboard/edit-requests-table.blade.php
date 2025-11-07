@@ -44,8 +44,7 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach($requests as $request)
                     <tr class="hover:bg-gray-50 transition-colors duration-150 cursor-pointer group"
-                        {{-- TODO: Ajouter onclick quand route admin.edit-requests.show sera créée --}}
-                        {{-- onclick="window.location.href='{{ route('admin.edit-requests.show', $request->id) }}'" --}}
+                        onclick="window.location.href='{{ route('admin.edit-requests.show', $request->id) }}'"
                     >
                         {{-- Lieu --}}
                         <td class="px-6 py-4">

@@ -3,15 +3,18 @@
 namespace App\Services\Admin\Place\Edit;
 
 use App\Contracts\Repositories\Admin\Place\Edit\PlaceUpdateRepositoryInterface;
+use App\Enums\RequestStatus;
 use App\Exceptions\Admin\Place\PlaceNotFoundException;
 use App\Exceptions\Photo\PhotoProcessingException;
 use App\Exceptions\Photo\PhotoValidationException;
 use App\Exceptions\Photo\UnexpectedPhotoException;
+use App\Models\EditRequest;
 use App\Models\Place;
 use App\Services\Photo\PhotoProcessingService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PlaceUpdateService
 {
@@ -69,6 +72,11 @@ class PlaceUpdateService
                 $this->processAndAddPhotos($place, $data['new_photos']);
             }
 
+            // Add EditRequest photos if present
+            if (! empty($data['edit_request_photos'])) {
+                $this->processEditRequestPhotos($place, $data['edit_request_photos']);
+            }
+
             // Update photo order
             if (! empty($data['photo_order'])) {
                 $this->repository->updatePhotoOrder($place, $data['photo_order']);
@@ -82,8 +90,18 @@ class PlaceUpdateService
             // Auto-assign first photo as main if no main photo exists
             $this->ensureMainPhoto($place);
 
+            // Mark EditRequest as accepted if present
+            if (! empty($data['edit_request_id'])) {
+                $appliedChanges = [
+                    'fields' => $data['selected_fields'] ?? [],
+                    'photos' => $data['selected_photos'] ?? [],
+                ];
+                $this->acceptEditRequest($data['edit_request_id'], $data['admin_id'], $appliedChanges);
+            }
+
             Log::info('Place updated successfully', [
                 'place_id' => $place->id,
+                'edit_request_id' => $data['edit_request_id'] ?? null,
             ]);
 
             return $place->fresh([
@@ -278,5 +296,122 @@ class PlaceUpdateService
                 ]);
             }
         }
+    }
+
+    /**
+     * Process EditRequest photos by copying them from EditRequest storage to place_photos.
+     *
+     * Utilise copyEditRequestPhotoWithThumbnails() + rollback pattern identique à processAndAddPhotos().
+     *
+     * @param  array<int, array{id: string, url: string, source: string, path: string, edit_request_id: int, filename: string}>  $editRequestPhotos
+     *
+     * @throws PhotoValidationException|PhotoProcessingException|UnexpectedPhotoException
+     */
+    private function processEditRequestPhotos(Place $place, array $editRequestPhotos): void
+    {
+        $photoData = [];
+        $storedFilenames = [];
+        $currentMaxSortOrder = $place->photos()->max('sort_order') ?? -1;
+        $sortOrder = $currentMaxSortOrder + 1;
+
+        foreach ($editRequestPhotos as $editRequestPhoto) {
+            try {
+                // Copier la photo avec génération de thumbnails via PhotoProcessingService
+                $processedData = $this->photoService->copyEditRequestPhotoWithThumbnails(
+                    $editRequestPhoto['filename'],
+                    $editRequestPhoto['edit_request_id'],
+                    'edit_request_photos',
+                    'place_photos',
+                    ''
+                );
+
+                $photoData[] = [
+                    'filename' => $processedData['filename'],
+                    'original_name' => $processedData['original_name'],
+                    'mime_type' => $processedData['mime_type'],
+                    'size' => $processedData['size'],
+                    'alt_text' => null,
+                    'is_main' => false,
+                    'sort_order' => $sortOrder,
+                ];
+
+                $storedFilenames[] = $processedData['filename'];
+                $sortOrder++;
+
+            } catch (PhotoProcessingException $e) {
+                // Exception attendue du PhotoProcessingService : rollback + propagation
+                $this->rollbackStoredPhotos($storedFilenames, $place->id);
+
+                Log::warning('EditRequest photo processing failed', [
+                    'place_id' => $place->id,
+                    'exception_type' => get_class($e),
+                    'message' => $e->getMessage(),
+                    'photos_rolled_back' => count($storedFilenames),
+                ]);
+
+                throw $e;
+            } catch (\Throwable $e) {
+                // Exception imprévue : rollback + log critique + wrapper
+                $this->rollbackStoredPhotos($storedFilenames, $place->id);
+
+                Log::critical('Unexpected error during EditRequest photo copy', [
+                    'place_id' => $place->id,
+                    'exception_type' => get_class($e),
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'trace' => $e->getTraceAsString(),
+                    'photos_rolled_back' => count($storedFilenames),
+                ]);
+
+                throw new UnexpectedPhotoException(
+                    "Une erreur inattendue est survenue lors de l'ajout des photos proposées. Veuillez réessayer.",
+                    'unexpected',
+                    $e
+                );
+            }
+        }
+
+        if (! empty($photoData)) {
+            $this->repository->addPhotos($place, $photoData);
+
+            Log::info('EditRequest photos added to place', [
+                'place_id' => $place->id,
+                'count' => count($photoData),
+            ]);
+        }
+    }
+
+    /**
+     * Mark EditRequest as accepted and save which changes were applied.
+     *
+     * @param  array<string, array<int, mixed>>  $appliedChanges  Structure: ['fields' => [...], 'photos' => [...]]
+     */
+    private function acceptEditRequest(int $editRequestId, int $adminId, array $appliedChanges): void
+    {
+        /** @var EditRequest|null $editRequest */
+        $editRequest = EditRequest::query()->find($editRequestId);
+
+        if (! $editRequest) {
+            Log::warning('EditRequest not found for acceptance', [
+                'edit_request_id' => $editRequestId,
+            ]);
+
+            return;
+        }
+
+        $editRequest->update([
+            'status' => RequestStatus::Accepted,
+            'applied_changes' => $appliedChanges,
+            'processed_by_admin_id' => $adminId,
+            'processed_at' => now(),
+        ]);
+
+        Log::info('EditRequest marked as accepted', [
+            'edit_request_id' => $editRequestId,
+            'place_id' => $editRequest->place_id,
+            'admin_id' => $adminId,
+            'applied_changes' => $appliedChanges,
+        ]);
     }
 }

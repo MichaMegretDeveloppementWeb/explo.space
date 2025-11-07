@@ -20,6 +20,7 @@ readonly class PlacePreviewDTO implements Wireable
      * @param  string  $title  Titre traduit du lieu
      * @param  string  $descriptionExcerpt  Extrait de description (max 200 caractères)
      * @param  string|null  $mainPhotoUrl  URL de la photo principale (null si aucune photo)
+     * @param  bool  $isFeatured  Lieu emblématique
      * @param  array<int, array{name: string, slug: string, color: string}>  $tags  Liste des tags (max 5)
      */
     public function __construct(
@@ -28,6 +29,7 @@ readonly class PlacePreviewDTO implements Wireable
         public string $title,
         public string $descriptionExcerpt,
         public ?string $mainPhotoUrl,
+        public bool $isFeatured,
         public array $tags = []
     ) {}
 
@@ -44,6 +46,7 @@ readonly class PlacePreviewDTO implements Wireable
             'title' => $this->title,
             'descriptionExcerpt' => $this->descriptionExcerpt,
             'mainPhotoUrl' => $this->mainPhotoUrl,
+            'isFeatured' => $this->isFeatured,
             'tags' => $this->tags,
         ];
     }
@@ -61,6 +64,7 @@ readonly class PlacePreviewDTO implements Wireable
             title: $value['title'],
             descriptionExcerpt: $value['descriptionExcerpt'],
             mainPhotoUrl: $value['mainPhotoUrl'],
+            isFeatured: $value['isFeatured'],
             tags: $value['tags'] ?? []
         );
     }

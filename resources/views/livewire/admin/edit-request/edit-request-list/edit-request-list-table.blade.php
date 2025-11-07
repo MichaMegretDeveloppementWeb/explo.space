@@ -147,9 +147,7 @@
                         <tr class="group relative hover:bg-gray-50/50 transition-colors" wire:key="{{ $request->id }}">
                             {{-- Lieu avec lien stretched --}}
                             <td class="px-6 py-4">
-                                {{-- TODO: Ajouter le lien vers la page de détail quand elle sera créée --}}
-                                {{-- <a href="{{ route('admin.edit-requests.show', ['id' => $request->id]) }}" class="flex items-center gap-3"> --}}
-                                <div class="flex items-center gap-3">
+                                <a href="{{ route('admin.edit-requests.show', ['id' => $request->id]) }}" class="flex items-center gap-3">
                                     {{-- Icône selon le type --}}
                                     <div class="h-10 w-10 flex-shrink-0 rounded-lg {{ $request->type === 'modification' ? 'bg-blue-50' : ($request->type === 'photo_suggestion' ? 'bg-purple-50' : 'bg-orange-50') }} flex items-center justify-center">
                                         @if($request->type === 'modification')
@@ -168,10 +166,8 @@
                                             {{ Str::limit($request->description ?? '', 60) }}
                                         </div>
                                     </div>
-                                    {{-- TODO: Décommenter quand la route sera créée --}}
-                                    {{-- <span class="absolute inset-0" aria-hidden="true"></span> --}}
-                                </div>
-                                {{-- </a> --}}
+                                    <span class="absolute inset-0" aria-hidden="true"></span>
+                                </a>
                             </td>
 
                             {{-- Type (pas de lien, juste contenu) --}}

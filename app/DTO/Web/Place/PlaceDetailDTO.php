@@ -15,6 +15,7 @@ readonly class PlaceDetailDTO implements Wireable
      * @param  float  $latitude  Latitude (coordonnée GPS)
      * @param  float  $longitude  Longitude (coordonnée GPS)
      * @param  string|null  $address  Adresse physique (optionnel)
+     * @param  bool  $isFeatured  Lieu à la une
      * @param  array<int, array{name: string, slug: string, color: string}>  $tags  Tags avec traductions
      * @param  array<int, array{id: int, url: string, medium_url: string, is_main: bool, sort_order: int}>  $photos  Photos du lieu
      * @param  string|null  $mainPhotoUrl  URL de la photo principale
@@ -30,6 +31,7 @@ readonly class PlaceDetailDTO implements Wireable
         public float $latitude,
         public float $longitude,
         public ?string $address,
+        public bool $isFeatured,
         public array $tags,
         public array $photos,
         public ?string $mainPhotoUrl,
@@ -53,6 +55,7 @@ readonly class PlaceDetailDTO implements Wireable
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'address' => $this->address,
+            'isFeatured' => $this->isFeatured,
             'tags' => $this->tags,
             'photos' => $this->photos,
             'mainPhotoUrl' => $this->mainPhotoUrl,
@@ -77,6 +80,7 @@ readonly class PlaceDetailDTO implements Wireable
             latitude: $value['latitude'],
             longitude: $value['longitude'],
             address: $value['address'],
+            isFeatured: $value['isFeatured'],
             tags: $value['tags'],
             photos: $value['photos'],
             mainPhotoUrl: $value['mainPhotoUrl'],
