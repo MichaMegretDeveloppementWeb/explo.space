@@ -58,7 +58,7 @@
                 title="Tags"
                 :value="$stats['total_tags']"
                 icon-color="purple"
-                link="#"
+                link="{{ route('admin.tags.index') }}"
             >
                 <x-slot name="icon">
                     <x-heroicon-o-tag class="h-6 w-6" />

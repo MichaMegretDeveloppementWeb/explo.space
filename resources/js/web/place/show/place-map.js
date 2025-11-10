@@ -4,6 +4,7 @@
  */
 
 import L from 'leaflet';
+import { createNormalMarkerIcon } from '../../map/marker-icon-utils.js';
 
 let map = null;
 
@@ -40,8 +41,10 @@ export function initPlaceMap() {
     // Ajouter les tiles CartoDB Positron avec fallback OSM
     addTileLayer();
 
-    // Ajouter un marqueur pour le lieu
-    const marker = L.marker([latitude, longitude]).addTo(map);
+    // Ajouter un marqueur pour le lieu avec icône custom
+    const marker = L.marker([latitude, longitude], {
+        icon: createNormalMarkerIcon()
+    }).addTo(map);
 
 }
 

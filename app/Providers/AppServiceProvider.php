@@ -12,6 +12,7 @@ use App\Contracts\Repositories\Admin\Place\Edit\PlaceUpdateRepositoryInterface;
 use App\Contracts\Repositories\Admin\Place\Management\PlaceDeleteRepositoryInterface;
 use App\Contracts\Repositories\Admin\Place\PlaceListRepositoryInterface;
 use App\Contracts\Repositories\Admin\PlaceRequest\PlaceRequestListRepositoryInterface;
+use App\Contracts\Repositories\Admin\Tag\TagListRepositoryInterface;
 use App\Contracts\Repositories\Admin\Tag\TagSelectionRepositoryInterface as AdminTagSelectionRepositoryInterface;
 use App\Contracts\Repositories\Web\Place\EditRequest\EditRequestCreateRepositoryInterface;
 use App\Contracts\Repositories\Web\Place\Index\PlaceExplorationRepositoryInterface;
@@ -34,6 +35,7 @@ use App\Repositories\Admin\Place\Edit\PlaceUpdateRepository;
 use App\Repositories\Admin\Place\Management\PlaceDeleteRepository;
 use App\Repositories\Admin\Place\PlaceListRepository;
 use App\Repositories\Admin\PlaceRequest\PlaceRequestListRepository;
+use App\Repositories\Admin\Tag\TagListRepository;
 use App\Repositories\Admin\Tag\TagSelectionRepository as AdminTagSelectionRepository;
 use App\Repositories\Web\Place\EditRequest\EditRequestCreateRepository;
 use App\Repositories\Web\Place\Index\PlaceExplorationRepository;
@@ -146,6 +148,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             EditRequestListRepositoryInterface::class,
             EditRequestListRepository::class
+        );
+
+        $this->app->bind(
+            TagListRepositoryInterface::class,
+            TagListRepository::class
         );
 
         // Services

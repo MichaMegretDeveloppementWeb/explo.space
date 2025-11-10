@@ -26,7 +26,7 @@ class PlaceEditController extends Controller
         $place = Place::query()->find($id);
 
         if (! $place) {
-            return redirect()->back()->with('error', 'Le lieu selectionné est introuvable.');
+            return redirect(route('admin.places.index'))->with('error', 'Le lieu selectionné est introuvable.');
         }
 
         // Récupérer l'ID de PlaceRequest depuis la query string
@@ -35,11 +35,11 @@ class PlaceEditController extends Controller
         $editRequest = $editRequestId ? EditRequest::query()->find($editRequestId) : null;
 
         if ($editRequestId && ! $editRequest) {
-            return redirect()->back()->with('error', 'Demande de modification introuvable.');
+            return redirect(route('admin.places.show', ['id' => $id]))->with('error', 'Demande de modification introuvable.');
         }
 
         if ($editRequest instanceof EditRequest && ! $editRequest->status->canBeModerated()) {
-            return redirect()->back()->with('error', 'Demande de modification déjà traitée.');
+            return redirect(route('admin.places.show', ['id' => $id]))->with('error', 'Demande de modification déjà traitée.');
         }
 
         return view('admin.place.edit', [

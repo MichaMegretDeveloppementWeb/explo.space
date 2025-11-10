@@ -33,7 +33,7 @@
                     <a href="{{ route('admin.places.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-indigo-50 @if(request()->routeIs('admin.places.*')) text-indigo-600 bg-indigo-50 @endif">
                         Lieux
                     </a>
-                    <a href="#" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-indigo-50">
+                    <a href="{{ route('admin.tags.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-indigo-50 @if(request()->routeIs('admin.tags.*')) text-indigo-600 bg-indigo-50 @endif">
                         Tags
                     </a>
                     <a href="#" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-indigo-50">
@@ -114,10 +114,10 @@
                 <a href="{{ route('admin.dashboard') }}" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium @if(request()->routeIs('admin.dashboard')) text-indigo-600 bg-indigo-50 @endif">
                     Tableau de bord
                 </a>
-                <a href="#" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium">
+                <a href="{{ route('admin.places.index') }}" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium @if(request()->routeIs('admin.places.*')) text-indigo-600 bg-indigo-50 @endif">
                     Lieux
                 </a>
-                <a href="#" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium">
+                <a href="{{ route('admin.tags.index') }}" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium @if(request()->routeIs('admin.tags.*')) text-indigo-600 bg-indigo-50 @endif">
                     Tags
                 </a>
                 <a href="#" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium">

@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import { createNormalMarkerIcon } from '../../../web/map/marker-icon-utils.js';
 
 /**
  * LocationPreview - Carte statique de prévisualisation pour les lieux
@@ -64,8 +65,9 @@ export class LocationPreview {
 
             primaryLayer.addTo(this.map);
 
-            // Ajouter un marqueur fixe (non draggable)
+            // Ajouter un marqueur fixe (non draggable) avec icône custom
             this.marker = L.marker([this.latitude, this.longitude], {
+                icon: createNormalMarkerIcon(),
                 draggable: false,
             }).addTo(this.map);
 

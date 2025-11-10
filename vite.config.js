@@ -10,6 +10,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/images/home/hero/terre-vue-espace.png',
                 ...glob.sync('resources/css/**/index.css'),
                 ...glob.sync('resources/js/**/index.js'),
             ],

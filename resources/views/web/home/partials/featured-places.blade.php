@@ -70,7 +70,7 @@
         </div>
 
         <div class="text-center mt-8 sm:mt-12">
-            <a href="{{ localRoute('explore') }}" class="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white font-semibold rounded-lg sm:rounded-xl hover:bg-gray-800 transition-colors text-sm sm:text-base">
+            <a href="{{ localRoute('explore', ['mode' => 'worldwide', 'featured' => true]) }}" class="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white font-semibold rounded-lg sm:rounded-xl hover:bg-gray-800 transition-colors text-sm sm:text-base">
                 {{ __('web/pages/home.featured_places.cta') }}
                 <x-heroicon-o-arrow-right class="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
             </a>

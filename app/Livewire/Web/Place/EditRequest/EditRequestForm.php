@@ -52,8 +52,40 @@ class EditRequestForm extends Component
             ],
         ];
 
-        // Pré-remplir les new_values avec les valeurs actuelles pour faciliter modification
-        $this->new_values = $this->current_values;
+        // Initialiser new_values avec valeurs vides sauf coordonnées
+        $this->new_values = [
+            'title' => '',
+            'description' => '',
+            'address' => '',
+            'practical_info' => '',
+            'coordinates' => $this->current_values['coordinates'], // Garder les coordonnées actuelles
+        ];
+    }
+
+    /**
+     * Hook appelé automatiquement par Livewire quand selected_fields change
+     */
+    public function updatedSelectedFields(): void
+    {
+        // Parcourir tous les champs sélectionnés
+        foreach ($this->selected_fields as $field) {
+            // Si le champ n'est pas 'coordinates', le vider pour forcer une nouvelle saisie
+            if ($field !== 'coordinates') {
+                $this->new_values[$field] = '';
+            }
+
+            // Si c'est 'coordinates', s'assurer que les valeurs actuelles sont présentes
+            if ($field === 'coordinates') {
+                if (
+                    ! isset($this->new_values['coordinates']['lat']) ||
+                    ! isset($this->new_values['coordinates']['lng']) ||
+                    $this->new_values['coordinates']['lat'] === '' ||
+                    $this->new_values['coordinates']['lng'] === ''
+                ) {
+                    $this->new_values['coordinates'] = $this->current_values['coordinates'];
+                }
+            }
+        }
     }
 
     public function render(): \Illuminate\View\View

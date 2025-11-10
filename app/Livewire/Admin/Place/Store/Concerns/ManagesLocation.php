@@ -110,7 +110,7 @@ trait ManagesLocation
     public function handleMapClick(float $latitude, float $longitude): void
     {
         // Réinitialiser les erreurs précédentes
-        $this->resetErrorBag('address');
+        $this->resetErrorBag(['address', 'placeAddress']);
 
         // Mettre à jour les coordonnées avec normalisation à 6 décimales
         $this->latitude = $this->normalizeCoordinate($latitude);

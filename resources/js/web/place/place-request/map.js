@@ -13,6 +13,7 @@
  * - Livewire → JS: 'coordinates-changed' (latitude, longitude)
  */
 import L from 'leaflet';
+import { createNormalMarkerIcon } from '../../map/marker-icon-utils.js';
 
 export class PlaceRequestMap {
     constructor(containerId = 'placeRequestMap') {
@@ -119,8 +120,9 @@ export class PlaceRequestMap {
             this.map.removeLayer(this.marker);
         }
 
-        // Add new marker (draggable)
+        // Add new marker (draggable) avec icône custom
         this.marker = L.marker([lat, lng], {
+            icon: createNormalMarkerIcon(),
             draggable: true,
         }).addTo(this.map);
 

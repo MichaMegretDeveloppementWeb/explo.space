@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\Place\PlaceListController;
 use App\Http\Controllers\Admin\Place\PlaceShowController as AdminPlaceShowController;
 use App\Http\Controllers\Admin\PlaceRequest\PlaceRequestListController;
 use App\Http\Controllers\Admin\PlaceRequest\PlaceRequestShowController;
+use App\Http\Controllers\Admin\Tag\TagListController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -65,6 +66,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/modifications-signalements/{id}', [EditRequestShowController::class, 'show'])
             ->name('edit-requests.show');
+
+        // Gestion des tags
+        Route::get('/tags', [TagListController::class, 'index'])
+            ->name('tags.index');
 
     });
 });

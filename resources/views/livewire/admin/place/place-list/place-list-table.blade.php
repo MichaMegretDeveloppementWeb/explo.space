@@ -215,21 +215,21 @@
                                 </span>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="px-6 py-20 text-center">
-                                <div class="flex flex-col items-center justify-center">
-                                    <div class="rounded-full bg-gray-100 p-3 mb-4">
-                                        <x-heroicon-o-map-pin class="h-8 w-8 text-gray-400" />
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-20 text-center">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <div class="rounded-full bg-gray-100 p-3 mb-4">
+                                            <x-heroicon-o-map-pin class="h-8 w-8 text-gray-400" />
+                                        </div>
+                                        <h3 class="text-sm font-medium text-gray-900 mb-1">Aucun lieu trouvé</h3>
+                                        <p class="text-xs text-gray-500 max-w-sm">
+                                            Aucun lieu ne correspond à vos critères de recherche.
+                                            Essayez de modifier vos filtres.
+                                        </p>
                                     </div>
-                                    <h3 class="text-sm font-medium text-gray-900 mb-1">Aucun lieu trouvé</h3>
-                                    <p class="text-xs text-gray-500 max-w-sm">
-                                        Aucun lieu ne correspond à vos critères de recherche.
-                                        Essayez de modifier vos filtres.
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         @endforelse
                     @enderror
                 </tbody>

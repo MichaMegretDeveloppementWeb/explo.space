@@ -13,6 +13,7 @@
  * - Livewire → JS: 'coordinates-changed' (latitude, longitude)
  */
 import L from 'leaflet';
+import { createNormalMarkerIcon, createOldMarkerIcon } from '../../../web/map/marker-icon-utils.js';
 
 export class LocationMap {
     constructor(containerId = 'admin-location-map') {
@@ -174,27 +175,9 @@ export class LocationMap {
 
         // Si nous avons des anciennes coordonnées (EditRequest), créer le marker ancien
         if (this.originalCoords && !this.oldMarker) {
-            // Marker ANCIEN (gris, style pin comme carte exploration)
-            const oldIconSvg = `
-                <svg width="27" height="42" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
-                          fill="#9CA3AF"
-                          stroke="#ffffff"
-                          stroke-width="1.5"/>
-                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
-                </svg>
-            `;
-
-            const oldIcon = L.divIcon({
-                className: 'old-marker-icon',
-                html: oldIconSvg,
-                iconSize: [27, 42],
-                iconAnchor: [13.5, 42],
-                popupAnchor: [0, -37],
-            });
-
+            // Marker ANCIEN (rouge avec icône custom)
             this.oldMarker = L.marker([this.originalCoords.lat, this.originalCoords.lng], {
-                icon: oldIcon,
+                icon: createOldMarkerIcon(),
                 draggable: false,
             }).addTo(this.map);
 
@@ -207,33 +190,11 @@ export class LocationMap {
             }).openPopup();
         }
 
-        // Marker NOUVEAU (bleu, style pin comme carte exploration)
-        const markerOptions = {
+        // Marker NOUVEAU (bleu avec icône custom)
+        this.marker = L.marker([lat, lng], {
+            icon: createNormalMarkerIcon(),
             draggable: true,
-        };
-
-        // Ajouter l'icône custom uniquement si nous avons des anciennes coordonnées
-        if (this.originalCoords) {
-            const newIconSvg = `
-                <svg width="27" height="42" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
-                          fill="#3b82f6"
-                          stroke="#ffffff"
-                          stroke-width="1.5"/>
-                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
-                </svg>
-            `;
-
-            markerOptions.icon = L.divIcon({
-                className: 'new-marker-icon',
-                html: newIconSvg,
-                iconSize: [27, 42],
-                iconAnchor: [13.5, 42],
-                popupAnchor: [0, -37],
-            });
-        }
-
-        this.marker = L.marker([lat, lng], markerOptions).addTo(this.map);
+        }).addTo(this.map);
 
         if (this.originalCoords) {
             // Popup nouvelle position - toujours ouvert initialement

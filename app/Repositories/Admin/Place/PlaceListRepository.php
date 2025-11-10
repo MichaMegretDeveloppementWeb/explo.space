@@ -35,8 +35,7 @@ class PlaceListRepository implements PlaceListRepositoryInterface
         // Filtrage par recherche (texte dans traductions)
         if (! empty($filters['search'])) {
             $query->whereHas('translations', function ($q) use ($filters) {
-                $q->where('locale', $filters['locale'])
-                    ->where('status', 'published')
+                $q->where('status', 'published')
                     ->where(function ($subQuery) use ($filters) {
                         $subQuery->where('title', 'like', '%'.$filters['search'].'%')
                             ->orWhere('description', 'like', '%'.$filters['search'].'%')

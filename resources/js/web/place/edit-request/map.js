@@ -5,6 +5,7 @@
 
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { createNormalMarkerIcon } from '../../map/marker-icon-utils.js';
 
 /**
  * Configuration des tiles (CartoDB Positron avec fallback OSM)
@@ -61,8 +62,9 @@ export function initEditRequestMap(container) {
     // Ajouter les tiles CartoDB avec fallback OSM
     addTileLayer(map);
 
-    // Créer un marqueur draggable
+    // Créer un marqueur draggable avec icône custom
     const marker = L.marker([initialLat, initialLng], {
+        icon: createNormalMarkerIcon(),
         draggable: true,
         autoPan: true,
     }).addTo(map);
