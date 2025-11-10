@@ -33,7 +33,7 @@
 
 @if(count($toasts) > 0)
     {{-- Container pour stack de toasts (fixé en haut à droite) --}}
-    <div class="fixed top-4 right-4 z-50 w-full max-w-sm space-y-3">
+    <div class="fixed top-4 right-[10%] z-50 w-[90%] max-w-sm space-y-3">
         @foreach($toasts as $toast)
             <div wire:key="toast-{{ $toast['id'] }}"
                  x-data="{

@@ -155,7 +155,7 @@
                             <tr class="group relative hover:bg-gray-50/50 transition-colors" wire:key="{{ $tag->id }}">
                                 {{-- Nom avec lien stretched --}}
                                 <td class="px-6 py-4">
-                                    <a href="#" class="flex items-center gap-3">
+                                    <a href="{{ route('admin.tags.edit', $tag->id) }}" class="flex items-center gap-3">
                                         <div class="min-w-0 flex-1">
                                             @if($translation)
                                                 <div class="text-sm font-medium text-gray-900 truncate">

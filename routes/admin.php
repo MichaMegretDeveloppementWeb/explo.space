@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\Place\PlaceListController;
 use App\Http\Controllers\Admin\Place\PlaceShowController as AdminPlaceShowController;
 use App\Http\Controllers\Admin\PlaceRequest\PlaceRequestListController;
 use App\Http\Controllers\Admin\PlaceRequest\PlaceRequestShowController;
+use App\Http\Controllers\Admin\Tag\TagCreateController;
+use App\Http\Controllers\Admin\Tag\TagEditController;
 use App\Http\Controllers\Admin\Tag\TagListController;
 use Illuminate\Support\Facades\Route;
 
@@ -70,6 +72,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Gestion des tags
         Route::get('/tags', [TagListController::class, 'index'])
             ->name('tags.index');
+
+        Route::get('/tags/creer', TagCreateController::class)
+            ->name('tags.create');
+
+        Route::get('/tags/{id}/editer', TagEditController::class)
+            ->name('tags.edit');
 
     });
 });
