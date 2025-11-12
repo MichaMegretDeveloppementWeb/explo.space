@@ -41,7 +41,7 @@ class Navbar extends Component
         $this->userInitial = substr($user->name, 0, 1);
     }
 
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View
     {
         return view('livewire.admin.navbar');
     }

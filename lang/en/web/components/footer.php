@@ -7,17 +7,16 @@ return [
             'links' => [
                 'mission' => 'Our mission',
                 'how_it_works' => 'How it works',
-                'team' => 'Team',
-                'contact' => 'Contact',
+                'contribute' => 'Contribute',
+                'philosophy' => 'Our philosophy',
             ],
         ],
         'explore' => [
             'title' => 'Explore',
             'links' => [
-                'search' => 'Search a place',
+                'around_me' => 'Around me',
+                'worldwide' => 'Worldwide',
                 'featured' => 'Featured places',
-                'latest' => 'Latest additions',
-                'all_tags' => 'All tags',
             ],
         ],
         'community' => [
@@ -44,10 +43,8 @@ return [
         'tagline' => 'Discover space universe',
     ],
     'legal' => [
-        'terms' => 'Legal notice',
-        'conditions' => 'Terms of use',
-        'privacy' => 'Privacy',
-        'cookies' => 'Cookies',
+        'legal_notice' => 'Legal Notice',
+        'privacy' => 'Privacy Policy',
     ],
     'copyright' => [
         'text' => 'All rights reserved.',

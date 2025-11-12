@@ -33,4 +33,9 @@ return [
 
     // Chargement
     'loading_map' => 'Chargement de la carte...',
+
+    // Breadcrumb
+    'breadcrumb' => [
+        'home' => 'Accueil',
+    ],
 ];

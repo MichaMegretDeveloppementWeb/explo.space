@@ -115,4 +115,6 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'destination_mail_contact' => env('DESTINATION_CONTACT_MAIL', 'contact@explo.space'),
+
 ];

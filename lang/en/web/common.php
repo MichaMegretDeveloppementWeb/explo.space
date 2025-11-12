@@ -33,4 +33,9 @@ return [
 
     // Loading
     'loading_map' => 'Loading map...',
+
+    // Breadcrumb
+    'breadcrumb' => [
+        'home' => 'Home',
+    ],
 ];

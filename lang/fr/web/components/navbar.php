@@ -3,10 +3,9 @@
 return [
     'navigation' => [
         'home' => 'Accueil',
-        'features' => 'Fonctionnalités',
         'explore' => 'Explorer',
-        'community' => 'Communauté',
         'about' => 'À propos',
+        'contact' => 'Contact',
     ],
     'actions' => [
         'suggest_place' => 'Proposer un lieu',

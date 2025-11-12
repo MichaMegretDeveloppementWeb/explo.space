@@ -22,7 +22,7 @@
                 <!-- Navigation Links -->
                 <div class="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-y-0 lg:space-x-6 grow-1 justify-center lg:mx-4">
                     @foreach ($navigationLinks as $link)
-                        <a href="{{ $link['url'] }}" class="text-gray-700 hover:text-blue-600 px-3 lg:px-2 py-2.5 lg:py-2 text-md lg:text-base font-medium transition-colors rounded-md hover:bg-blue-50">
+                        <a href="{{ $link['url'] }}" class="px-3 lg:px-2 py-2.5 lg:py-2 text-md lg:text-base font-medium transition-colors rounded-md @if($link['active']) text-blue-600 bg-blue-200 @else text-gray-700 hover:text-blue-600 hover:bg-blue-50 @endif">
                             {{ $link['label'] }}
                         </a>
                     @endforeach

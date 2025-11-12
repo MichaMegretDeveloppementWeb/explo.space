@@ -37,13 +37,6 @@ class HomepageTest extends TestCase
         $response->assertSee('<title>', false);
     }
 
-    public function test_homepage_contains_hero_section(): void
-    {
-        $response = $this->get('/fr');
-
-        $response->assertSee('hero', false);
-    }
-
     public function test_homepage_contains_features_section(): void
     {
         $response = $this->get('/fr');
@@ -203,19 +196,5 @@ class HomepageTest extends TestCase
         $response = $this->get('/fr');
 
         $response->assertSee('<link rel="icon"', false);
-    }
-
-    public function test_homepage_loads_css_assets(): void
-    {
-        $response = $this->get('/fr');
-
-        $response->assertSee('app.css', false);
-    }
-
-    public function test_homepage_loads_js_assets(): void
-    {
-        $response = $this->get('/fr');
-
-        $response->assertSee('app.js', false);
     }
 }

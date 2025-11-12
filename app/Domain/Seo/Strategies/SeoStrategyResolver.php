@@ -17,6 +17,10 @@ class SeoStrategyResolver
     {
         return match ($pageType) {
             'homepage' => app(HomepageSeoStrategy::class),
+            'about' => app(AboutSeoStrategy::class),
+            'contact' => app(ContactSeoStrategy::class),
+            'legal' => app(LegalSeoStrategy::class),
+            'privacy' => app(PrivacySeoStrategy::class),
             'explore' => app(ExploreSeoStrategy::class),
             'place-request' => app(PlaceRequestSeoStrategy::class),
             'place_show' => new PlaceShowSeoStrategy($context),
@@ -33,6 +37,10 @@ class SeoStrategyResolver
     {
         return [
             'homepage',
+            'about',
+            'contact',
+            'legal',
+            'privacy',
             'explore',
             'place-request',
             'place_show',

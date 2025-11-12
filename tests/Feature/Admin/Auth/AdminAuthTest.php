@@ -80,7 +80,7 @@ class AdminAuthTest extends TestCase
         $response = $this->actingAs($admin)->post(route('admin.logout'));
 
         $this->assertGuest();
-        $response->assertRedirect('/');
+        $response->assertRedirect(route('admin.login'));
     }
 
     public function test_guest_cannot_access_dashboard(): void

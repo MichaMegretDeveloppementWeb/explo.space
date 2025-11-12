@@ -1,0 +1,229 @@
+<?php
+
+namespace App\Domain\Seo\Strategies;
+
+use App\Domain\Seo\Contracts\SeoStrategyInterface;
+use App\Domain\Seo\DTO\MetaTagsData;
+use App\Domain\Seo\DTO\OpenGraphData;
+use App\Domain\Seo\DTO\TwitterCardsData;
+use Illuminate\Support\Str;
+
+class PrivacySeoStrategy implements SeoStrategyInterface
+{
+    private string $locale;
+
+    /** @var array<string, mixed> */
+    private array $pageData;
+
+    public function __construct()
+    {
+        $this->locale = app()->getLocale();
+        $this->pageData = $this->getPageData();
+    }
+
+    public function getMetaTagsData(): MetaTagsData
+    {
+        $title = $this->buildFullTitle($this->pageData['seo']['title']);
+        $description = $this->truncateDescription($this->pageData['seo']['description']);
+
+        return new MetaTagsData(
+            title: $title,
+            description: $description,
+            keywords: $this->pageData['seo']['keywords'],
+            robots: $this->buildRobotsContent(),
+            canonical: localRoute('privacy'),
+        );
+    }
+
+    public function getOpenGraphData(): OpenGraphData
+    {
+        return new OpenGraphData(
+            title: $this->buildFullTitle($this->pageData['seo']['title']),
+            description: $this->truncateDescription($this->pageData['seo']['description']),
+            type: $this->pageData['seo']['og']['type'],
+            url: localRoute('privacy'),
+            siteName: config('app.name'),
+            image: $this->getDefaultImage('og'),
+            imageAlt: $this->pageData['seo']['og']['image_alt'],
+            locale: $this->getOgLocale(),
+            localeAlternates: $this->buildLocaleAlternates(),
+        );
+    }
+
+    public function getTwitterCardsData(): TwitterCardsData
+    {
+        return new TwitterCardsData(
+            card: $this->pageData['seo']['twitter']['card'],
+            title: $this->buildFullTitle($this->pageData['seo']['title']),
+            description: $this->truncateDescription($this->pageData['seo']['description']),
+            url: localRoute('privacy'),
+            image: $this->getDefaultImage('twitter'),
+            imageAlt: $this->pageData['seo']['og']['image_alt'],
+            site: config('company.social.twitter_url'),
+            creator: config('company.social.twitter_name'),
+        );
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function getJsonLdData(): array
+    {
+        $schemas = [
+            $this->buildWebPageSchema(),
+            $this->buildBreadcrumbSchema(),
+        ];
+
+        return [
+            [
+                '@context' => 'https://schema.org',
+                '@graph' => $schemas,
+            ],
+        ];
+    }
+
+    /**
+     * @return array<int, array<string, string>>
+     */
+    public function getHreflangData(): array
+    {
+        $hreflangs = [];
+        $supportedLocales = config('locales.supported', ['fr', 'en']);
+
+        foreach ($supportedLocales as $locale) {
+            $url = localRoute('privacy', [], $locale);
+            $hreflangs[] = [
+                'hreflang' => $locale,
+                'href' => $url,
+            ];
+        }
+
+        // x-default vers la langue par défaut
+        $hreflangs[] = [
+            'hreflang' => 'x-default',
+            'href' => localRoute('privacy', [], config('locales.default', 'fr')),
+        ];
+
+        return $hreflangs;
+    }
+
+    /* ------------PRIVATE METHODS------------- */
+
+    private function buildFullTitle(string $title): string
+    {
+        $separator = config('seo.title_separator');
+        $suffix = config('app.name');
+
+        if (str_contains($title, $suffix)) {
+            return $title;
+        }
+
+        return $title.$separator.$suffix;
+    }
+
+    private function buildRobotsContent(): string
+    {
+        $directives = [];
+        $directives[] = 'index';
+        $directives[] = 'follow';
+        $directives[] = 'archive';
+        $directives[] = 'snippet';
+        $directives[] = 'imageindex';
+
+        return implode(',', $directives);
+    }
+
+    private function truncateDescription(string $description, ?int $maxLength = null): string
+    {
+        $maxLength = $maxLength ?: 160;
+
+        return Str::limit(strip_tags($description), $maxLength);
+    }
+
+    private function getDefaultImage(string $type): string
+    {
+        $imagePath = config("seo.images.default_{$type}") ?? config('seo.images.default_og');
+
+        return url($imagePath);
+    }
+
+    private function getOgLocale(): string
+    {
+        return $this->locale === 'fr' ? 'fr_FR' : 'en_US';
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function buildLocaleAlternates(): array
+    {
+        $localeAlternates = [];
+        $supportedLocales = config('locales.supported', ['fr', 'en']);
+
+        foreach ($supportedLocales as $locale) {
+            if ($locale !== $this->locale) {
+                $ogLocale = $locale === 'fr' ? 'fr_FR' : 'en_US';
+                $localeAlternates[$locale] = $ogLocale;
+            }
+        }
+
+        return $localeAlternates;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildWebPageSchema(): array
+    {
+        return [
+            '@type' => 'WebPage',
+            '@id' => localRoute('privacy').'#webpage',
+            'url' => localRoute('privacy'),
+            'name' => $this->pageData['seo']['title'],
+            'description' => $this->truncateDescription($this->pageData['seo']['description']),
+            'inLanguage' => $this->locale,
+            'isPartOf' => [
+                '@id' => url('/').'#website',
+            ],
+            'about' => [
+                '@type' => 'Thing',
+                'name' => 'Privacy Information',
+                'description' => 'Privacy policy and data protection information for '.config('app.name'),
+            ],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildBreadcrumbSchema(): array
+    {
+        $homeLabel = $this->locale === 'fr' ? 'Accueil' : 'Home';
+
+        return [
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => $homeLabel,
+                    'item' => url('/'.$this->locale),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => $this->pageData['seo']['title'],
+                    'item' => localRoute('privacy'),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getPageData(): array
+    {
+        return __('web/pages/privacy');
+    }
+}

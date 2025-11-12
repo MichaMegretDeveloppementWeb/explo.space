@@ -30,6 +30,8 @@ class ResetPasswordForm extends Component
 
     /**
      * Validation rules.
+     *
+     * @return array<string, mixed>
      */
     protected function rules(): array
     {
@@ -42,6 +44,8 @@ class ResetPasswordForm extends Component
 
     /**
      * Custom validation messages.
+     *
+     * @return array<string, string>
      */
     protected function messages(): array
     {
@@ -55,6 +59,8 @@ class ResetPasswordForm extends Component
 
     /**
      * Reset password.
+     *
+     * @return \Livewire\Features\SupportRedirects\Redirector|void
      */
     public function resetPassword()
     {
@@ -82,7 +88,7 @@ class ResetPasswordForm extends Component
         }
     }
 
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View
     {
         return view('livewire.admin.auth.reset-password-form');
     }

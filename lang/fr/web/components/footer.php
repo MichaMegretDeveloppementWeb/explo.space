@@ -7,17 +7,16 @@ return [
             'links' => [
                 'mission' => 'Notre mission',
                 'how_it_works' => 'Comment ça marche',
-                'team' => 'Équipe',
-                'contact' => 'Contact',
+                'contribute' => 'Contribuer',
+                'philosophy' => 'Notre philosophie',
             ],
         ],
         'explore' => [
             'title' => 'Explorer',
             'links' => [
-                'search' => 'Rechercher un lieu',
-                'featured' => 'Lieux à la une',
-                'latest' => 'Derniers ajouts',
-                'all_tags' => 'Tous les tags',
+                'around_me' => 'Autour de moi',
+                'worldwide' => 'Monde entier',
+                'featured' => 'Lieux emblématiques',
             ],
         ],
         'community' => [
@@ -44,10 +43,8 @@ return [
         'tagline' => 'Découvrez l\'univers spatial',
     ],
     'legal' => [
-        'terms' => 'Mentions légales',
-        'conditions' => 'CGU',
-        'privacy' => 'Confidentialité',
-        'cookies' => 'Cookies',
+        'legal_notice' => 'Mentions légales',
+        'privacy' => 'Politique de confidentialité',
     ],
     'copyright' => [
         'text' => 'Tous droits réservés.',

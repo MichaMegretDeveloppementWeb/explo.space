@@ -7,23 +7,23 @@
                 <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">{{ __('web/components/footer.sections.about.title') }}</h3>
                 <ul class="space-y-3">
                     <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
+                        <a href="{{ localRoute('about') }}#mission" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
                             {{ __('web/components/footer.sections.about.links.mission') }}
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
+                        <a href="{{ localRoute('about') }}#how-it-works" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
                             {{ __('web/components/footer.sections.about.links.how_it_works') }}
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.about.links.team') }}
+                        <a href="{{ localRoute('about') }}#contribute" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
+                            {{ __('web/components/footer.sections.about.links.contribute') }}
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.about.links.contact') }}
+                        <a href="{{ localRoute('about') }}#philosophy" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
+                            {{ __('web/components/footer.sections.about.links.philosophy') }}
                         </a>
                     </li>
                 </ul>
@@ -34,23 +34,18 @@
                 <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">{{ __('web/components/footer.sections.explore.title') }}</h3>
                 <ul class="space-y-3">
                     <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.explore.links.search') }}
+                        <a href="{{ localRoute('explore', ['mode' => 'proximity']) }}" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
+                            {{ __('web/components/footer.sections.explore.links.around_me') }}
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
+                        <a href="{{ localRoute('explore', ['mode' => 'worldwide']) }}" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
+                            {{ __('web/components/footer.sections.explore.links.worldwide') }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ localRoute('explore', ['mode' => 'worldwide', 'featured' => '1']) }}" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
                             {{ __('web/components/footer.sections.explore.links.featured') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.explore.links.latest') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.explore.links.all_tags') }}
                         </a>
                     </li>
                 </ul>
@@ -65,21 +60,6 @@
                             {{ __('web/components/footer.sections.community.links.suggest_place') }}
                         </a>
                     </li>
-                    <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.community.links.report_error') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.community.links.contributors') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.community.links.guidelines') }}
-                        </a>
-                    </li>
                 </ul>
             </div>
 
@@ -88,23 +68,8 @@
                 <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">{{ __('web/components/footer.sections.support.title') }}</h3>
                 <ul class="space-y-3">
                     <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.support.links.help_center') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.support.links.faq') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
+                        <a href="{{ localRoute('contact') }}" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
                             {{ __('web/components/footer.sections.support.links.contact_us') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">
-                            {{ __('web/components/footer.sections.support.links.report_bug') }}
                         </a>
                     </li>
                 </ul>
@@ -130,17 +95,11 @@
                 <!-- Liens légaux et réseaux -->
                 <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
                     <div class="flex space-x-4 text-xs text-gray-600">
-                        <a href="#" class="hover:text-blue-600 transition-colors">
-                            {{ __('web/components/footer.legal.terms') }}
+                        <a href="{{ localRoute('legal') }}" class="hover:text-blue-600 transition-colors">
+                            {{ __('web/components/footer.legal.legal_notice') }}
                         </a>
-                        <a href="#" class="hover:text-blue-600 transition-colors">
-                            {{ __('web/components/footer.legal.conditions') }}
-                        </a>
-                        <a href="#" class="hover:text-blue-600 transition-colors">
+                        <a href="{{ localRoute('privacy') }}" class="hover:text-blue-600 transition-colors">
                             {{ __('web/components/footer.legal.privacy') }}
-                        </a>
-                        <a href="#" class="hover:text-blue-600 transition-colors">
-                            {{ __('web/components/footer.legal.cookies') }}
                         </a>
                     </div>
                 </div>

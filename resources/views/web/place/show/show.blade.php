@@ -1,11 +1,16 @@
 @extends('layouts.web', ['footer' => true])
 
-{{-- Scripts JS pour carrousel et carte (chargés via Vite) --}}
-@vite([
-    'resources/js/web/place/show/index.js',
-    'resources/js/web/place/edit-request/index.js',
-    'resources/js/web/place/photo-suggestion/index.js'
-])
+@push('head')
+    {{-- Google reCAPTCHA v3 (pour formulaires de suggestion de photo et modification/signalement) --}}
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('recaptcha.site_key') }}"></script>
+
+    {{-- Scripts JS pour carrousel et carte (chargés via Vite) --}}
+    @vite([
+        'resources/js/web/place/show/index.js',
+        'resources/js/web/place/edit-request/index.js',
+        'resources/js/web/place/photo-suggestion/index.js'
+    ])
+@endpush
 
 @section('content')
     {{-- Architecture verticale modulaire (style Apple) --}}

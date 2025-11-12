@@ -77,7 +77,7 @@ class SeoStrategyResolverTest extends TestCase
     {
         $types = $this->resolver->getSupportedPageTypes();
 
-        $this->assertCount(4, $types); // homepage, explore, place_request, place_show
+        $this->assertCount(8, $types); // homepage, about, contact, legal, privacy, explore, place_show, place_request_create
     }
 
     public function test_is_supported_returns_true_for_homepage(): void

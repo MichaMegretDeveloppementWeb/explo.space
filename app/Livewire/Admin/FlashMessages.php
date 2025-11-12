@@ -7,6 +7,9 @@ use Livewire\Component;
 
 class FlashMessages extends Component
 {
+    /**
+     * @var array<int, array{id: string, type: string, message: string}>
+     */
     public array $messages = [];
 
     /**
@@ -62,7 +65,7 @@ class FlashMessages extends Component
         }
     }
 
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View
     {
         return view('livewire.admin.flash-messages');
     }

@@ -10,11 +10,11 @@ class Navbar extends Component
     /**
      * Get the navigation links for the navbar.
      *
-     * @return array<int, array<string, string>>
+     * @return array<int, array<string, string|bool>>
      */
     public function getNavigationLinks(): array
     {
-        return [
+        $links = [
             [
                 'key' => 'home',
                 'label' => __('web/components/navbar.navigation.home'),
@@ -22,30 +22,42 @@ class Navbar extends Component
                 'url' => localRoute('home'),
             ],
             [
-                'key' => 'features',
-                'label' => __('web/components/navbar.navigation.features'),
-                'route' => 'features',
-                'url' => '#', // À remplacer plus tard par la vraie route
-            ],
-            [
                 'key' => 'explore',
                 'label' => __('web/components/navbar.navigation.explore'),
                 'route' => 'explore',
-                'url' => localRoute('explore'), // À remplacer plus tard par la vraie route
-            ],
-            [
-                'key' => 'community',
-                'label' => __('web/components/navbar.navigation.community'),
-                'route' => 'community',
-                'url' => '#', // À remplacer plus tard par la vraie route
+                'url' => localRoute('explore'),
             ],
             [
                 'key' => 'about',
                 'label' => __('web/components/navbar.navigation.about'),
                 'route' => 'about',
-                'url' => '#', // À remplacer plus tard par la vraie route
+                'url' => localRoute('about'),
+            ],
+            [
+                'key' => 'contact',
+                'label' => __('web/components/navbar.navigation.contact'),
+                'route' => 'contact',
+                'url' => localRoute('contact'),
             ],
         ];
+
+        // Ajouter le flag 'active' pour chaque lien
+        return array_map(function ($link) {
+            $link['active'] = $this->isLinkActive($link['route']);
+
+            return $link;
+        }, $links);
+    }
+
+    /**
+     * Check if a navigation link is active.
+     */
+    private function isLinkActive(string $routePattern): bool
+    {
+        // Vérifier si la route actuelle correspond au pattern
+        // Supporte les patterns avec wildcard (ex: 'explore.*')
+        return request()->routeIs($routePattern.'.'.app()->getLocale())
+            || request()->routeIs($routePattern.'.*');
     }
 
     /**

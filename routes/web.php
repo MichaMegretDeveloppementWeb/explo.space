@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\Web\About\AboutController;
+use App\Http\Controllers\Web\Contact\ContactController;
 use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\Legal\LegalController;
 use App\Http\Controllers\Web\Place\ExplorePlaceController;
 use App\Http\Controllers\Web\Place\PlaceRequestCreateController;
 use App\Http\Controllers\Web\Place\PlaceShowController as WebPlaceShowController;
+use App\Http\Controllers\Web\Privacy\PrivacyController;
 use App\Support\LocaleUrl;
 use Illuminate\Support\Facades\Route;
 
@@ -21,17 +26,25 @@ foreach ($locales as $locale) {
             )->name("home.$locale");
 
             // Pages statiques
-            Route::get(LocaleUrl::segment('about', $locale), function () {
-                return view('web.pages.about');
-            })->name("about.$locale");
+            Route::get(
+                LocaleUrl::segment('about', $locale),
+                [AboutController::class, 'index']
+            )->name("about.$locale");
 
-            Route::get(LocaleUrl::segment('features', $locale), function () {
-                return view('web.pages.features');
-            })->name("features.$locale");
+            Route::get(
+                LocaleUrl::segment('contact', $locale),
+                [ContactController::class, 'index']
+            )->name("contact.$locale");
 
-            Route::get(LocaleUrl::segment('contact', $locale), function () {
-                return view('web.pages.contact');
-            })->name("contact.$locale");
+            Route::get(
+                LocaleUrl::segment('legal', $locale),
+                [LegalController::class, 'index']
+            )->name("legal.$locale");
+
+            Route::get(
+                LocaleUrl::segment('privacy', $locale),
+                [PrivacyController::class, 'index']
+            )->name("privacy.$locale");
 
             // Explorer
             Route::get(
@@ -53,6 +66,10 @@ foreach ($locales as $locale) {
 
         });
 }
+
+// Sitemap dynamique
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])
+    ->name('sitemap');
 
 // Redirection racine vers langue par défaut
 Route::get('/', function () {

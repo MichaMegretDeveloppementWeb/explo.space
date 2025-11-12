@@ -11,6 +11,8 @@ class ForgotPasswordForm extends Component
 
     /**
      * Validation rules.
+     *
+     * @return array<string, mixed>
      */
     protected function rules(): array
     {
@@ -21,6 +23,8 @@ class ForgotPasswordForm extends Component
 
     /**
      * Custom validation messages.
+     *
+     * @return array<string, string>
      */
     protected function messages(): array
     {
@@ -49,7 +53,7 @@ class ForgotPasswordForm extends Component
         }
     }
 
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View
     {
         return view('livewire.admin.auth.forgot-password-form');
     }
