@@ -18,7 +18,7 @@ class PlaceCreateController extends Controller
     public function __invoke(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
     {
         // Authorization check
-        if (! auth()->check() || ! auth()->user()->isAdmin()) {
+        if (! auth()->check() || ! auth()->user()->hasAdminRights()) {
             abort(403, 'Unauthorized action.');
         }
 

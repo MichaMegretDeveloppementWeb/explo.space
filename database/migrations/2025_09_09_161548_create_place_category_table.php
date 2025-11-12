@@ -17,8 +17,8 @@ return new class extends Migration
             $table->collation('utf8mb4_general_ci');
 
             $table->id();
-            $table->foreignId('place_id')->constrained()->onDelete('cascade');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('place_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
 
             $table->unique(['place_id', 'category_id']);

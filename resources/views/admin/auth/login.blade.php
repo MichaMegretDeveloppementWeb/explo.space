@@ -3,34 +3,46 @@
 @section('title', 'Connexion - Administration')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="max-w-md w-full">
         <!-- Header -->
-        <div class="text-center">
-            <div class="flex justify-center mb-4">
-                <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
-                    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+        <div class="text-center mb-8">
+            <div class="flex justify-center mb-6">
+                <div class="w-14 h-14 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
                     </svg>
                 </div>
             </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
-                Administration
+            <h1 class="text-2xl font-semibold text-gray-900 mb-1">
+                Connexion administrateur
             </h1>
-            <p class="text-gray-600">
-                Explo.space - Connexion administrateur
+            <p class="text-sm text-gray-500">
+                Accédez au panneau d'administration Explo.space
             </p>
         </div>
 
+        <!-- Success Message -->
+        @if (session('success'))
+            <div class="mb-6 bg-green-50 border border-green-200 rounded-xl p-4">
+                <div class="flex items-start">
+                    <svg class="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    <p class="text-sm text-green-700">{{ session('success') }}</p>
+                </div>
+            </div>
+        @endif
+
         <!-- Formulaire Livewire -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
             @livewire('admin.auth.admin-login')
         </div>
 
         <!-- Lien retour site public -->
-        <div class="text-center">
-            <a href="/" class="inline-flex items-center text-sm text-gray-600 hover:text-indigo-600 transition-colors">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="text-center mt-6">
+            <a href="/" class="inline-flex items-center text-sm text-gray-600 hover:text-indigo-600 transition-colors font-medium">
+                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
                 Retour au site

@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Collection;
 interface CategorySelectionRepositoryInterface
 {
     /**
-     * Get all categories with their translations for all locales
+     * Get all active categories ordered by name
      * Used in admin forms to populate category selection dropdowns
-     * Returns categories with eager-loaded translations
+     * Categories don't have translations (internal admin use only)
      *
      * @return Collection<int, \App\Models\Category>
      */

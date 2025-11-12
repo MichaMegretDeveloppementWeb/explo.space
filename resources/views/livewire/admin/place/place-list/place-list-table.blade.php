@@ -58,7 +58,7 @@
                         {{-- Colonne Titre (triable) --}}
                         <th scope="col"
                             wire:click="sortByColumn('title')"
-                            class="group cursor-pointer px-6 py-3.5 text-left text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-100/50">
+                            class="bg-gray-50 group cursor-pointer px-6 py-3.5 text-left text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-100/50">
                             <div class="flex items-center gap-1.5">
                                 <span>Lieu</span>
                                 @if($sortBy === 'title')
@@ -70,14 +70,19 @@
                         </th>
 
                         {{-- Colonne Tags (non triable) --}}
-                        <th scope="col" class="px-6 py-3.5 text-left text-xs font-semibold text-gray-700">
+                        <th scope="col" class="bg-gray-50 px-6 py-3.5 text-left text-xs font-semibold text-gray-700">
                             Thématiques
+                        </th>
+
+                        {{-- Colonne Catégories (non triable) --}}
+                        <th scope="col" class="bg-gray-50 px-6 py-3.5 text-left text-xs font-semibold text-gray-700">
+                            Catégories
                         </th>
 
                         {{-- Colonne Mise à l'affiche (triable) --}}
                         <th scope="col"
                             wire:click="sortByColumn('is_featured')"
-                            class="group cursor-pointer px-6 py-3.5 text-left text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-100/50">
+                            class="bg-gray-50 group cursor-pointer px-6 py-3.5 text-left text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-100/50">
                             <div class="flex items-center gap-1.5">
                                 <span>Affiche</span>
                                 @if($sortBy === 'is_featured')
@@ -91,24 +96,10 @@
                         {{-- Colonne Date de création (triable) --}}
                         <th scope="col"
                             wire:click="sortByColumn('created_at')"
-                            class="group cursor-pointer px-6 py-3.5 text-left text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-100/50">
+                            class="bg-gray-50 group cursor-pointer px-6 py-3.5 text-left text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-100/50">
                             <div class="flex items-center gap-1.5">
                                 <span>Créé</span>
                                 @if($sortBy === 'created_at')
-                                    <x-heroicon-s-chevron-up class="h-3.5 w-3.5 {{ $sortDirection === 'asc' ? 'text-blue-600' : 'rotate-180 text-blue-600' }}" />
-                                @else
-                                    <x-heroicon-o-arrows-up-down class="h-3.5 w-3.5 text-gray-400 opacity-0 group-hover:opacity-100" />
-                                @endif
-                            </div>
-                        </th>
-
-                        {{-- Colonne Dernière modification (triable) --}}
-                        <th scope="col"
-                            wire:click="sortByColumn('updated_at')"
-                            class="group cursor-pointer px-6 py-3.5 text-left text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-100/50">
-                            <div class="flex items-center gap-1.5">
-                                <span>Modifié</span>
-                                @if($sortBy === 'updated_at')
                                     <x-heroicon-s-chevron-up class="h-3.5 w-3.5 {{ $sortDirection === 'asc' ? 'text-blue-600' : 'rotate-180 text-blue-600' }}" />
                                 @else
                                     <x-heroicon-o-arrows-up-down class="h-3.5 w-3.5 text-gray-400 opacity-0 group-hover:opacity-100" />
@@ -121,7 +112,7 @@
                 <tbody class="divide-y divide-gray-200 bg-white">
                     @error('load-data')
                         <tr>
-                            <td colspan="5" class="px-6 py-20 text-center">
+                            <td colspan="6" class="px-6 py-20 text-center">
                                 <div class="flex flex-col items-center justify-center">
                                     <div class="rounded-full bg-red-100 p-3 mb-4">
                                         <x-heroicon-o-exclamation-triangle class="h-8 w-8 text-red-600" />
@@ -170,20 +161,36 @@
 
                             {{-- Tags (pas de lien, juste contenu) --}}
                             <td class="px-6 py-4">
-                                <div class="flex flex-wrap gap-1.5">
+                                <div class="flex gap-1.5">
                                     @foreach($place->tags->take(3) as $tag)
                                         @php
                                             // Sécuriser l'accès à la traduction du tag dans la bonne locale
                                             $tagTranslation = $tag->translations->firstWhere('locale', $locale)
                                                 ?? $tag->translations->first();
                                         @endphp
-                                        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-0.5 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-200">
+                                        <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20 whitespace-nowrap">
                                             {{ $tagTranslation->name ?? $tag->id }}
                                         </span>
                                     @endforeach
                                     @if($place->tags->count() > 3)
-                                        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-0.5 text-xs font-medium text-gray-500 ring-1 ring-inset ring-gray-200">
+                                        <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-500 ring-1 ring-inset ring-blue-600/20">
                                             +{{ $place->tags->count() - 3 }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </td>
+
+                            {{-- Catégories (pas de lien, juste contenu) --}}
+                            <td class="px-6 py-4">
+                                <div class="flex gap-1.5">
+                                    @foreach($place->categories->take(3) as $category)
+                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 whitespace-nowrap">
+                                            {{ $category->name }}
+                                        </span>
+                                    @endforeach
+                                    @if($place->categories->count() > 3)
+                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-0.5 text-xs font-medium text-green-500 ring-1 ring-inset ring-green-600/20">
+                                            +{{ $place->categories->count() - 3 }}
                                         </span>
                                     @endif
                                 </div>
@@ -207,17 +214,10 @@
                                     {{ $place->created_at->format('d/m/Y') }}
                                 </span>
                             </td>
-
-                            {{-- Dernière modification (pas de lien, juste contenu) --}}
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="text-xs text-gray-500">
-                                    {{ $place->updated_at->format('d/m/Y') }}
-                                </span>
-                            </td>
                         </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-20 text-center">
+                                <td colspan="6" class="px-6 py-20 text-center">
                                     <div class="flex flex-col items-center justify-center">
                                         <div class="rounded-full bg-gray-100 p-3 mb-4">
                                             <x-heroicon-o-map-pin class="h-8 w-8 text-gray-400" />

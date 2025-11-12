@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -14,8 +13,12 @@ class Category extends Model
 
     // Catégories internes pour organisation admin uniquement
     // Non visible par les visiteurs (contrairement aux tags)
+    // PAS de traductions (usage interne admin seulement)
 
     protected $fillable = [
+        'name',
+        'slug',
+        'description',
         'color',
         'is_active',
     ];
@@ -25,25 +28,6 @@ class Category extends Model
         return [
             'is_active' => 'boolean',
         ];
-    }
-
-    /**
-     * @return HasMany<CategoryTranslation, $this>
-     */
-    public function translations(): HasMany
-    {
-        return $this->hasMany(CategoryTranslation::class);
-    }
-
-    /**
-     * Get translation for specific locale
-     *
-     * Note: Avoid using this method in loops or with eagerly loaded relations.
-     * Prefer accessing $model->translations->first() to use already loaded data.
-     */
-    public function translate(string $locale): ?CategoryTranslation
-    {
-        return $this->translations->firstWhere('locale', $locale);
     }
 
     /**

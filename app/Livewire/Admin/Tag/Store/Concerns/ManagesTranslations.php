@@ -32,7 +32,7 @@ trait ManagesTranslations
         $sourceTexts = $this->getSourceTexts($sourceLocale);
 
         if (empty($sourceTexts)) {
-            session()->flash('warning', 'Aucun champ à traduire dans la langue source.');
+            $this->dispatch('flash-message', type: 'warning', message: 'Aucun champ à traduire dans la langue source.');
 
             return;
         }
@@ -72,7 +72,7 @@ trait ManagesTranslations
             }
 
         } catch (TranslationException $e) {
-            session()->flash('error', $e->getDisplayMessage());
+            $this->dispatch('flash-message', type: 'error', message: $e->getDisplayMessage());
             Log::warning('Tag translation failed', [
                 'source_locale' => $sourceLocale,
                 'target_locale' => $targetLocale,
@@ -80,7 +80,7 @@ trait ManagesTranslations
                 'error' => $e->getMessage(),
             ]);
         } catch (\Exception $e) {
-            session()->flash('error', 'Une erreur inattendue est survenue lors de la traduction. Veuillez réessayer.');
+            $this->dispatch('flash-message', type: 'error', message: 'Une erreur inattendue est survenue lors de la traduction. Veuillez réessayer.');
             Log::error('Unexpected tag translation error', [
                 'source_locale' => $sourceLocale,
                 'target_locale' => $targetLocale,
@@ -223,12 +223,12 @@ trait ManagesTranslations
                 ? "{$successCount} champ traduit avec succès."
                 : "{$successCount} champs traduits avec succès.";
 
-            session()->flash('success', $message);
+            $this->dispatch('flash-message', type: 'success', message: $message);
         }
 
         if (! empty($failedFields)) {
             $fieldsList = implode(', ', $failedFields);
-            session()->flash('warning', "Certains champs n'ont pas pu être traduits : {$fieldsList}");
+            $this->dispatch('flash-message', type: 'warning', message: "Certains champs n'ont pas pu être traduits : {$fieldsList}");
         }
     }
 

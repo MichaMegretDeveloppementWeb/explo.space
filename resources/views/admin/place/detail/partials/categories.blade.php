@@ -5,8 +5,6 @@
     icon="heroicon-o-folder"
     :count="$categoryCount">
 
-    <x-admin.place.detail.tag-list
-        :items="$place->categories"
-        type="category"
-        locale="fr" />
+    <x-admin.place.detail.category-list
+        :items="$place->categories" />
 </x-admin.place.detail.info-card>

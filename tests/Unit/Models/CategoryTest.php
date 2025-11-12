@@ -3,7 +3,6 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Category;
-use App\Models\CategoryTranslation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -11,27 +10,12 @@ class CategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_category_translation_generates_slug_automatically(): void
-    {
-        $category = Category::factory()->create();
-
-        $translation = new CategoryTranslation([
-            'category_id' => $category->id,
-            'locale' => 'fr',
-            'name' => 'Stations Spatiales',
-            'description' => 'Catégorie pour les stations spatiales',
-        ]);
-        $translation->save();
-
-        $this->assertEquals('stations-spatiales', $translation->slug);
-    }
-
     public function test_category_has_default_values(): void
     {
         $category = Category::factory()->create();
 
         $this->assertTrue($category->is_active);
-        $this->assertEquals('#6B7280', $category->color); // Couleur par défaut différente des tags
+        $this->assertMatchesRegularExpression('/^#[0-9A-F]{6}$/i', $category->color); // Couleur hex aléatoire
         $this->assertTrue($category->isActive());
     }
 
@@ -42,21 +26,17 @@ class CategoryTest extends TestCase
         $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\BelongsToMany::class, $category->places());
     }
 
-    public function test_category_translation_slug_update_when_name_changes(): void
+    public function test_category_slug_doesnt_change_on_update(): void
     {
-        $category = Category::factory()->create();
-
-        $translation = CategoryTranslation::factory()->create([
-            'category_id' => $category->id,
-            'locale' => 'fr',
+        $category = Category::factory()->create([
             'name' => 'Initial Name',
-            'slug' => '', // Force empty slug to trigger auto-generation
+            'slug' => 'initial-name',
         ]);
 
-        $translation->update(['name' => 'Updated Name']);
+        $category->update(['name' => 'Updated Name']);
 
         // Le slug ne devrait pas changer si il existe déjà
-        $this->assertEquals('initial-name', $translation->slug);
+        $this->assertEquals('initial-name', $category->slug);
     }
 
     public function test_category_is_active_helper(): void
@@ -66,5 +46,22 @@ class CategoryTest extends TestCase
 
         $this->assertTrue($activeCategory->isActive());
         $this->assertFalse($inactiveCategory->isActive());
+    }
+
+    public function test_category_has_required_attributes(): void
+    {
+        $category = Category::factory()->create([
+            'name' => 'Test Category',
+            'slug' => 'test-category',
+            'description' => 'Test description',
+            'color' => '#3B82F6',
+            'is_active' => true,
+        ]);
+
+        $this->assertEquals('Test Category', $category->name);
+        $this->assertEquals('test-category', $category->slug);
+        $this->assertEquals('Test description', $category->description);
+        $this->assertEquals('#3B82F6', $category->color);
+        $this->assertTrue($category->is_active);
     }
 }

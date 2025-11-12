@@ -11,17 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('admin_invitations', function (Blueprint $table) {
             $table->engine('InnoDB');
             $table->charset('utf8mb4');
             $table->collation('utf8mb4_general_ci');
 
             $table->id();
-            $table->string('color', 7)->default('#6B7280'); // Couleur différente des tags pour usage interne
-            $table->boolean('is_active')->default(true);
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('token', 64)->unique();
+            $table->timestamp('accepted_at')->nullable();
+            $table->timestamp('expires_at');
             $table->timestamps();
 
-            $table->index(['is_active']);
+            // Index sur user_id et token
+            $table->index('user_id');
+            $table->index('token');
         });
     }
 
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('admin_invitations');
     }
 };

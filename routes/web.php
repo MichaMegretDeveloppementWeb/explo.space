@@ -51,11 +51,6 @@ foreach ($locales as $locale) {
                 [PlaceRequestCreateController::class, 'create']
             )->name("place_requests.create.$locale");
 
-            // Tags
-            Route::get('tags/{slug}', function ($locale, $slug) {
-                return view('web.tags.show', compact('slug'));
-            })->name("tags.show.$locale");
-
         });
 }
 

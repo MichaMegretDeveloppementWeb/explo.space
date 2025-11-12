@@ -148,7 +148,7 @@ trait ManagesSaving
      */
     private function handlePlaceNotFoundException(PlaceNotFoundException $e): void
     {
-        session()->flash('error', $e->getMessage());
+        $this->dispatch('flash-message', type: 'error', message: $e->getMessage());
 
         Log::warning('Place not found during save', [
             'place_id' => $this->placeId,
@@ -162,7 +162,7 @@ trait ManagesSaving
      */
     private function handlePhotoValidationException(PhotoValidationException $e): void
     {
-        session()->flash('error', $e->getMessage());
+        $this->dispatch('flash-message', type: 'error', message: $e->getMessage());
 
         Log::warning('Photo validation failed during save', [
             'mode' => $this->mode,
@@ -177,7 +177,7 @@ trait ManagesSaving
      */
     private function handlePhotoProcessingException(PhotoProcessingException $e): void
     {
-        session()->flash('error', $e->getMessage());
+        $this->dispatch('flash-message', type: 'error', message: $e->getMessage());
 
         Log::error('Photo processing failed during save', [
             'mode' => $this->mode,
@@ -190,7 +190,7 @@ trait ManagesSaving
 
     private function handlePhotoUnexpectedException(UnexpectedPhotoException $e): void
     {
-        session()->flash('error', $e->getMessage());
+        $this->dispatch('flash-message', type: 'error', message: $e->getMessage());
 
         Log::error('Photo processing catch unexpected error', [
             'mode' => $this->mode,
@@ -212,7 +212,7 @@ trait ManagesSaving
             $message .= ' (Détail technique : '.$e->getMessage().')';
         }
 
-        session()->flash('error', $message);
+        $this->dispatch('flash-message', type: 'error', message: $message);
 
         Log::error('Place save failed', [
             'mode' => $this->mode,

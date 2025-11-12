@@ -19,7 +19,7 @@ class PlaceEditController extends Controller
     public function __invoke(int $id, Request $request): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
     {
         // Authorization check
-        if (! auth()->check() || ! auth()->user()->isAdmin()) {
+        if (! auth()->check() || ! auth()->user()->hasAdminRights()) {
             return redirect('/')->with('error', 'Accès non autorisé.');
         }
 

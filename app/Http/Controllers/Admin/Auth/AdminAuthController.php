@@ -104,6 +104,6 @@ class AdminAuthController extends Controller
     {
         $this->authService->logout();
 
-        return redirect('/');
+        return redirect()->route('admin.login');
     }
 }

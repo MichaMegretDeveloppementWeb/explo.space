@@ -11,7 +11,7 @@ class PlaceListRepository implements PlaceListRepositoryInterface
     /**
      * Récupérer les lieux paginés avec filtres, tri et eager loading
      *
-     * @param  array{search: string, tags: array<int, string>, locale: string}  $filters
+     * @param  array{search: string, tags: array<int, string>, categories: array<int, int>, locale: string}  $filters
      * @param  array{column: string, direction: string}  $sorting
      * @return LengthAwarePaginator<int, \App\Models\Place>
      */
@@ -51,6 +51,13 @@ class PlaceListRepository implements PlaceListRepositoryInterface
                     $subQuery->where('locale', $filters['locale'])
                         ->whereIn('slug', $filters['tags']);
                 });
+            });
+        }
+
+        // Filtrage par catégories
+        if (! empty($filters['categories'])) {
+            $query->whereHas('categories', function ($q) use ($filters) {
+                $q->whereIn('categories.id', $filters['categories']);
             });
         }
 

@@ -25,7 +25,7 @@
             id="{{ $name }}"
             name="{{ $name }}"
             {{ $required ? 'required' : '' }}
-            {{ $placeholder ? "placeholder=$placeholder" : "" }}
+            placeholder="{{ $placeholder ?? "" }}"
             {{ $wire }}
             {{ $attributes->except(['class', 'label', 'name', 'type', 'required', 'placeholder', 'helperText', 'error', 'wire']) }}
             class="block w-full rounded-lg border border-gray-300 bg-white text-sm text-gray-900 placeholder:text-gray-400 transition-colors duration-150

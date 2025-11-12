@@ -3,7 +3,6 @@
 namespace Tests\Unit\Repositories\Admin\Place\Detail;
 
 use App\Models\Category;
-use App\Models\CategoryTranslation;
 use App\Models\Photo;
 use App\Models\Place;
 use App\Models\PlaceTranslation;
@@ -75,14 +74,13 @@ class PlaceDetailRepositoryTest extends TestCase
         $this->assertTrue($result->tags->first()->relationLoaded('translations'));
     }
 
-    public function test_get_place_with_relations_loads_categories_with_translations(): void
+    public function test_get_place_with_relations_loads_categories(): void
     {
         $place = Place::factory()->create();
 
-        $category = Category::factory()->create(['is_active' => true]);
-        CategoryTranslation::factory()->create([
-            'category_id' => $category->id,
-            'locale' => 'fr',
+        $category = Category::factory()->create([
+            'is_active' => true,
+            'name' => 'Test Category',
         ]);
 
         $place->categories()->attach($category);
@@ -91,7 +89,7 @@ class PlaceDetailRepositoryTest extends TestCase
 
         $this->assertTrue($result->relationLoaded('categories'));
         $this->assertCount(1, $result->categories);
-        $this->assertTrue($result->categories->first()->relationLoaded('translations'));
+        $this->assertEquals('Test Category', $result->categories->first()->name);
     }
 
     public function test_get_place_with_relations_loads_photos_ordered_correctly(): void

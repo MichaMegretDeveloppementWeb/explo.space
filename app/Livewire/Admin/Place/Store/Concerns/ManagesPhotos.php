@@ -52,7 +52,7 @@ trait ManagesPhotos
             $this->photos = array_merge($this->photos, $this->pendingPhotos);
             $this->pendingPhotos = [];
 
-            session()->flash('photo_success', $addedCount.' photo(s) validée(s)');
+            $this->dispatch('flash-message', type: 'photo_success', message: $addedCount.' photo(s) validée(s)');
 
         } catch (ValidationException $e) {
             $this->addError('pendingPhotos', $e->getMessage());

@@ -3,66 +3,49 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
-use App\Models\CategoryTranslation;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
     /**
-     * Seed categories with their translations (FR + EN)
+     * Seed categories (no translations, internal admin use only)
      */
     public function run(): void
     {
         // 1. Space Agencies Category
-        $spaceAgencyCategory = Category::factory()->create([
+        Category::factory()->create([
+            'name' => 'Agences spatiales',
+            'slug' => 'agences-spatiales',
+            'description' => 'Centres de contrôle et agences spatiales mondiales',
             'color' => '#3B82F6',
             'is_active' => true,
         ]);
 
-        // French translation
-        CategoryTranslation::factory()->create([
-            'category_id' => $spaceAgencyCategory->id,
-            'locale' => 'fr',
-            'name' => 'Agences spatiales',
-            'slug' => 'agences-spatiales',
-            'description' => 'Centres de contrôle et agences spatiales mondiales',
-            'status' => 'published',
-        ]);
-
-        // English translation
-        CategoryTranslation::factory()->create([
-            'category_id' => $spaceAgencyCategory->id,
-            'locale' => 'en',
-            'name' => 'Space Agencies',
-            'slug' => 'space-agencies',
-            'description' => 'Global space agencies and control centers',
-            'status' => 'published',
-        ]);
-
         // 2. Launch Sites Category
-        $launchSiteCategory = Category::factory()->create([
+        Category::factory()->create([
+            'name' => 'Sites de lancement',
+            'slug' => 'sites-de-lancement',
+            'description' => 'Bases de lancement de fusées et missions spatiales',
             'color' => '#EF4444',
             'is_active' => true,
         ]);
 
-        // French translation
-        CategoryTranslation::factory()->create([
-            'category_id' => $launchSiteCategory->id,
-            'locale' => 'fr',
-            'name' => 'Sites de lancement',
-            'slug' => 'sites-de-lancement',
-            'description' => 'Bases de lancement de fusées et missions spatiales',
-            'status' => 'published',
+        // 3. Museums Category
+        Category::factory()->create([
+            'name' => 'Musées et expositions',
+            'slug' => 'musees-et-expositions',
+            'description' => 'Musées dédiés à l\'espace et expositions temporaires',
+            'color' => '#10B981',
+            'is_active' => true,
         ]);
 
-        // English translation
-        CategoryTranslation::factory()->create([
-            'category_id' => $launchSiteCategory->id,
-            'locale' => 'en',
-            'name' => 'Launch Sites',
-            'slug' => 'launch-sites',
-            'description' => 'Rocket launch bases and space mission facilities',
-            'status' => 'published',
+        // 4. Observatories Category
+        Category::factory()->create([
+            'name' => 'Observatoires',
+            'slug' => 'observatoires',
+            'description' => 'Observatoires astronomiques et télescopes',
+            'color' => '#8B5CF6',
+            'is_active' => true,
         ]);
     }
 }

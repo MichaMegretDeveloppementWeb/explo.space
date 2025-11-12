@@ -66,7 +66,7 @@
                         wire:click="delete"
                         wire:loading.attr="disabled"
                         class="inline-flex justify-center items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
-                    <span wire:loading.remove class="flex gap-2 items-center">
+                    <span wire:loading.remove.flex class="flex gap-2 items-center">
                         <x-heroicon-o-trash class="w-4 h-4" />
                         Supprimer définitivement
                     </span>

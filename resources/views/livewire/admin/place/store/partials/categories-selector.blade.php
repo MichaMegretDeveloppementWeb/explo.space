@@ -12,7 +12,7 @@
                        value="{{ $category->id }}"
                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                 <span class="ml-3 text-sm text-gray-700">
-                    {{ $category->translations->first()->name ?? 'Sans nom' }}
+                    {{ $category->name }}
                 </span>
             </label>
         @empty
@@ -30,7 +30,7 @@
         <div class="mt-3 flex flex-wrap gap-2">
             @foreach ($availableCategories->whereIn('id', $categoryIds) as $category)
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                    {{ $category->translations->first()->name ?? 'Sans nom' }}
+                    {{ $category->name }}
                     <button type="button"
                             wire:click="$set('categoryIds', {{ json_encode(array_values(array_diff($categoryIds, [$category->id]))) }})"
                             class="ml-2 inline-flex items-center p-0.5 text-gray-400 hover:text-gray-600">

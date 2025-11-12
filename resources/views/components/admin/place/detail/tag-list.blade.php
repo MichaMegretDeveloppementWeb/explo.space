@@ -10,7 +10,7 @@
     <div class="flex flex-wrap gap-2">
         @foreach($items as $item)
             @php
-                $translation = $item->translations->firstWhere('locale', $locale);
+                $translation = $item->translations?->where('locale', $locale)->first();
                 $name = $translation?->name ?? "Sans nom ({$locale})";
             @endphp
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200">

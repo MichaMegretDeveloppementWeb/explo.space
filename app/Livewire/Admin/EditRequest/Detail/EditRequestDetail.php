@@ -72,7 +72,7 @@ class EditRequestDetail extends Component
         $status = $this->editRequest->status;
 
         if (! $status->canBeRefused()) {
-            session()->flash('error', 'Cette demande ne peut pas être refusée.');
+            $this->dispatch('flash-message', type: 'error', message: 'Cette demande ne peut pas être refusée.');
             $this->closeRefusalModal();
 
             return;
@@ -93,9 +93,9 @@ class EditRequestDetail extends Component
                 'processedByAdmin:id,name',
             ]);
 
-            session()->flash('success', 'La demande a été refusée avec succès.');
+            $this->dispatch('flash-message', type: 'success', message: 'La demande a été refusée avec succès.');
         } else {
-            session()->flash('error', 'Une erreur est survenue lors du refus.');
+            $this->dispatch('flash-message', type: 'error', message: 'Une erreur est survenue lors du refus.');
         }
 
         $this->closeRefusalModal();
@@ -108,7 +108,7 @@ class EditRequestDetail extends Component
     {
         // Vérifier que c'est bien un signalement
         if (! $this->editRequest->isSignalement()) {
-            session()->flash('error', 'Cette action n\'est disponible que pour les signalements simples.');
+            $this->dispatch('flash-message', type: 'error', message: 'Cette action n\'est disponible que pour les signalements simples.');
 
             return;
         }
@@ -127,9 +127,9 @@ class EditRequestDetail extends Component
                 'processedByAdmin:id,name',
             ]);
 
-            session()->flash('success', 'Le signalement a été marqué comme traité avec succès.');
+            $this->dispatch('flash-message', type: 'success', message: 'Le signalement a été marqué comme traité avec succès.');
         } else {
-            session()->flash('error', 'Une erreur est survenue lors de l\'acceptation.');
+            $this->dispatch('flash-message', type: 'error', message: 'Une erreur est survenue lors de l\'acceptation.');
         }
     }
 

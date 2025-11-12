@@ -18,8 +18,6 @@
      }"
      @scroll-to-validation-error.window="scrollToFirstError()">
 
-    <x-admin.flash-messages/>
-
     @include('livewire.admin.tag.store.partials.form-header')
 
     <form wire:submit="save" novalidate class="space-y-6">

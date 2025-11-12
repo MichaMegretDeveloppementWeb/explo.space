@@ -16,8 +16,13 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->unique()->words(2, true);
+
         return [
-            'color' => '#6B7280',
+            'name' => $name,
+            'slug' => \Illuminate\Support\Str::slug($name),
+            'description' => fake()->sentence(),
+            'color' => fake()->hexColor(),
             'is_active' => true,
         ];
     }

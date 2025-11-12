@@ -10,8 +10,8 @@ class PlaceListFilterValidationService
     /**
      * Valider et nettoyer les filtres
      *
-     * @param  array{search?: string, tags?: array<int, string>, locale?: string}  $filters
-     * @return array{search: string, tags: array<int, string>, locale: string}
+     * @param  array{search?: string, tags?: array<int, string>, categories?: array<int, int>, locale?: string}  $filters
+     * @return array{search: string, tags: array<int, string>, categories: array<int, int>, locale: string}
      *
      * @throws ValidationException
      */
@@ -21,6 +21,8 @@ class PlaceListFilterValidationService
             'search' => 'nullable|string|max:255',
             'tags' => 'nullable|array',
             'tags.*' => 'string|max:255',
+            'categories' => 'nullable|array',
+            'categories.*' => 'integer|min:1',
             'locale' => 'nullable|string|in:fr,en',
         ]);
 
@@ -33,6 +35,7 @@ class PlaceListFilterValidationService
         return [
             'search' => trim($validated['search'] ?? ''),
             'tags' => $validated['tags'] ?? [],
+            'categories' => $validated['categories'] ?? [],
             'locale' => $validated['locale'] ?? config('locales.default', 'fr'),
         ];
     }
@@ -40,10 +43,10 @@ class PlaceListFilterValidationService
     /**
      * Vérifier si les filtres sont vides
      *
-     * @param  array{search: string, tags: array<int, string>, locale: string}  $filters
+     * @param  array{search: string, tags: array<int, string>, categories: array<int, int>, locale: string}  $filters
      */
     public function areFiltersEmpty(array $filters): bool
     {
-        return empty($filters['search']) && empty($filters['tags']);
+        return empty($filters['search']) && empty($filters['tags']) && empty($filters['categories']);
     }
 }

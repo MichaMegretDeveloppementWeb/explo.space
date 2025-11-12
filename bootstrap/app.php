@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'set-locale' => \App\Http\Middleware\SetLocale::class,
             'admin' => \App\Http\Middleware\Admin::class,
+            'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         ]);
 
     })

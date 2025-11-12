@@ -108,7 +108,7 @@ trait ManagesSaving
         $service = app(TagUpdateService::class);
         $tag = $service->update($this->tagId, $data);
 
-        session()->flash('success', 'Tag mis à jour avec succès.');
+        $this->dispatch('flash-message', type: 'success', message: 'Tag mis à jour avec succès.');
 
         // Stay on edit page after update (no redirect)
         $this->loadTag($tag->id);
@@ -135,7 +135,7 @@ trait ManagesSaving
      */
     private function handleGenericException(\Throwable $e): void
     {
-        session()->flash('error', 'Une erreur inattendue est survenue. Veuillez réessayer.');
+        $this->dispatch('flash-message', type: 'error', message: 'Une erreur inattendue est survenue. Veuillez réessayer.');
 
         Log::error('Unexpected error during tag save', [
             'mode' => $this->mode,

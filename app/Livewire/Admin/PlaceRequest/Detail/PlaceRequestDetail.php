@@ -53,7 +53,7 @@ class PlaceRequestDetail extends Component
         $status = $this->placeRequest->status;
 
         if (! $status->canBeRefused()) {
-            session()->flash('error', 'Cette proposition ne peut pas être refusée.');
+            $this->dispatch('flash-message', type: 'error', message: 'Cette proposition ne peut pas être refusée.');
             $this->closeRefusalModal();
 
             return;
@@ -74,9 +74,9 @@ class PlaceRequestDetail extends Component
                 'processedByAdmin:id,name',
             ]);
 
-            session()->flash('success', 'La proposition a été refusée avec succès.');
+            $this->dispatch('flash-message', type: 'success', message: 'La proposition a été refusée avec succès.');
         } else {
-            session()->flash('error', 'Une erreur est survenue lors du refus.');
+            $this->dispatch('flash-message', type: 'error', message: 'Une erreur est survenue lors du refus.');
         }
 
         $this->closeRefusalModal();

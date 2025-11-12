@@ -52,16 +52,19 @@ trait ManagesLoadData
             $filterService->validate([
                 'search' => $this->search,
                 'tags' => $this->tags,
+                'categories' => $this->categories,
                 'locale' => $this->locale,
             ]);
         } catch (ValidationException $e) {
             // Réinitialiser uniquement les filtres
             $this->search = '';
             $this->tags = [];
+            $this->categories = [];
             $this->locale = 'fr';
             $this->dispatch('filters:updated',
                 search: $this->search,
                 tags: $this->tags,
+                categories: $this->categories,
                 locale: $this->locale
             );
             $hasErrors = true;
@@ -91,6 +94,7 @@ trait ManagesLoadData
                 [
                     'search' => $this->search,
                     'tags' => $this->tags,
+                    'categories' => $this->categories,
                     'locale' => $this->locale,
                 ],
                 [
@@ -121,6 +125,7 @@ trait ManagesLoadData
     {
         $this->search = '';
         $this->tags = [];
+        $this->categories = [];
         $this->locale = 'fr';
         $this->sortBy = 'created_at';
         $this->sortDirection = 'desc';

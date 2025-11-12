@@ -25,6 +25,9 @@ class PlaceListTable extends Component
     /** @var array<int, string> */
     public array $tags = [];
 
+    /** @var array<int, int> */
+    public array $categories = [];
+
     public string $locale = 'fr';
 
     /**
@@ -42,13 +45,14 @@ class PlaceListTable extends Component
     /**
      * Initialiser depuis les props du parent
      *
-     * @param  array{search: string, tags: array<int, string>, locale: string}  $initialFilters
+     * @param  array{search: string, tags: array<int, string>, categories: array<int, int>, locale: string}  $initialFilters
      * @param  array{sortBy: string, sortDirection: string}  $initialSorting
      */
     public function mount(array $initialFilters, array $initialSorting, int $initialPerPage): void
     {
         $this->search = $initialFilters['search'] ?? '';
         $this->tags = $initialFilters['tags'] ?? [];
+        $this->categories = $initialFilters['categories'] ?? [];
         $this->locale = $initialFilters['locale'] ?? 'fr';
 
         $this->sortBy = $initialSorting['sortBy'] ?? 'created_at';
@@ -72,12 +76,14 @@ class PlaceListTable extends Component
      * Écouter les changements de filtres
      *
      * @param  array<int, string>  $tags
+     * @param  array<int, int>  $categories
      */
     #[On('filters:updated')]
-    public function updateFiltersFromEvent(string $search, array $tags, string $locale): void
+    public function updateFiltersFromEvent(string $search, array $tags, array $categories, string $locale): void
     {
         $this->search = $search;
         $this->tags = $tags;
+        $this->categories = $categories;
         $this->locale = $locale;
 
         // Réinitialiser la pagination lors d'un changement de filtre

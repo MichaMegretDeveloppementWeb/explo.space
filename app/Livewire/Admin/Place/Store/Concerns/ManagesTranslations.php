@@ -85,8 +85,9 @@ trait ManagesTranslations
             $this->isTranslatedFromSource = true;
             $this->showSpecialTranslateButton = false;
 
-            session()->flash('translation_success',
-                "Contenu traduit avec succès depuis {$this->detectedLanguageName}."
+            $this->dispatch('flash-message',
+                type: 'translation_success',
+                message: "Contenu traduit avec succès depuis {$this->detectedLanguageName}."
             );
 
         } catch (\App\Exceptions\Translation\TranslationException $e) {
@@ -182,8 +183,9 @@ trait ManagesTranslations
                 );
                 $languageName = $languageNames[$sourceLang] ?? strtoupper($sourceLang);
 
-                session()->flash('translation_success',
-                    "Champ traduit avec succès depuis {$languageName}."
+                $this->dispatch('flash-message',
+                    type: 'translation_success',
+                    message: "Champ traduit avec succès depuis {$languageName}."
                 );
             } else {
                 $this->addError('translation', 'La traduction a échoué.');
@@ -232,7 +234,7 @@ trait ManagesTranslations
         $sourceTexts = $this->getSourceTexts($sourceLocale);
 
         if (empty($sourceTexts)) {
-            session()->flash('warning', 'Aucun champ à traduire dans la langue source.');
+            $this->dispatch('flash-message', type: 'warning', message: 'Aucun champ à traduire dans la langue source.');
 
             return;
         }
@@ -272,7 +274,7 @@ trait ManagesTranslations
             }
 
         } catch (TranslationException $e) {
-            session()->flash('error', $e->getDisplayMessage());
+            $this->dispatch('flash-message', type: 'error', message: $e->getDisplayMessage());
             Log::warning('Translation failed', [
                 'source_locale' => $sourceLocale,
                 'target_locale' => $targetLocale,
@@ -280,7 +282,7 @@ trait ManagesTranslations
                 'error' => $e->getMessage(),
             ]);
         } catch (\Exception $e) {
-            session()->flash('error', 'Une erreur inattendue est survenue lors de la traduction. Veuillez réessayer.');
+            $this->dispatch('flash-message', type: 'error', message: 'Une erreur inattendue est survenue lors de la traduction. Veuillez réessayer.');
             Log::error('Unexpected translation error', [
                 'source_locale' => $sourceLocale,
                 'target_locale' => $targetLocale,
@@ -384,12 +386,12 @@ trait ManagesTranslations
 
         // Show appropriate message
         if ($successCount > 0 && empty($failedFields)) {
-            session()->flash('success', "{$successCount} champ(s) traduit(s) avec succès.");
+            $this->dispatch('flash-message', type: 'success', message: "{$successCount} champ(s) traduit(s) avec succès.");
         } elseif ($successCount > 0 && ! empty($failedFields)) {
             $fieldsList = implode(', ', $failedFields);
-            session()->flash('warning', "{$successCount} champ(s) traduit(s). Échec pour : {$fieldsList}");
+            $this->dispatch('flash-message', type: 'warning', message: "{$successCount} champ(s) traduit(s). Échec pour : {$fieldsList}");
         } else {
-            session()->flash('error', 'Aucun champ n\'a pu être traduit.');
+            $this->dispatch('flash-message', type: 'error', message: 'Aucun champ n\'a pu être traduit.');
         }
     }
 

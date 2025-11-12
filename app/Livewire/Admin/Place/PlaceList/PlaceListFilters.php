@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Place\PlaceList;
 
+use App\Contracts\Repositories\Admin\Category\CategorySelectionRepositoryInterface;
 use App\Services\Admin\Tag\TagSelectionService;
 use Livewire\Component;
 
@@ -14,6 +15,9 @@ class PlaceListFilters extends Component
 
     /** @var array<int, string> */
     public array $tags = [];
+
+    /** @var array<int, int> */
+    public array $categories = [];
 
     public string $locale = 'fr';
 
@@ -38,18 +42,40 @@ class PlaceListFilters extends Component
     public array $tagSuggestions = [];
 
     /**
+     * Recherche de catégories (autosuggestion)
+     */
+    public string $categorySearchInput = '';
+
+    /**
+     * Liste complète des catégories disponibles (chargée une seule fois)
+     * Utilisée comme source pour le filtrage côté PHP
+     *
+     * @var array<int, array{id: int, name: string}>
+     */
+    public array $availableCategories = [];
+
+    /**
+     * Catégories filtrées affichées dans les suggestions
+     *
+     * @var array<int, array{id: int, name: string}>
+     */
+    public array $categorySuggestions = [];
+
+    /**
      * Initialiser depuis les props du parent
      *
-     * @param  array{search: string, tags: array<int, string>, locale: string}  $initialFilters
+     * @param  array{search: string, tags: array<int, string>, categories: array<int, int>, locale: string}  $initialFilters
      */
     public function mount(array $initialFilters): void
     {
         $this->search = $initialFilters['search'] ?? '';
         $this->tags = $initialFilters['tags'] ?? [];
+        $this->categories = $initialFilters['categories'] ?? [];
         $this->locale = $initialFilters['locale'] ?? 'fr';
 
-        // Charger tous les tags disponibles UNE SEULE FOIS
+        // Charger tous les tags et catégories disponibles UNE SEULE FOIS
         $this->loadAvailableTags();
+        $this->loadAvailableCategories();
     }
 
     /**
@@ -179,6 +205,104 @@ class PlaceListFilters extends Component
     }
 
     /**
+     * Charger toutes les catégories disponibles depuis la DB
+     * Appelé uniquement au mount() (les catégories n'ont pas de traductions)
+     */
+    private function loadAvailableCategories(): void
+    {
+        $categoryRepository = app(CategorySelectionRepositoryInterface::class);
+        $categories = $categoryRepository->getAll();
+
+        $this->availableCategories = $categories->map(fn ($category) => [
+            'id' => $category->id,
+            'name' => $category->name,
+        ])->toArray();
+
+        // Initialiser les suggestions avec toutes les catégories disponibles
+        $this->filterCategorySuggestions();
+    }
+
+    /**
+     * Filtrer les suggestions de catégories côté PHP (instantané, pas de requête DB)
+     * Appelé à chaque modification du champ de recherche
+     */
+    public function updatedCategorySearchInput(): void
+    {
+        $this->filterCategorySuggestions();
+    }
+
+    /**
+     * Filtrer les catégories disponibles selon la recherche
+     * Filtrage en PHP sur le tableau $availableCategories, pas de requête DB
+     */
+    private function filterCategorySuggestions(): void
+    {
+        $query = trim($this->categorySearchInput);
+
+        if (strlen($query) === 0) {
+            // Aucune recherche : afficher toutes les catégories disponibles
+            $this->categorySuggestions = $this->availableCategories;
+
+            return;
+        }
+
+        // Recherche case-insensitive sur le nom
+        $this->categorySuggestions = array_values(array_filter(
+            $this->availableCategories,
+            fn ($category) => stripos($category['name'], $query) !== false
+        ));
+
+        // Optionnel : limiter à 100 résultats pour performance d'affichage
+        if (count($this->categorySuggestions) > 100) {
+            $this->categorySuggestions = array_slice($this->categorySuggestions, 0, 100);
+        }
+    }
+
+    /**
+     * Récupérer les noms des catégories sélectionnées
+     * Computed property pour la vue
+     *
+     * @return array<int, string> [id => name]
+     */
+    public function getSelectedCategoryNamesProperty(): array
+    {
+        $names = [];
+        foreach ($this->categories as $categoryId) {
+            foreach ($this->availableCategories as $category) {
+                if ($category['id'] === $categoryId) {
+                    $names[$categoryId] = $category['name'];
+                    break;
+                }
+            }
+        }
+
+        return $names;
+    }
+
+    /**
+     * Ajouter une catégorie sélectionnée
+     */
+    public function addCategory(int $categoryId): void
+    {
+        if (! in_array($categoryId, $this->categories, true)) {
+            $this->categories[] = $categoryId;
+            $this->applyFilters();
+        }
+
+        $this->categorySearchInput = '';
+        $this->categorySuggestions = $this->availableCategories;
+    }
+
+    /**
+     * Retirer une catégorie
+     */
+    public function removeCategory(int $categoryId): void
+    {
+        $this->categories = array_values(array_filter($this->categories, fn ($id) => $id !== $categoryId));
+        $this->applyFilters();
+    }
+
+    /**
      * Appliquer les filtres (déclenche événement)
      */
     public function applyFilters(): void
@@ -187,6 +311,7 @@ class PlaceListFilters extends Component
         $this->dispatch('filters:updated',
             search: $this->search,
             tags: $this->tags,
+            categories: $this->categories,
             locale: $this->locale
         );
     }
@@ -198,9 +323,12 @@ class PlaceListFilters extends Component
     {
         $this->search = '';
         $this->tags = [];
+        $this->categories = [];
         $this->locale = 'fr';
         $this->tagSearchInput = '';
+        $this->categorySearchInput = '';
         $this->tagSuggestions = $this->availableTags;
+        $this->categorySuggestions = $this->availableCategories;
 
         $this->applyFilters();
     }

@@ -31,9 +31,14 @@ class PlaceDeleteController extends Controller
                 ->back()
                 ->with('error', 'Une erreur est survenue lors de la suppression du lieu.');
         } catch (\Exception $e) {
+            $message = 'Une erreur est survenue lors de la suppression du lieu.';
+            if (app()->environment() !== 'production') {
+                $message .= ' '.$e->getMessage();
+            }
+
             return redirect()
                 ->back()
-                ->with('error', $e->getMessage());
+                ->with('error', $message);
         }
     }
 }

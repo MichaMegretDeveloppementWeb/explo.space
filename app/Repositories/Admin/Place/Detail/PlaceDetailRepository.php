@@ -26,9 +26,8 @@ class PlaceDetailRepository implements PlaceDetailRepositoryInterface
             'tags' => fn ($q) => $q->where('is_active', true),
             'tags.translations' => fn ($q) => $q->orderBy('locale'),
 
-            // Catégories avec leurs traductions
-            'categories' => fn ($q) => $q->where('is_active', true),
-            'categories.translations' => fn ($q) => $q->orderBy('locale'),
+            // Catégories (pas de traductions, usage interne admin uniquement)
+            'categories' => fn ($q) => $q->where('is_active', true)->orderBy('name'),
 
             // Photos triées (principale en premier)
             'photos' => fn ($q) => $q->orderByDesc('is_main')

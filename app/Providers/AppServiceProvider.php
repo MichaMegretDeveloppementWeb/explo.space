@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Contracts\Repositories\Admin\Category\CategorySelectionRepositoryInterface;
+use App\Contracts\Repositories\Admin\Category\Create\CategoryCreateRepositoryInterface;
+use App\Contracts\Repositories\Admin\Category\Edit\CategoryUpdateRepositoryInterface;
+use App\Contracts\Repositories\Admin\Category\List\CategoryListRepositoryInterface;
 use App\Contracts\Repositories\Admin\Dashboard\DashboardStatsRepositoryInterface;
 use App\Contracts\Repositories\Admin\EditRequest\Detail\EditRequestDetailRepositoryInterface;
 use App\Contracts\Repositories\Admin\EditRequest\EditRequestListRepositoryInterface;
@@ -12,6 +15,9 @@ use App\Contracts\Repositories\Admin\Place\Edit\PlaceUpdateRepositoryInterface;
 use App\Contracts\Repositories\Admin\Place\Management\PlaceDeleteRepositoryInterface;
 use App\Contracts\Repositories\Admin\Place\PlaceListRepositoryInterface;
 use App\Contracts\Repositories\Admin\PlaceRequest\PlaceRequestListRepositoryInterface;
+use App\Contracts\Repositories\Admin\Settings\AdminList\AdminListRepositoryInterface;
+use App\Contracts\Repositories\Admin\Settings\Invitation\InvitationRepositoryInterface;
+use App\Contracts\Repositories\Admin\Settings\User\UserManagementRepositoryInterface;
 use App\Contracts\Repositories\Admin\Tag\Create\TagCreateRepositoryInterface;
 use App\Contracts\Repositories\Admin\Tag\Edit\TagUpdateRepositoryInterface;
 use App\Contracts\Repositories\Admin\Tag\TagListRepositoryInterface;
@@ -28,6 +34,9 @@ use App\Contracts\Services\Admin\EditRequest\Detail\EditRequestTranslationServic
 use App\Contracts\Services\GeocodingServiceInterface;
 use App\Contracts\Translation\TranslationStrategyInterface;
 use App\Repositories\Admin\Category\CategorySelectionRepository;
+use App\Repositories\Admin\Category\Create\CategoryCreateRepository;
+use App\Repositories\Admin\Category\Edit\CategoryUpdateRepository;
+use App\Repositories\Admin\Category\List\CategoryListRepository;
 use App\Repositories\Admin\Dashboard\DashboardStatsRepository;
 use App\Repositories\Admin\EditRequest\Detail\EditRequestDetailRepository;
 use App\Repositories\Admin\EditRequest\EditRequestListRepository;
@@ -37,6 +46,9 @@ use App\Repositories\Admin\Place\Edit\PlaceUpdateRepository;
 use App\Repositories\Admin\Place\Management\PlaceDeleteRepository;
 use App\Repositories\Admin\Place\PlaceListRepository;
 use App\Repositories\Admin\PlaceRequest\PlaceRequestListRepository;
+use App\Repositories\Admin\Settings\AdminList\AdminListRepository;
+use App\Repositories\Admin\Settings\Invitation\InvitationRepository;
+use App\Repositories\Admin\Settings\User\UserManagementRepository;
 use App\Repositories\Admin\Tag\Create\TagCreateRepository;
 use App\Repositories\Admin\Tag\Edit\TagUpdateRepository;
 use App\Repositories\Admin\Tag\TagListRepository;
@@ -110,6 +122,21 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            CategoryListRepositoryInterface::class,
+            CategoryListRepository::class
+        );
+
+        $this->app->bind(
+            CategoryCreateRepositoryInterface::class,
+            CategoryCreateRepository::class
+        );
+
+        $this->app->bind(
+            CategoryUpdateRepositoryInterface::class,
+            CategoryUpdateRepository::class
+        );
+
+        $this->app->bind(
             DashboardStatsRepositoryInterface::class,
             DashboardStatsRepository::class
         );
@@ -167,6 +194,21 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             TagUpdateRepositoryInterface::class,
             TagUpdateRepository::class
+        );
+
+        $this->app->bind(
+            UserManagementRepositoryInterface::class,
+            UserManagementRepository::class
+        );
+
+        $this->app->bind(
+            InvitationRepositoryInterface::class,
+            InvitationRepository::class
+        );
+
+        $this->app->bind(
+            AdminListRepositoryInterface::class,
+            AdminListRepository::class
         );
 
         // Services

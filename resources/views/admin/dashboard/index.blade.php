@@ -70,7 +70,7 @@
                 title="Catégories"
                 :value="$stats['total_categories']"
                 icon-color="indigo"
-                link="#"
+                :link="route('admin.categories.index')"
             >
                 <x-slot name="icon">
                     <x-heroicon-o-folder class="h-6 w-6" />

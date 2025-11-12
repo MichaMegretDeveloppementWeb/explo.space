@@ -1,7 +1,3 @@
-@php
-    $user = auth()->user();
-@endphp
-
 <!-- Navbar admin responsive -->
 <nav class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
     <div class="max-w-[90em] mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,7 +32,7 @@
                     <a href="{{ route('admin.tags.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-indigo-50 @if(request()->routeIs('admin.tags.*')) text-indigo-600 bg-indigo-50 @endif">
                         Tags
                     </a>
-                    <a href="#" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-indigo-50">
+                    <a href="{{ route('admin.categories.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-indigo-50 @if(request()->routeIs('admin.categories.*')) text-indigo-600 bg-indigo-50 @endif">
                         Catégories
                     </a>
 
@@ -65,9 +61,9 @@
                 <div class="relative ml-auto" x-data="{ open: false }" @click.away="open = false">
                     <button @click="open = !open" type="button" class="flex items-center space-x-2 text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md hover:bg-indigo-50 transition-colors">
                         <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                            <span class="text-sm font-medium text-indigo-600">{{ substr($user->name, 0, 1) }}</span>
+                            <span class="text-sm font-medium text-indigo-600">{{ $userInitial }}</span>
                         </div>
-                        <span class="font-medium">{{ $user->name }}</span>
+                        <span class="font-medium">{{ $userName }}</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
@@ -77,15 +73,20 @@
                     <div :class="{ 'hidden': !open }"
                          class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 border border-gray-200 z-50">
                         <div class="px-4 py-2 border-b border-gray-100">
-                            <p class="text-sm font-medium text-gray-900">{{ $user->name }}</p>
-                            <p class="text-xs text-gray-500">{{ ucfirst($user->role) }}</p>
+                            <p class="text-sm font-medium text-gray-900">{{ $userName }}</p>
+                            <p class="text-xs text-gray-500">{{ $userRole }}</p>
                         </div>
 
-                        @if($user->isSuperAdmin())
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">
-                                Paramètres
-                            </a>
-                        @endif
+                        <a href="{{ route('home.fr') }}" target="_blank" class="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                            <span>Voir le site public</span>
+                        </a>
+
+                        <a href="{{ route('admin.settings.show') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors @if(request()->routeIs('admin.settings.*')) text-indigo-600 bg-indigo-50 font-medium @endif">
+                            Paramètres
+                        </a>
 
                         <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf
@@ -120,7 +121,7 @@
                 <a href="{{ route('admin.tags.index') }}" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium @if(request()->routeIs('admin.tags.*')) text-indigo-600 bg-indigo-50 @endif">
                     Tags
                 </a>
-                <a href="#" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium">
+                <a href="{{ route('admin.categories.index') }}" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium @if(request()->routeIs('admin.categories.*')) text-indigo-600 bg-indigo-50 @endif">
                     Catégories
                 </a>
 
@@ -152,15 +153,20 @@
                 <!-- User info mobile -->
                 <div class="pt-4 border-t border-gray-200 mt-4">
                     <div class="px-3 py-2 mb-2">
-                        <p class="text-sm font-medium text-gray-900">{{ $user->name }}</p>
-                        <p class="text-xs text-gray-500">{{ ucfirst($user->role) }}</p>
+                        <p class="text-sm font-medium text-gray-900">{{ $userName }}</p>
+                        <p class="text-xs text-gray-500">{{ $userRole }}</p>
                     </div>
 
-                    @if($user->isSuperAdmin())
-                        <a href="#" class="block px-3 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-md transition-colors">
-                            Paramètres
-                        </a>
-                    @endif
+                    <a href="{{ route('home.fr') }}" target="_blank" class="flex items-center space-x-2 px-3 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-md transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                        <span>Voir le site public</span>
+                    </a>
+
+                    <a href="{{ route('admin.settings.show') }}" class="block px-3 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 rounded-md transition-colors @if(request()->routeIs('admin.settings.*')) text-indigo-600 bg-indigo-50 font-medium @endif">
+                        Paramètres
+                    </a>
 
                     <form method="POST" action="{{ route('admin.logout') }}">
                         @csrf

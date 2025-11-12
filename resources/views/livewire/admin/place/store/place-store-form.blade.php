@@ -18,8 +18,6 @@
      }"
      @scroll-to-validation-error.window="scrollToFirstError()">
 
-    <x-admin.flash-messages/>
-
     @include('livewire.admin.place.store.partials.form-header')
 
     {{-- Message informatif pour EditRequest --}}

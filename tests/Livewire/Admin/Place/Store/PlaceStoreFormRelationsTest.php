@@ -4,7 +4,6 @@ namespace Tests\Livewire\Admin\Place\Store;
 
 use App\Livewire\Admin\Place\Store\PlaceStoreForm;
 use App\Models\Category;
-use App\Models\CategoryTranslation;
 use App\Models\Place;
 use App\Models\Tag;
 use App\Models\TagTranslation;
@@ -71,18 +70,13 @@ class PlaceStoreFormRelationsTest extends TestCase
 
     public function test_mount_loads_available_categories(): void
     {
-        $category1 = Category::factory()->create(['is_active' => true]);
-        $category2 = Category::factory()->create(['is_active' => true]);
-
-        CategoryTranslation::factory()->create([
-            'category_id' => $category1->id,
-            'locale' => 'fr',
+        $category1 = Category::factory()->create([
+            'is_active' => true,
             'name' => 'Catégorie 1',
         ]);
 
-        CategoryTranslation::factory()->create([
-            'category_id' => $category2->id,
-            'locale' => 'fr',
+        $category2 = Category::factory()->create([
+            'is_active' => true,
             'name' => 'Catégorie 2',
         ]);
 

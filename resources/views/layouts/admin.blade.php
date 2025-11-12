@@ -20,14 +20,14 @@
 
     @stack('head')
 </head>
-<body class="antialiased bg-gray-100 font-inter">
+<body class="antialiased bg-gray-50 font-inter">
     {{-- Navbar admin (visible seulement si connecté) --}}
     @auth
-        <x-admin.navbar />
+        @livewire('admin.navbar')
     @endauth
 
-    {{-- Messages flash (modals) --}}
-    <x-admin.flash-messages />
+    {{-- Messages flash centralisés (Livewire) --}}
+    @livewire('admin.flash-messages')
 
     {{-- Contenu principal --}}
     <main class="@auth mx-auto px-4 py-8 @endauth">

@@ -134,7 +134,7 @@ class FlashMessagesTest extends TestCase
             ->get(route('admin.places.index'));
 
         // Vérifier que le container toast est présent
-        $response->assertSee('fixed top-4 right-4 z-50', false);
+        $response->assertSee('fixed top-4 right-[10%] z-50', false);
         $response->assertSee('space-y-3', false);
     }
 

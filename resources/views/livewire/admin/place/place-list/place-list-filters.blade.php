@@ -3,7 +3,7 @@
     {{-- Header avec bouton reset --}}
     <div class="mb-3 flex items-center justify-between">
         <h2 class="text-sm font-medium text-gray-700">Filtres</h2>
-        @if($search !== '' || count($tags) > 0)
+        @if($search !== '' || count($tags) > 0 || count($categories) > 0)
             <button type="button"
                     wire:click="resetFilters"
                     class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all">
@@ -113,7 +113,84 @@
 
                 </div>
 
-                {{-- Section 3: Langue (width auto avec min-width) --}}
+                {{-- Section 3: Catégories (flex-1 pour étalement) --}}
+                <div class="lg:px-4 flex-1">
+                    <label for="categorySearch" class="block text-xs font-medium text-gray-700 mb-1.5">
+                        Catégories
+                        @if(count($categories) > 0)
+                            <span class="ml-1 inline-flex items-center justify-center rounded-full bg-green-100 px-1.5 py-0.5 text-[10px] font-semibold text-green-700">
+                                {{ count($categories) }}
+                            </span>
+                        @endif
+                    </label>
+
+                    {{-- Input recherche catégories --}}
+                    <div class="relative" x-data="{ open: false }">
+                        <input type="text"
+                               id="categorySearch"
+                               wire:model.live="categorySearchInput"
+                               @focus="open = true"
+                               @click.away="open = false"
+                               placeholder="Ajouter une catégorie..."
+                               class="block w-full rounded-lg border-0 py-2 px-3 text-sm text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600">
+
+                        {{-- Dropdown suggestions --}}
+                        @if(count($categorySuggestions) > 0)
+                            <div x-show="open"
+                                 x-transition:enter="transition ease-out duration-100"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 x-transition:leave="transition ease-in duration-75"
+                                 x-transition:leave-start="opacity-100 scale-100"
+                                 x-transition:leave-end="opacity-0 scale-95"
+                                 class="absolute z-10 mt-1.5 w-full rounded-lg border border-gray-200 bg-white shadow-xl ring-1 ring-black/5">
+                                <ul class="max-h-[30em] overflow-auto py-1">
+                                    @php
+                                    $availableCategories = 0;
+                                    @endphp
+                                    @foreach($categorySuggestions as $index=>$suggestion)
+                                        {{-- Ne pas afficher les catégories déjà sélectionnées --}}
+                                        @if(!in_array($suggestion['id'], $categories))
+                                            @php
+                                                $availableCategories ++;
+                                            @endphp
+                                            <li wire:click="addCategory({{ $suggestion['id'] }}); open = false"
+                                                class="flex items-center gap-2 cursor-pointer px-3 py-2 text-sm text-gray-900 hover:bg-gray-50 transition-colors">
+                                                <x-heroicon-o-plus class="h-3.5 w-3.5 text-gray-400" />
+                                                {{ $suggestion['name'] }}
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                    @if($availableCategories === 0)
+                                        <li class="flex items-center gap-2 cursor-pointer px-3 py-2 text-sm text-gray-900 hover:bg-gray-50 transition-colors">
+                                            <x-heroicon-o-exclamation-triangle class="w-4 text-gray-400" />
+                                            Toutes les catégories sont sélectionnées
+                                        </li>
+                                    @endif
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Catégories sélectionnées (inline compact) --}}
+                    @if(count($categories) > 0)
+                        <div class="flex flex-wrap gap-1 mt-1.5">
+                            @foreach($this->selectedCategoryNames as $categoryId => $categoryName)
+                                <span class="inline-flex items-center gap-1 rounded-md bg-green-50 pl-2 pr-1 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                    {{ $categoryName }}
+                                    <button type="button"
+                                            wire:click="removeCategory({{ $categoryId }})"
+                                            class="inline-flex h-4 w-4 items-center justify-center rounded hover:bg-green-100 transition-colors">
+                                        <x-heroicon-s-x-mark class="h-3 w-3 text-green-600" />
+                                    </button>
+                                </span>
+                            @endforeach
+                        </div>
+                    @endif
+
+                </div>
+
+                {{-- Section 4: Langue (width auto avec min-width) --}}
                 <div class="lg:pl-4 lg:min-w-[120px] w-full lg:w-auto">
                     <label class="block text-xs font-medium text-gray-700 mb-1.5">
                         Langue

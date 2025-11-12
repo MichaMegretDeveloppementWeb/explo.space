@@ -1,7 +1,4 @@
 <div>
-    {{-- Flash messages (toasts modernes en haut à droite) --}}
-    <x-admin.flash-messages />
-
     {{-- Header sticky --}}
     @include('admin.edit-request.detail.partials.header', ['editRequest' => $editRequest])
 

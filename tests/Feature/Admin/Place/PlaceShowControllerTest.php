@@ -3,7 +3,6 @@
 namespace Tests\Feature\Admin\Place;
 
 use App\Models\Category;
-use App\Models\CategoryTranslation;
 use App\Models\Photo;
 use App\Models\Place;
 use App\Models\PlaceTranslation;
@@ -120,14 +119,12 @@ class PlaceShowControllerTest extends TestCase
         $response->assertSee('NASA');
     }
 
-    public function test_displays_categories_with_translations(): void
+    public function test_displays_categories(): void
     {
         $place = Place::factory()->create();
 
-        $category = Category::factory()->create(['is_active' => true]);
-        CategoryTranslation::factory()->create([
-            'category_id' => $category->id,
-            'locale' => 'fr',
+        $category = Category::factory()->create([
+            'is_active' => true,
             'name' => 'Centre de lancement',
         ]);
 
