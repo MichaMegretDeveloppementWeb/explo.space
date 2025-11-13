@@ -10,8 +10,12 @@
 
 /* Layout principal - Base (toujours actif) */
 #place-explorer-container {
+    /* Fallback pour navigateurs qui ne supportent pas dvh */
     height: calc(100vh - var(--navbar-height));
     max-height: calc(100vh - var(--navbar-height));
+    /* Utiliser dvh (dynamic viewport height) pour mobile - surcharge le fallback */
+    height: calc(100dvh - var(--navbar-height));
+    max-height: calc(100dvh - var(--navbar-height));
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -323,7 +327,7 @@ html {
         right: 0;
         bottom: calc(-100% + 50px);  /* Default collapsed - Alpine.js override via :style */
         height: 100%;
-        max-height: calc(100vh - var(--navbar-height));
+        max-height: calc(90dvh - var(--navbar-height));
         z-index: 20;
         box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
         border-radius: 1rem 1rem 0 0;

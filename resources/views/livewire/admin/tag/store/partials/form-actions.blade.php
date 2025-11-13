@@ -1,10 +1,5 @@
 {{-- Actions --}}
 <div class="flex justify-end items-center gap-3 pt-2">
-    <a href="{{ route('admin.tags.index') }}"
-       class="px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-        Annuler
-    </a>
-
     <button type="submit"
             wire:loading.attr="disabled"
             wire:target="save"

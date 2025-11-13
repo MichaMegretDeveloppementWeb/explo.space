@@ -37,6 +37,9 @@ class EditRequestForm extends Component
     /** @var array<string, mixed> */
     public array $current_values = [];
 
+    /** @var array<int, string> */
+    public array $previousSelectedFields = [];
+
     public function mount(): void
     {
 
@@ -67,25 +70,24 @@ class EditRequestForm extends Component
      */
     public function updatedSelectedFields(): void
     {
-        // Parcourir tous les champs sélectionnés
-        foreach ($this->selected_fields as $field) {
+        // Détecter les champs nouvellement ajoutés (différence entre l'état actuel et précédent)
+        $newlyAddedFields = array_diff($this->selected_fields, $this->previousSelectedFields);
+
+        // Ne vider que les champs nouvellement ajoutés
+        foreach ($newlyAddedFields as $field) {
             // Si le champ n'est pas 'coordinates', le vider pour forcer une nouvelle saisie
             if ($field !== 'coordinates') {
                 $this->new_values[$field] = '';
             }
 
-            // Si c'est 'coordinates', s'assurer que les valeurs actuelles sont présentes
+            // Si c'est 'coordinates', initialiser avec les valeurs actuelles
             if ($field === 'coordinates') {
-                if (
-                    ! isset($this->new_values['coordinates']['lat']) ||
-                    ! isset($this->new_values['coordinates']['lng']) ||
-                    $this->new_values['coordinates']['lat'] === '' ||
-                    $this->new_values['coordinates']['lng'] === ''
-                ) {
-                    $this->new_values['coordinates'] = $this->current_values['coordinates'];
-                }
+                $this->new_values['coordinates'] = $this->current_values['coordinates'];
             }
         }
+
+        // Mettre à jour l'état précédent pour le prochain changement
+        $this->previousSelectedFields = $this->selected_fields;
     }
 
     public function render(): \Illuminate\View\View
@@ -101,6 +103,9 @@ class EditRequestForm extends Component
     {
         $this->new_values['coordinates']['lat'] = round($lat, 6);
         $this->new_values['coordinates']['lng'] = round($lng, 6);
+
+        // Émettre événement JavaScript pour masquer le loader
+        $this->js('window.dispatchEvent(new CustomEvent("map-geocoding-finished"))');
     }
 
     /**

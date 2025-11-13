@@ -13,7 +13,8 @@
  * - Livewire → JS: 'coordinates-changed' (latitude, longitude)
  */
 import L from 'leaflet';
-import { createNormalMarkerIcon, createOldMarkerIcon } from '../../../web/map/marker-icon-utils.js';
+import { createNormalMarkerIcon, createOldMarkerIcon } from '../../../shared/marker-icon-utils.js';
+import { getMinZoom } from '../../../shared/map-responsive-config.js';
 
 export class LocationMap {
     constructor(containerId = 'admin-location-map') {
@@ -128,7 +129,7 @@ export class LocationMap {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: ['a', 'b', 'c', 'd'],
             maxZoom: 19,
-            minZoom: 2,
+            minZoom: getMinZoom(), // Responsive: 1 sur mobile, 3 sur desktop
         });
 
         primaryLayer.on('tileerror', () => {
@@ -138,7 +139,7 @@ export class LocationMap {
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 maxZoom: 19,
-                minZoom: 2,
+                minZoom: getMinZoom(), // Responsive: 1 sur mobile, 3 sur desktop
             }).addTo(this.map);
         });
 
@@ -154,6 +155,9 @@ export class LocationMap {
 
         // Mettre à jour le marker localement
         this.setMarker(lat, lng);
+
+        // Émettre événement pour afficher le loader
+        window.dispatchEvent(new CustomEvent('map-geocoding-started'));
 
         // Notifier Livewire pour reverse geocoding
         if (window.Livewire) {
@@ -216,6 +220,9 @@ export class LocationMap {
 
         this.marker.on('dragend', (e) => {
             const position = e.target.getLatLng();
+
+            // Émettre événement pour afficher le loader
+            window.dispatchEvent(new CustomEvent('map-geocoding-started'));
 
             // Notifier Livewire
             if (window.Livewire) {

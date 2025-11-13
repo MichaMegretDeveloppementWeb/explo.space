@@ -181,7 +181,7 @@
 
             {{-- Badge indicateur de langue + bouton traduction --}}
             @if($isHighlighted && $titleDetectedLang)
-                <div class="mb-2 flex items-center justify-between gap-4">
+                <div class="mb-2 flex items-center justify-between gap-4 flex-wrap">
                     <div class="flex items-center gap-2">
                         {{-- Badge "Modifié" --}}
                         <span class="inline-flex items-centers gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
@@ -267,7 +267,7 @@
 
             {{-- Badge indicateur de langue + bouton traduction --}}
             @if($isDescHighlighted && $descDetectedLang)
-                <div class="mb-2 flex items-center justify-between gap-4">
+                <div class="mb-2 flex items-center justify-between gap-4 flex-wrap">
                     <div class="flex items-center gap-2">
                         {{-- Badge "Modifié" --}}
                         <span class="inline-flex items-centers gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
@@ -344,7 +344,7 @@
 
             {{-- Badge indicateur de langue + bouton traduction --}}
             @if($isPracticalHighlighted && $practicalDetectedLang)
-                <div class="mb-2 flex items-center justify-between gap-4">
+                <div class="mb-2 flex items-center justify-between gap-4 flex-wrap">
                     <div class="flex items-center gap-2">
                         {{-- Badge "Modifié" --}}
                         <span class="inline-flex items-centers gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">

@@ -26,6 +26,7 @@ return [
     'retry' => 'Retry',
     'view_detail' => 'View details',
     'back' => 'Back',
+    'loading_coordinates' => 'Updating coordinates...',
 
     // Featured places
     'featured_place' => 'Featured place',

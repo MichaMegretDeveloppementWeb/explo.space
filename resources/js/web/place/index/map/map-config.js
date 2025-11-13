@@ -1,4 +1,4 @@
-
+import { getMinZoom } from '../../../../shared/map-responsive-config.js';
 
 // Récupérer la config depuis PHP (injectée par PlaceSearchConfig::getJsConfig())
 const phpMapConfig = window.PlaceSearchConfig?.map || {};
@@ -13,14 +13,16 @@ export const MAP_CONFIG = {
             attribution: '© OpenStreetMap contributors © CARTO',
             subdomains: ['a', 'b', 'c', 'd'],
             maxZoom: 19,
-            minZoom: 3,
+            // minZoom responsive : 1 sur mobile (< 800px), 3 sur desktop
+            get minZoom() { return getMinZoom(); },
         },
         fallback: {
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             subdomains: ['a', 'b', 'c', 'd'],
             attribution: '© OpenStreetMap contributors',
             maxZoom: 19,
-            minZoom: 3,
+            // minZoom responsive : 1 sur mobile (< 800px), 3 sur desktop
+            get minZoom() { return getMinZoom(); },
         },
     },
 

@@ -13,7 +13,8 @@
  * - Livewire → JS: 'coordinates-changed' (latitude, longitude)
  */
 import L from 'leaflet';
-import { createNormalMarkerIcon } from '../../map/marker-icon-utils.js';
+import { createNormalMarkerIcon } from '../../../shared/marker-icon-utils.js';
+import { getMinZoom } from '../../../shared/map-responsive-config.js';
 
 export class PlaceRequestMap {
     constructor(containerId = 'placeRequestMap') {
@@ -75,7 +76,7 @@ export class PlaceRequestMap {
             attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: ['a', 'b', 'c', 'd'],
             maxZoom: 19,
-            minZoom: 2,
+            minZoom: getMinZoom(), // Responsive: 1 sur mobile, 3 sur desktop
         });
 
         primaryLayer.on('tileerror', () => {
@@ -85,7 +86,7 @@ export class PlaceRequestMap {
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 maxZoom: 19,
-                minZoom: 2,
+                minZoom: getMinZoom(), // Responsive: 1 sur mobile, 3 sur desktop
             }).addTo(this.map);
         });
 
@@ -101,6 +102,9 @@ export class PlaceRequestMap {
 
         // Update marker locally
         this.setMarker(lat, lng);
+
+        // Émettre événement pour afficher le loader
+        window.dispatchEvent(new CustomEvent('map-geocoding-started'));
 
         // Notify Livewire for reverse geocoding
         if (window.Livewire) {
@@ -129,6 +133,9 @@ export class PlaceRequestMap {
         // Handle marker drag
         this.marker.on('dragend', (e) => {
             const position = e.target.getLatLng();
+
+            // Émettre événement pour afficher le loader
+            window.dispatchEvent(new CustomEvent('map-geocoding-started'));
 
             // Notify Livewire
             if (window.Livewire) {

@@ -5,7 +5,8 @@
 
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { createNormalMarkerIcon } from '../../map/marker-icon-utils.js';
+import { createNormalMarkerIcon } from '../../../shared/marker-icon-utils.js';
+import { getMinZoom } from '../../../shared/map-responsive-config.js';
 
 /**
  * Configuration des tiles (CartoDB Positron avec fallback OSM)
@@ -16,13 +17,15 @@ const TILE_CONFIG = {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: ['a', 'b', 'c', 'd'],
         maxZoom: 19,
-        minZoom: 2,
+        // minZoom responsive : 1 sur mobile (< 800px), 3 sur desktop
+        get minZoom() { return getMinZoom(); },
     },
     fallback: {
         url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19,
-        minZoom: 2,
+        // minZoom responsive : 1 sur mobile (< 800px), 3 sur desktop
+        get minZoom() { return getMinZoom(); },
     },
 };
 
@@ -130,6 +133,9 @@ function updateLivewireCoordinates(lat, lng) {
     // Arrondir à 6 décimales pour éviter la précision excessive
     const roundedLat = Math.round(lat * 1000000) / 1000000;
     const roundedLng = Math.round(lng * 1000000) / 1000000;
+
+    // Émettre événement pour afficher le loader
+    window.dispatchEvent(new CustomEvent('map-geocoding-started'));
 
     // Dispatch événement Livewire pour appeler la méthode du composant
     window.Livewire.dispatch('update-coordinates-from-map', {

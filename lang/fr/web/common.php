@@ -26,6 +26,7 @@ return [
     'retry' => 'Réessayer',
     'view_detail' => 'Voir le détail',
     'back' => 'Retour',
+    'loading_coordinates' => 'Mise à jour des coordonnées...',
 
     // Featured places
     'featured_place' => 'Lieu emblématique',

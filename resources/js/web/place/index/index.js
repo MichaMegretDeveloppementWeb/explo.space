@@ -1,8 +1,8 @@
 import { initializeGeolocation } from '../../../components/geolocation.js';
-import { PlaceMap } from '../../map/map.js';
-import { PlaceMapMarkers } from '../../map/map-markers.js';
-import { PlaceMapSync } from '../../map/map-sync.js';
-import { calculateZoomFromRadius } from '../../map/map-zoom-calculator.js';
+import { PlaceMap } from './map/map.js';
+import { PlaceMapMarkers } from './map/map-markers.js';
+import { PlaceMapSync } from './map/map-sync.js';
+import { calculateZoomFromRadius } from './map/map-zoom-calculator.js';
 
 /**
  * PlaceExplorer - Orchestrateur principal de la page d'exploration

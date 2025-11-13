@@ -142,6 +142,9 @@ trait ManagesPlaceRequestLocation
                 'exception_type' => get_class($e),
             ]);
         }
+
+        // Émettre événement JavaScript pour masquer le loader
+        $this->js('window.dispatchEvent(new CustomEvent("map-geocoding-finished"))');
     }
 
     /**

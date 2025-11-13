@@ -18,10 +18,19 @@
 
         getMobileStyle() {
             if (!this.isMobile) return '';
-            return 'bottom: ' + (this.isExpanded ? '0' : 'calc(-100% + 50px)') + '; transition: bottom 300ms ease;';
+            // Utiliser 90dvh - navbar + 50px pour correspondre au max-height du CSS
+            return 'bottom: ' + (this.isExpanded ? '0' : 'calc(-90dvh + var(--navbar-height) + 50px)') + '; transition: bottom 300ms ease;';
+        },
+
+        handleResultClick() {
+            // Fermer le sheet sur mobile après sélection d'un lieu
+            if (this.isMobile && this.isExpanded) {
+                this.isExpanded = false;
+            }
         }
      }"
-     :style="getMobileStyle()">
+     :style="getMobileStyle()"
+     @click.outside="if (isExpanded && isMobile) toggleSheet()">
 
     {{-- Header (desktop) / Toggle bar (mobile) --}}
     <div class="place-list-header">
@@ -115,7 +124,8 @@
                     <div class="divide-y divide-gray-200">
                         @foreach($places as $place)
                             <div class="p-4 hover:bg-gray-50 cursor-pointer transition-colors"
-                                 data-place-id="{{ $place['id'] }}">
+                                 data-place-id="{{ $place['id'] }}"
+                                 @click="handleResultClick()">
                                 <div class="flex items-start space-x-3">
                                     @if(!empty($place['main_photo']))
                                         <img src="{{ $place['main_photo']['thumb_url'] }}"

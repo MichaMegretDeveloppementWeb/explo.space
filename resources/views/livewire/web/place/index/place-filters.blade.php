@@ -26,7 +26,8 @@
             return 'transform: translateY(' + (this.isExpanded ? '0' : 'calc(-100% + 50px)') + '); transition: transform 300ms ease;';
         }
      }"
-     :style="getMobileStyle()">
+     :style="getMobileStyle()"
+     @click.outside="if (isExpanded && isMobile) toggleSheet()">
 
 
     {{-- Header (desktop toggle button / mobile toggle bar) --}}

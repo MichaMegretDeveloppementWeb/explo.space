@@ -125,7 +125,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
                             {{-- Valeur actuelle --}}
                             <div class="p-4">
-                                <div class="text-xs font-medium text-gray-500 uppercase mb-2">Valeur actuelle</div>
+                                <div class="text-xs font-medium text-gray-500 uppercase mb-2">Valeur initiale</div>
                                 <div class="text-sm text-gray-700 bg-gray-50 rounded p-3">
                                     {{ $oldValue ?: '(vide)' }}
                                 </div>

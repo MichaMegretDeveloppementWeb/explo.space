@@ -1,5 +1,6 @@
 import L from 'leaflet';
-import { createNormalMarkerIcon } from '../../../web/map/marker-icon-utils.js';
+import { createNormalMarkerIcon } from '../../../shared/marker-icon-utils.js';
+import { getMinZoom } from '../../../shared/map-responsive-config.js';
 
 /**
  * LocationPreview - Carte statique de prévisualisation pour les propositions de lieux
@@ -48,7 +49,7 @@ export class LocationPreview {
                 attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
                 subdomains: ['a', 'b', 'c', 'd'],
                 maxZoom: 19,
-                minZoom: 1,
+                minZoom: getMinZoom(), // Responsive: 1 sur mobile, 3 sur desktop
             });
 
             primaryLayer.on('tileerror', () => {
@@ -59,7 +60,7 @@ export class LocationPreview {
                     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
                     subdomains: ['a', 'b', 'c', 'd'],
                     maxZoom: 19,
-                    minZoom: 1,
+                    minZoom: getMinZoom(), // Responsive: 1 sur mobile, 3 sur desktop
                 }).addTo(this.map);
             });
 
