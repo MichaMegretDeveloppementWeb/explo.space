@@ -117,7 +117,8 @@ return [
             'content' => [
                 'intro' => 'For any questions regarding these legal notices, you can contact us:',
                 'email' => 'By email: <a href="mailto:'.config('mail.destination_mail_contact').'" class="text-blue-600 hover:underline">'.config('mail.destination_mail_contact').'</a>',
-                'form' => 'Via our <a href="'.localRoute('contact').'" class="text-blue-600 hover:underline">contact form</a>',
+                'form' => 'Via our contact form',
+                'form_url' => 'contact', // Route name for localRoute() in view
             ],
         ],
     ],

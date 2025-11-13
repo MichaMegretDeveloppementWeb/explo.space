@@ -7,7 +7,7 @@ return [
             'part2' => 'at your fingertips',
         ],
         'subtitle' => [
-            'part1' => 'Discover over 1,200 iconic places',
+            'part1' => 'Discover iconic places',
             'part2' => 'related to space exploration.',
             'part3' => 'From launch centers to museums, explore world space history.',
         ],
@@ -17,15 +17,12 @@ return [
         ],
         'stats' => [
             'places' => [
-                'count' => '1,200+',
                 'label' => 'Places listed',
             ],
-            'countries' => [
-                'count' => '50+',
-                'label' => 'Countries covered',
+            'featured' => [
+                'label' => 'Iconic places',
             ],
-            'categories' => [
-                'count' => '25+',
+            'themes' => [
                 'label' => 'Themes',
             ],
         ],
@@ -73,7 +70,7 @@ return [
                 'title' => 'Thematic search',
                 'description' => 'Explore all global locations linked to a specific theme: NASA, SpaceX, Apollo missions, observatories, space museums and much more.',
                 'benefits' => [
-                    'themes_available' => '25+ available themes',
+                    'themes_available' => 'Many themes available',
                     'worldwide_coverage' => 'Global coverage',
                     'smart_clustering' => 'Smart clustering',
                 ],
@@ -93,7 +90,7 @@ return [
     'community_contribution' => [
         'badge' => 'Community',
         'title' => 'Join the space adventure',
-        'subtitle' => 'Join our community of enthusiasts and help build the world\'s largest space database.',
+        'subtitle' => 'Join our community of enthusiasts and help build a global collaborative space database.',
         'actions' => [
             'propose_places' => [
                 'title' => 'Suggest new places',
@@ -130,7 +127,7 @@ return [
 
     'community_stats' => [
         'title' => 'A passionate community',
-        'subtitle' => 'Join thousands of explorers who share your passion for space',
+        'subtitle' => 'Join explorers from around the world who share your passion for space',
         'stats' => [
             'places' => [
                 'count' => '1,247',
@@ -147,6 +144,9 @@ return [
             'monthly_submissions' => [
                 'count' => '127',
                 'label' => 'Submissions this month',
+            ],
+            'submissions' => [
+                'label' => 'Place submissions',
             ],
         ],
     ],
@@ -181,7 +181,7 @@ return [
 
     'why_cosmap' => [
         'title' => 'Why choose '.config('app.name').' ?',
-        'subtitle' => 'The first collaborative platform dedicated to global mapping of space sites',
+        'subtitle' => 'A collaborative platform dedicated to global mapping of space sites',
         'benefits' => [
             'collaborative_database' => [
                 'title' => 'Collaborative database',
@@ -207,7 +207,7 @@ return [
             'part1' => 'Your space journey',
             'part2' => 'starts here',
         ],
-        'subtitle' => 'Explore thousands of iconic places, from historic launch pads to cutting-edge observatories. The universe awaits you.',
+        'subtitle' => 'Explore iconic places of space exploration, from historic launch pads to cutting-edge observatories. The universe awaits you.',
         'buttons' => [
             'primary' => 'Start exploring',
             'secondary' => 'Suggest a place',
@@ -217,7 +217,7 @@ return [
     // SEO integration for this page
     'seo' => [
         'title' => 'The spatial universe within reach',
-        'description' => 'Discover over 1,200 iconic space exploration sites. From launch centers to museums, explore worldwide space history on '.config('app.name').' .',
+        'description' => 'Discover iconic space exploration sites. From launch centers to museums, explore worldwide space history on '.config('app.name').' .',
         'keywords' => 'space, spatial, space exploration, NASA, SpaceX, space sites, launch centers, space museums, astronomy',
 
         // Open Graph specific to this page

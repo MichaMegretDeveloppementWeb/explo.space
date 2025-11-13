@@ -22,6 +22,9 @@ class HomeController extends Controller
         // Récupérer les 3 derniers lieux featured avec leurs relations
         $featuredPlaces = $homeService->getFeaturedPlaces();
 
+        // Récupérer toutes les statistiques (une seule fois)
+        $stats = $homeService->getStats();
+
         // Alternates multilingues pour la homepage
         $alternates = [
             'fr' => url('/fr'),
@@ -30,6 +33,6 @@ class HomeController extends Controller
 
         $seo = $seoBuilderAction->execute('homepage');
 
-        return view('web.home.homepage', compact('featuredPlaces', 'seo'));
+        return view('web.home.homepage', compact('featuredPlaces', 'stats', 'seo'));
     }
 }

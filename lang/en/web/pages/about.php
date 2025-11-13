@@ -18,7 +18,7 @@ return [
         'title' => 'Our mission',
         'content' => [
             'intro' => config('app.name').' was born from a passion for space exploration and a simple observation: places related to space conquest are scattered around the world, but no platform brings them together in a comprehensive and accessible way.',
-            'goal' => 'Our mission is to create the largest collaborative global database listing all iconic places of space adventure: from historic launch centers to cutting-edge observatories, from space-dedicated museums to landing sites of emblematic missions.',
+            'goal' => 'Our mission is to create a collaborative global database listing all iconic places of space adventure: from historic launch centers to cutting-edge observatories, from space-dedicated museums to landing sites of emblematic missions.',
             'vision' => 'We want to enable every space enthusiast, whether a simple curious person or an astronomy expert, to easily discover and explore these fascinating places that have marked humanity\'s history in space.',
         ],
     ],
@@ -69,7 +69,7 @@ return [
                 ],
                 'enrich_database' => [
                     'title' => 'Enrich the database',
-                    'description' => 'Each place added or information completed helps thousands of explorers.',
+                    'description' => 'Each place added or information completed helps explorers worldwide.',
                 ],
                 'quality' => [
                     'title' => 'Ensure quality',

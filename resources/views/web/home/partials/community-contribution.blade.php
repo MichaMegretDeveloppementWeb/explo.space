@@ -1,5 +1,5 @@
 <!-- Section Contribution communautaire -->
-<section class="py-12 sm:py-16 md:py-20 bg-white">
+<section class="py-12 sm:py-16 md:py-20 bg-white px-3">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -23,7 +23,7 @@
             <div class="flex flex-col items-start justify-start self-stretch order-2 lg:order-1">
 
                 <!-- Contribution 1: Proposer des lieux -->
-                <div class="mb-6 sm:mb-8">
+                <div class="mb-6 sm:mb-8 max-w-3xl mx-auto">
                     <div class="flex flex-col lg:flex-row items-start lg:items-start space-y-4 lg:space-y-0 lg:space-x-4 mb-4 sm:mb-6">
                         <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md sm:shadow-lg lg:translate-y-[-15%] bg-white border border-gray-100">
                             <x-heroicon-o-plus class="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
@@ -123,7 +123,7 @@
             <div class="flex flex-col items-start justify-start self-stretch order-4 lg:order-3">
 
                 <!-- Contribution 2: Améliorer l'existant -->
-                <div class="mb-6 sm:mb-8">
+                <div class="mb-6 sm:mb-8 max-w-3xl mx-auto">
                     <div class="flex flex-col lg:flex-row items-start lg:items-start space-y-4 lg:space-y-0 lg:space-x-4 mb-4 sm:mb-6">
                         <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md sm:shadow-lg lg:translate-y-[-15%] bg-white border border-gray-100">
                             <x-heroicon-o-pencil-square class="w-5 h-5 sm:w-6 sm:h-6 text-orange-500" />

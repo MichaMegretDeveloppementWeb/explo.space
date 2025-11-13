@@ -18,7 +18,7 @@ return [
         'title' => 'Notre mission',
         'content' => [
             'intro' => config('app.name').' est né d\'une passion pour l\'exploration spatiale et d\'un constat simple : les lieux liés à la conquête spatiale sont éparpillés dans le monde entier, mais aucune plateforme ne les rassemble de manière exhaustive et accessible.',
-            'goal' => 'Notre mission est de créer la plus grande base de données mondiale collaborative recensant tous les lieux emblématiques de l\'aventure spatiale : des centres de lancement historiques aux observatoires de pointe, des musées dédiés à l\'espace aux sites d\'atterrissage de missions emblématiques.',
+            'goal' => 'Notre mission est de créer une base de données mondiale collaborative recensant tous les lieux emblématiques de l\'aventure spatiale : des centres de lancement historiques aux observatoires de pointe, des musées dédiés à l\'espace aux sites d\'atterrissage de missions emblématiques.',
             'vision' => 'Nous voulons permettre à chaque passionné d\'espace, qu\'il soit simple curieux ou expert en astronomie, de découvrir et d\'explorer facilement ces lieux fascinants qui ont marqué l\'histoire de l\'humanité dans l\'espace.',
         ],
     ],
@@ -69,7 +69,7 @@ return [
                 ],
                 'enrich_database' => [
                     'title' => 'Enrichissez la base de données',
-                    'description' => 'Chaque lieu ajouté ou information complétée aide des milliers d\'explorateurs.',
+                    'description' => 'Chaque lieu ajouté ou information complétée aide les explorateurs du monde entier.',
                 ],
                 'quality' => [
                     'title' => 'Garantissez la qualité',

@@ -6,11 +6,7 @@
             <!-- Logo -->
             <div class="flex items-center flex-shrink-0">
                 <a href="{{ localRoute('home') }}" class="flex items-center space-x-1.5 sm:space-x-2">
-                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-md sm:rounded-lg flex items-center justify-center">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
-                        </svg>
-                    </div>
+                    <img src="{{ Vite::asset('resources/images/logo_explo_space.webp') }}" alt="{{ config('app.name') }}" class="h-7 sm:h-8 w-auto">
                     <span class="text-lg sm:text-xl font-bold text-gray-900">{{config('app.name')}}</span>
                 </a>
             </div>

@@ -1,5 +1,5 @@
 <!-- Section Fonctionnalites principales -->
-<section class="py-12 sm:py-16 md:py-20 bg-white">
+<section class="py-12 sm:py-16 md:py-20 bg-white px-3">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header Section -->
         <div class="text-center mb-12 sm:mb-16">
@@ -133,7 +133,7 @@
                 </div>
             </div>
 
-            <div class="order-1 lg:order-2">
+            <div class="order-1 lg:order-2 max-w-3xl mx-auto">
                 <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
                     {{ __('web/pages/home.features.modes.proximity.title') }}
                 </h3>
@@ -161,7 +161,7 @@
             </div>
 
             <!-- Fonctionnalite 2: Recherche thematique -->
-            <div class="order-3">
+            <div class="order-3 max-w-3xl mx-auto">
                 <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
                     {{ __('web/pages/home.features.modes.thematic.title') }}
                 </h3>

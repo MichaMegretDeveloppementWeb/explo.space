@@ -8,11 +8,7 @@
         <!-- Header -->
         <div class="text-center mb-8">
             <div class="flex justify-center mb-6">
-                <div class="w-14 h-14 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
-                    </svg>
-                </div>
+                <img src="{{ Vite::asset('resources/images/logo_explo_space.webp') }}" alt="{{ config('app.name') }}" class="h-14 w-auto">
             </div>
             <h1 class="text-2xl font-semibold text-gray-900 mb-1">
                 Connexion administrateur

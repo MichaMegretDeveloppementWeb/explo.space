@@ -1,5 +1,5 @@
 <!-- Section Pourquoi explo.space -->
-<section class="py-12 sm:py-16 md:py-20 lg:py-32 bg-white">
+<section class="py-12 sm:py-16 md:py-20 lg:py-32 bg-white px-3">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-center">
             <!-- Contenu -->
@@ -7,7 +7,7 @@
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 px-2 lg:px-0">
                     {{ __('web/pages/home.why_cosmap.title') }}
                 </h2>
-                <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 px-2 lg:px-0">
+                <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 px-2 lg:px-0 max-w-xl mx-auto">
                     {{ __('web/pages/home.why_cosmap.subtitle') }}
                 </p>
 

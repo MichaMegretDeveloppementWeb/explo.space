@@ -81,11 +81,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                 <!-- Logo et description -->
                 <div class="flex items-center space-x-4">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
-                        </svg>
-                    </div>
+                    <img src="{{ Vite::asset('resources/images/logo_explo_space.webp') }}" alt="{{ config('app.name') }}" class="h-8 w-auto">
                     <div>
                         <div class="text-sm font-semibold text-gray-900">{{ __('web/components/footer.brand.name') }}</div>
                         <div class="text-xs text-gray-600">{{ __('web/components/footer.brand.tagline') }}</div>

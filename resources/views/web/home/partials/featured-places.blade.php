@@ -1,6 +1,6 @@
 @php use App\Models\Photo; @endphp
 <!-- Section Lieux emblematiques -->
-<section class="py-12 sm:py-16 md:py-20 bg-gray-50">
+<section class="py-12 sm:py-16 md:py-20 bg-gray-50 px-3">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12 sm:mb-16">
             <div class="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium mb-3 sm:mb-4">
@@ -15,7 +15,7 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div class="flex flex-wrap justify-center items-stretch gap-6 sm:gap-8 max-w-6xl mx-auto">
             @forelse($featuredPlaces as $place)
 
                 @php
@@ -28,7 +28,7 @@
 
                 @if($translation)
                 <a href="{{ localRoute('places.show', ['slug' => $translation->slug]) }}"
-                   class="group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg overflow-hidden hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300 block">
+                   class="flex-1 min-w-[300px] max-w-[400px] group bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg overflow-hidden hover:shadow-xl sm:hover:shadow-2xl transition-all duration-300 block">
                     <div class="h-40 sm:h-48 bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center relative overflow-hidden">
                         @if($mainPhoto?->medium_url)
                             <img src="{{ $mainPhoto->medium_url }}"

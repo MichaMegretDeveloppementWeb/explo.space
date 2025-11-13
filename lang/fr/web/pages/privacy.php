@@ -201,7 +201,8 @@ return [
             'content' => [
                 'intro' => 'Pour toute question concernant cette politique de confidentialité ou vos données personnelles :',
                 'email' => 'Email : <a href="mailto:'.config('mail.destination_mail_contact').'" class="text-blue-600 hover:underline">'.config('mail.destination_mail_contact').'</a>',
-                'form' => 'Formulaire de contact : <a href="'.localRoute('contact').'" class="text-blue-600 hover:underline">'.localRoute('contact').'</a>',
+                'form' => 'Formulaire de contact',
+                'form_url' => 'contact', // Route name for localRoute() in view
             ],
         ],
     ],

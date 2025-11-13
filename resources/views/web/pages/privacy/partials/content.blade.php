@@ -211,7 +211,11 @@
                     <p>{{ __('web/pages/privacy.sections.contact.content.intro') }}</p>
                     <ul class="space-y-1">
                         <li>{!! __('web/pages/privacy.sections.contact.content.email') !!}</li>
-                        <li>{!! __('web/pages/privacy.sections.contact.content.form') !!}</li>
+                        <li>
+                            <a href="{{ localRoute(__('web/pages/privacy.sections.contact.content.form_url')) }}" class="text-blue-600 hover:underline">
+                                {{ __('web/pages/privacy.sections.contact.content.form') }}
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

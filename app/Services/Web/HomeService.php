@@ -2,8 +2,13 @@
 
 namespace App\Services\Web;
 
+use App\Models\EditRequest;
 use App\Models\Place;
+use App\Models\PlaceRequest;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class HomeService
 {
@@ -32,5 +37,75 @@ class HomeService
             ->orderBy('created_at', 'desc')
             ->limit(3)
             ->get();
+    }
+
+    /**
+     * Get all statistics (for hero and community sections)
+     */
+    public function getStats(): array
+    {
+        return [
+            'places_count' => $this->getPlacesCount(),
+            'featured_places_count' => $this->getFeaturedPlacesCount(),
+            'active_tags_count' => $this->getActiveTagsCount(),
+            'active_members' => $this->getActiveMembersCount(),
+            'total_submissions' => $this->getTotalSubmissions(),
+        ];
+    }
+
+    /**
+     * Count total places
+     */
+    private function getPlacesCount(): int
+    {
+        return Place::count();
+    }
+
+    /**
+     * Count active members (admins + unique emails from proposals)
+     */
+    private function getActiveMembersCount(): int
+    {
+        // Count admins
+        $adminsCount = User::count();
+
+        // Get unique emails from PlaceRequest
+        $placeRequestEmails = PlaceRequest::select('contact_email')
+            ->distinct()
+            ->pluck('contact_email');
+
+        // Get unique emails from EditRequest
+        $editRequestEmails = EditRequest::select('contact_email')
+            ->distinct()
+            ->pluck('contact_email');
+
+        // Merge and get unique emails
+        $uniqueEmails = $placeRequestEmails->merge($editRequestEmails)->unique();
+
+        return $adminsCount + $uniqueEmails->count();
+    }
+
+    /**
+     * Count total place submissions (all PlaceRequests)
+     */
+    private function getTotalSubmissions(): int
+    {
+        return PlaceRequest::count();
+    }
+
+    /**
+     * Count featured places (is_featured = true)
+     */
+    private function getFeaturedPlacesCount(): int
+    {
+        return Place::where('is_featured', true)->count();
+    }
+
+    /**
+     * Count active tags (is_active = true)
+     */
+    private function getActiveTagsCount(): int
+    {
+        return Tag::where('is_active', true)->count();
     }
 }

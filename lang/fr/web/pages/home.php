@@ -7,7 +7,7 @@ return [
             'part2' => 'à portée de main',
         ],
         'subtitle' => [
-            'part1' => 'Découvrez plus de 1,200 lieux emblématiques',
+            'part1' => 'Découvrez les lieux emblématiques',
             'part2' => 'de la conquête spatiale.',
             'part3' => 'Des centres de lancement aux musées, explorez l\'histoire spatiale mondiale.',
         ],
@@ -17,15 +17,12 @@ return [
         ],
         'stats' => [
             'places' => [
-                'count' => '1,200+',
-                'label' => 'Lieux références',
+                'label' => 'Lieux référencés',
             ],
-            'countries' => [
-                'count' => '50+',
-                'label' => 'Pays couverts',
+            'featured' => [
+                'label' => 'Lieux emblématiques',
             ],
-            'categories' => [
-                'count' => '25+',
+            'themes' => [
                 'label' => 'Thématiques',
             ],
         ],
@@ -73,7 +70,7 @@ return [
                 'title' => 'Recherche thématique',
                 'description' => 'Explorez tous les lieux mondiaux liés à une thématique précise : NASA, SpaceX, missions Apollo, observatoires, musées spatiaux et bien plus.',
                 'benefits' => [
-                    'themes_available' => '25+ thématiques disponibles',
+                    'themes_available' => 'De nombreuses thématiques disponibles',
                     'worldwide_coverage' => 'Couverture mondiale',
                     'smart_clustering' => 'Clustering intelligent',
                 ],
@@ -93,7 +90,7 @@ return [
     'community_contribution' => [
         'badge' => 'Communauté',
         'title' => 'Participez à l\'aventure spatiale',
-        'subtitle' => 'Rejoignez notre communauté de passionnés et contribuez à enrichir la plus grande base de données spatiale mondiale.',
+        'subtitle' => 'Rejoignez notre communauté de passionnés et contribuez à enrichir une base de données spatiale collaborative mondiale.',
         'actions' => [
             'propose_places' => [
                 'title' => 'Proposez de nouveaux lieux',
@@ -130,7 +127,7 @@ return [
 
     'community_stats' => [
         'title' => 'Une communauté passionnée',
-        'subtitle' => 'Rejoignez des milliers d\'explorateurs qui partagent votre passion pour l\'espace',
+        'subtitle' => 'Rejoignez les explorateurs du monde entier qui partagent votre passion pour l\'espace',
         'stats' => [
             'places' => [
                 'count' => '1,247',
@@ -148,6 +145,9 @@ return [
                 'count' => '127',
                 'label' => 'Propositions ce mois',
             ],
+            'submissions' => [
+                'label' => 'Propositions de lieux',
+            ],
         ],
     ],
 
@@ -161,7 +161,7 @@ return [
 
     'why_cosmap' => [
         'title' => 'Pourquoi choisir '.config('app.name').' ?',
-        'subtitle' => 'La première plateforme collaborative dédiée à la cartographie mondiale des sites spatiaux',
+        'subtitle' => 'Une plateforme collaborative dédiée à la cartographie mondiale des sites spatiaux',
         'benefits' => [
             'collaborative_database' => [
                 'title' => 'Base de données collaborative',
@@ -187,7 +187,7 @@ return [
             'part1' => 'Votre voyage spatial',
             'part2' => 'commence ici',
         ],
-        'subtitle' => 'Explorez des milliers de lieux emblématiques, depuis les rampes de lancement historiques jusqu\'aux observatoires de pointe. L\'univers vous attend.',
+        'subtitle' => 'Explorez les lieux emblématiques de la conquête spatiale, depuis les rampes de lancement historiques jusqu\'aux observatoires de pointe. L\'univers vous attend.',
         'buttons' => [
             'primary' => 'Démarrer l\'exploration',
             'secondary' => 'Proposer un lieu',
@@ -197,7 +197,7 @@ return [
     // SEO intégré pour cette page
     'seo' => [
         'title' => 'L\'univers spatial à portée de main',
-        'description' => 'Découvrez plus de 1,200 lieux emblématiques de la conquête spatiale. Des centres de lancement aux musées, explorez l\'histoire spatiale mondiale sur '.config('app.name').'.',
+        'description' => 'Découvrez les lieux emblématiques de la conquête spatiale. Des centres de lancement aux musées, explorez l\'histoire spatiale mondiale sur '.config('app.name').'.',
         'keywords' => 'espace, spatial, conquête spatiale, NASA, SpaceX, lieux spatiaux, centres de lancement, musées espace, astronomie',
 
         // Open Graph spécifique à cette page

@@ -117,7 +117,8 @@ return [
             'content' => [
                 'intro' => 'Pour toute question concernant ces mentions légales, vous pouvez nous contacter :',
                 'email' => 'Par email : <a href="mailto:'.config('mail.destination_mail_contact').'" class="text-blue-600 hover:underline">'.config('mail.destination_mail_contact').'</a>',
-                'form' => 'Via notre <a href="'.localRoute('contact').'" class="text-blue-600 hover:underline">formulaire de contact</a>',
+                'form' => 'Via notre formulaire de contact',
+                'form_url' => 'contact', // Route name for localRoute() in view
             ],
         ],
     ],

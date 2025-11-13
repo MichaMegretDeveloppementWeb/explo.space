@@ -201,7 +201,8 @@ return [
             'content' => [
                 'intro' => 'For any questions regarding this privacy policy or your personal data:',
                 'email' => 'Email: <a href="mailto:'.config('mail.destination_mail_contact').'" class="text-blue-600 hover:underline">'.config('mail.destination_mail_contact').'</a>',
-                'form' => 'Contact form: <a href="'.localRoute('contact').'" class="text-blue-600 hover:underline">'.localRoute('contact').'</a>',
+                'form' => 'Contact form',
+                'form_url' => 'contact', // Route name for localRoute() in view
             ],
         ],
     ],

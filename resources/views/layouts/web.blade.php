@@ -1,6 +1,6 @@
 @php
     // Données SEO par défaut si pas fournies par le contrôleur
-    if (!isset($seo)) {
+    use Illuminate\Foundation\Vite;if (!isset($seo)) {
         $seoBuilderAction = app(\App\Domain\Seo\Actions\SeoBuilderAction::class);
         $seo = $seoBuilderAction->execute('homepage');
     }
@@ -8,7 +8,7 @@
     $breadcrumbs = $breadcrumbs ?? [];
 @endphp
 
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -17,13 +17,13 @@
     <meta name="recaptcha-site-key" content="{{ config('recaptcha.site_key') }}">
 
     {{-- SEO complet via composants --}}
-    <x-seo.head :seo="$seo" :alternates="$alternates" :breadcrumbs="$breadcrumbs" />
+    <x-seo.head :seo="$seo" :alternates="$alternates" :breadcrumbs="$breadcrumbs"/>
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet"/>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -34,26 +34,26 @@
 </head>
 
 <body class="antialiased bg-white text-gray-900 font-inter">
-    <!-- Navbar -->
-    <x-web.navbar />
+<!-- Navbar -->
+<x-web.navbar/>
 
-    <!-- Flash Messages -->
-    <x-web.flash-messages />
+<!-- Flash Messages -->
+<x-web.flash-messages/>
 
-    <!-- Main Content -->
-    <main>
-        @yield('content')
-    </main>
+<!-- Main Content -->
+<main>
+    @yield('content')
+</main>
 
-    @if(isset($footer))
-        <x-web.footer />
-    @endif
+@if(isset($footer))
+    <x-web.footer/>
+@endif
 
-    <!-- Error Modal -->
-    <x-web.error-modal />
+<!-- Error Modal -->
+<x-web.error-modal/>
 
-    <!-- Additional Scripts -->
-    @stack('scripts')
-    @livewireScripts
+<!-- Additional Scripts -->
+@stack('scripts')
+@livewireScripts
 </body>
 </html>

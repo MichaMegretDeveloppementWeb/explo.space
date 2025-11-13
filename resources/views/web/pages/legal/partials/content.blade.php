@@ -184,7 +184,11 @@
                     </p>
                     <ul class="space-y-2 text-gray-700">
                         <li>{!! __('web/pages/legal.sections.contact.content.email') !!}</li>
-                        <li>{!! __('web/pages/legal.sections.contact.content.form') !!}</li>
+                        <li>
+                            <a href="{{ localRoute(__('web/pages/legal.sections.contact.content.form_url')) }}" class="text-blue-600 hover:underline">
+                                {{ __('web/pages/legal.sections.contact.content.form') }}
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
