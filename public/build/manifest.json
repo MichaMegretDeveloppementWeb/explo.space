@@ -35,7 +35,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-65s4c9MX.css",
+    "file": "assets/app-Cv6awHjG.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "names": [
@@ -57,6 +57,10 @@
     "names": [
       "index.css"
     ]
+  },
+  "resources/images/backgroud_map.webp": {
+    "file": "assets/backgroud_map-BMtjfhrW.webp",
+    "src": "resources/images/backgroud_map.webp"
   },
   "resources/images/home/hero/terre-vue-espace.png": {
     "file": "assets/terre-vue-espace-C7xmu6f1.png",

@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/images/home/hero/terre-vue-espace.png',
                 'resources/images/logo_explo_space.webp',
+                'resources/images/backgroud_map.webp',
                 ...glob.sync('resources/css/**/index.css'),
                 ...glob.sync('resources/js/**/index.js'),
             ],
