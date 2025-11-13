@@ -1,0 +1,458 @@
+/* Animation curseur rayon - 3 paliers synchronisés avec les markers */
+@keyframes slideRadius {
+    0%, 10% {
+        left: 20%; /* ~200km - rayon 60px */
+    }
+    25%, 35% {
+        left: 35%; /* ~400km - rayon 100px → marker 1 */
+    }
+    45%, 55% {
+        left: 55%; /* ~650km - rayon 160px → marker 2 */
+    }
+    65%, 75% {
+        left: 75%; /* ~950km - rayon 240px → marker 3 */
+    }
+    90%, 100% {
+        left: 20%; /* ~200km - retour */
+    }
+}
+
+/* Animation cercle rayon - synchronisée avec les 3 markers */
+@keyframes radiusAnimation {
+    0%, 10% {
+        width: 60px;
+        height: 60px;
+    }
+    /* Grandit vers marker 1 - englobe largement */
+    25%, 35% {
+        width: 160px;
+        height: 160px;
+    }
+    /* Grandit vers marker 2 - englobe largement */
+    45%, 55% {
+        width: 280px;
+        height: 280px;
+    }
+    /* Grandit vers marker 3 - presque 100% de l'espace */
+    65%, 75% {
+        width: 400px;
+        height: 400px;
+    }
+    /* Retour au départ */
+    90%, 100% {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+.search-placeholder {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Animations des result cards - synchronisées PRÉCISÉMENT avec le rayon et les markers */
+/* Utilisation de grid-template-rows pour un espace adaptatif sans reflow */
+
+/* Card 1 - apparaît à 25%, disparaît en dernier à 86% */
+@keyframes resultCard1Animation {
+    0%, 23% {
+        opacity: 0;
+        grid-template-rows: 0fr;
+    }
+    25% {
+        opacity: 0;
+        grid-template-rows: 1fr;
+    }
+    27%, 84% {
+        opacity: 1;
+        grid-template-rows: 1fr;
+    }
+    86%, 100% {
+        opacity: 0;
+        grid-template-rows: 0fr;
+    }
+}
+
+/* Card 2 - apparaît à 45%, disparaît en second à 82% */
+@keyframes resultCard2Animation {
+    0%, 43% {
+        opacity: 0;
+        grid-template-rows: 0fr;
+    }
+    45% {
+        opacity: 0;
+        grid-template-rows: 1fr;
+    }
+    47%, 80% {
+        opacity: 1;
+        grid-template-rows: 1fr;
+    }
+    82%, 100% {
+        opacity: 0;
+        grid-template-rows: 0fr;
+    }
+}
+
+/* Card 3 - apparaît à 65%, disparaît en premier à 78% */
+@keyframes resultCard3Animation {
+    0%, 63% {
+        opacity: 0;
+        grid-template-rows: 0fr;
+    }
+    65% {
+        opacity: 0;
+        grid-template-rows: 1fr;
+    }
+    67%, 76% {
+        opacity: 1;
+        grid-template-rows: 1fr;
+    }
+    78%, 100% {
+        opacity: 0;
+        grid-template-rows: 0fr;
+    }
+}
+
+/* Animation du texte du rayon désormais gérée uniquement par JavaScript */
+.radius-display {
+    opacity: 1;
+}
+
+/* Ancienne animation radiusTextAnimation supprimée - plus d'opacité variable */
+
+/* Animations pour le mockup "Recherche thématique" - Cycle de 6s avec pause de 7s */
+
+/* Animation des tags avec transitions fluides */
+@keyframes tagNasaAnimation {
+    0%, 35% {
+        background-color: #dbeafe;
+        border-color: #3b82f6;
+        color: #1e40af;
+        transform: scale(1);
+        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+    }
+    37% {
+        background-color: #e0e7ff;
+        border-color: #6b7280;
+        color: #6b7280;
+        transform: scale(0.98);
+        box-shadow: 0 1px 3px rgba(59, 130, 246, 0.2);
+    }
+    40% {
+        background-color: #f3f4f6;
+        border-color: #d1d5db;
+        color: #9ca3af;
+        transform: scale(0.96);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    43%, 85% {
+        background-color: #f3f4f6;
+        border-color: #d1d5db;
+        color: #9ca3af;
+        transform: scale(1);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    90% {
+        background-color: #e0e7ff;
+        border-color: #6b7280;
+        color: #6b7280;
+        transform: scale(1.02);
+        box-shadow: 0 2px 3px rgba(59, 130, 246, 0.2);
+    }
+    93% {
+        background-color: #dbeafe;
+        border-color: #3b82f6;
+        color: #1e40af;
+        transform: scale(1.03);
+        box-shadow: 0 3px 6px rgba(59, 130, 246, 0.35);
+    }
+    100% {
+        background-color: #dbeafe;
+        border-color: #3b82f6;
+        color: #1e40af;
+        transform: scale(1);
+        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+    }
+}
+
+@keyframes tagApolloAnimation {
+    0%, 35% {
+        background-color: #f3f4f6;
+        border-color: #d1d5db;
+        color: #9ca3af;
+        transform: scale(1);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    40% {
+        background-color: #f3f0ff;
+        border-color: #a78bfa;
+        color: #8b5cf6;
+        transform: scale(1.02);
+        box-shadow: 0 2px 3px rgba(139, 92, 246, 0.2);
+    }
+    43% {
+        background-color: #faf5ff;
+        border-color: #8b5cf6;
+        color: #7c3aed;
+        transform: scale(1.03);
+        box-shadow: 0 3px 6px rgba(139, 92, 246, 0.35);
+    }
+    50%, 85% {
+        background-color: #faf5ff;
+        border-color: #8b5cf6;
+        color: #7c3aed;
+        transform: scale(1);
+        box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
+    }
+    87% {
+        background-color: #f3f0ff;
+        border-color: #a78bfa;
+        color: #8b5cf6;
+        transform: scale(0.98);
+        box-shadow: 0 1px 3px rgba(139, 92, 246, 0.2);
+    }
+    90% {
+        background-color: #f3f4f6;
+        border-color: #d1d5db;
+        color: #9ca3af;
+        transform: scale(0.96);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    100% {
+        background-color: #f3f4f6;
+        border-color: #d1d5db;
+        color: #9ca3af;
+        transform: scale(1);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Animation des points NASA avec transition fluide */
+@keyframes nasaPointsAnimation {
+    0%, 35% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+    37% {
+        opacity: 0.9;
+        transform: scale(0.9) rotate(5deg);
+    }
+    39% {
+        opacity: 0.6;
+        transform: scale(0.7) rotate(10deg);
+    }
+    41% {
+        opacity: 0.2;
+        transform: scale(0.4) rotate(20deg);
+    }
+    43% {
+        opacity: 0;
+        transform: scale(0.2) rotate(30deg);
+    }
+    50%, 85% {
+        opacity: 0;
+        transform: scale(0.2) rotate(30deg);
+    }
+    87% {
+        opacity: 0.2;
+        transform: scale(0.4) rotate(-20deg);
+    }
+    89% {
+        opacity: 0.6;
+        transform: scale(0.7) rotate(-10deg);
+    }
+    91% {
+        opacity: 0.9;
+        transform: scale(0.9) rotate(-5deg);
+    }
+    93% {
+        opacity: 1;
+        transform: scale(1.05) rotate(0deg);
+    }
+    95% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Animation des points Apollo avec transition fluide */
+@keyframes apolloPointsAnimation {
+    0%, 35% {
+        opacity: 0;
+        transform: scale(0.2) rotate(-30deg);
+    }
+    37% {
+        opacity: 0.2;
+        transform: scale(0.4) rotate(-20deg);
+    }
+    39% {
+        opacity: 0.6;
+        transform: scale(0.7) rotate(-10deg);
+    }
+    41% {
+        opacity: 0.9;
+        transform: scale(0.9) rotate(-5deg);
+    }
+    43% {
+        opacity: 1;
+        transform: scale(1.05) rotate(0deg);
+    }
+    45% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+    50%, 85% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    87% {
+        opacity: 0.9;
+        transform: scale(0.9) rotate(5deg);
+    }
+    89% {
+        opacity: 0.6;
+        transform: scale(0.7) rotate(10deg);
+    }
+    91% {
+        opacity: 0.2;
+        transform: scale(0.4) rotate(20deg);
+    }
+    93% {
+        opacity: 0;
+        transform: scale(0.2) rotate(30deg);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.2) rotate(30deg);
+    }
+}
+
+/* Animation du compteur de résultats avec transition marquée */
+.results-counter {
+    animation: resultsContainerAnimation 6s infinite;
+}
+
+@keyframes resultsContainerAnimation {
+    0%, 35.7% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    40% {
+        transform: scale(0.9);
+        opacity: 0.7;
+    }
+    42.8% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    50%, 85.7% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    90% {
+        transform: scale(0.9);
+        opacity: 0.7;
+    }
+    92.8% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Animations des markers - synchronisées avec les cartes de résultats */
+
+/* Marker 1 - apparaît à 25%, disparaît en dernier à 86% */
+@keyframes marker1Animation {
+    0%, 23% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(0.5);
+    }
+    25%, 27% {
+        opacity: 1;
+        transform: translate(-50%, -100%) scale(1.1);
+    }
+    29%, 84% {
+        opacity: 1;
+        transform: translate(-50%, -100%) scale(1);
+    }
+    86%, 100% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(0.5);
+    }
+}
+
+/* Marker 2 - apparaît à 45%, disparaît en second à 82% */
+@keyframes marker2Animation {
+    0%, 43% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(0.5);
+    }
+    45%, 47% {
+        opacity: 1;
+        transform: translate(-50%, -100%) scale(1.1);
+    }
+    49%, 80% {
+        opacity: 1;
+        transform: translate(-50%, -100%) scale(1);
+    }
+    82%, 100% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(0.5);
+    }
+}
+
+/* Marker 3 - apparaît à 65%, disparaît en premier à 78% */
+@keyframes marker3Animation {
+    0%, 63% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(0.5);
+    }
+    65%, 67% {
+        opacity: 1;
+        transform: translate(-50%, -100%) scale(1.1);
+    }
+    69%, 76% {
+        opacity: 1;
+        transform: translate(-50%, -100%) scale(1);
+    }
+    78%, 100% {
+        opacity: 0;
+        transform: translate(-50%, -100%) scale(0.5);
+    }
+}
+
+/* Styles des clusters pour le mockup thématique */
+.marker-cluster {
+    background-color: rgba(59, 130, 246, 0.8);
+    border-radius: 50%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.marker-cluster-small {
+    width: 26px;
+    height: 26px;
+    font-size: 10px;
+}
+
+.marker-cluster-medium {
+    width: 26px;
+    height: 26px;
+    font-size: 10px;
+}
+
+.marker-cluster-purple {
+    background-color: rgba(168, 85, 247, 0.8);
+}

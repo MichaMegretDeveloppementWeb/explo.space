@@ -60,15 +60,25 @@
 
             <!-- Mockup/Visual -->
             <div class="relative order-1 lg:order-2">
-                <!-- Mockup : Page d'exploration skeleton -->
+                <!-- Mockup : Page d'exploration skeleton premium -->
                 <div class="relative mx-auto w-full sm:w-[90%] lg:w-[85%] max-w-xs sm:max-w-md lg:max-w-lg">
-                    <div class="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl border border-gray-200 overflow-hidden">
+                    <!-- Container avec hauteur fixe pour stabiliser la page -->
+                    <div class="h-[580px] flex items-center justify-center">
+                        <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 relative overflow-hidden w-full"
+                             style="box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.02);">
 
-                        <!-- Header avec recherche -->
-                        <div class="p-3 sm:p-4 bg-gray-50 border-b border-gray-200">
+                            <!-- Gradient background subtil -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-white to-green-50/20 pointer-events-none"></div>
+
+                            <!-- Contenu relatif -->
+                            <div class="relative z-10">
+
+                        <!-- Header avec recherche premium -->
+                        <div class="mb-0 p-3 sm:p-4 bg-white rounded-xl border border-gray-200"
+                             style="box-shadow: 0 2px 8px -2px rgba(0,0,0,0.04);">
                             <div class="flex items-center space-x-2 sm:space-x-3 mb-3">
-                                <!-- Champ de recherche -->
-                                <div class="flex-1 bg-white rounded-lg border border-gray-300 px-2.5 sm:px-3 py-2 sm:py-2.5">
+                                <!-- Champ de recherche amélioré -->
+                                <div class="flex-1 bg-gray-50 rounded-lg border border-gray-200 px-2.5 sm:px-3 py-2 sm:py-2.5">
                                     <div class="flex items-center">
                                         <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -76,8 +86,9 @@
                                         <div class="h-2 sm:h-2.5 w-16 sm:w-20 bg-gray-300 rounded"></div>
                                     </div>
                                 </div>
-                                <!-- Bouton géolocalisation -->
-                                <div class="w-8 h-8 sm:w-9 sm:h-9 bg-blue-500 rounded-lg flex items-center justify-center">
+                                <!-- Bouton géolocalisation premium -->
+                                <div class="w-8 h-8 sm:w-9 sm:h-9 bg-blue-500 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors"
+                                     style="box-shadow: 0 2px 6px -1px rgba(59,130,246,0.3);">
                                     <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -102,159 +113,76 @@
                         <!-- Carte interactive -->
                         <div class="p-3 sm:p-4">
 
-                            <div class="h-32 sm:h-40 rounded-lg relative overflow-hidden border border-gray-300 mb-3 sm:mb-4">
-                                <!-- Background dégradé moderne sur océan -->
-                                <div class="absolute inset-0 bg-gradient-to-br from-blue-100 via-blue-100 to-blue-100"></div>
+                            <div class="h-32 sm:h-40 rounded-lg relative overflow-hidden border border-gray-200 mb-3 sm:mb-4"
+                                 style="box-shadow: 0 2px 8px -2px rgba(0,0,0,0.04);">
 
-                                <!-- Grille subtile optionnelle -->
-                                <div class="absolute inset-0 opacity-30" style="background-image:
-                                    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-                                    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-                                    background-size: 25px 25px;">
-                                </div>
+                                <!-- Background map image -->
+                                <div class="absolute inset-0 bg-cover bg-center opacity-20"
+                                     style="background-image: url('{{ Vite::asset('resources/images/backgroud_map.webp') }}');"></div>
 
-                                <!-- SVG World Map avec continents reconnaissables -->
-                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Amérique du Nord -->
-                                    <path d="M30 40 L80 30 L90 50 L85 70 L75 80 L65 85 L50 90 L35 85 L25 75 L20 60 L25 45 Z"
-                                          fill="rgba(245, 243, 235, 0.85)"
-                                          stroke="rgba(229, 231, 235, 0.8)"
-                                          stroke-width="0.8"
-                                          class="transition-all duration-300 hover:fill-opacity-90"/>
-
-                                    <!-- Amérique du Sud -->
-                                    <path d="M50 110 L65 105 L70 120 L75 140 L70 160 L60 170 L50 175 L45 165 L40 145 L45 125 Z"
-                                          fill="rgba(245, 243, 235, 0.85)"
-                                          stroke="rgba(229, 231, 235, 0.8)"
-                                          stroke-width="0.8"
-                                          class="transition-all duration-300 hover:fill-opacity-90"/>
-
-                                    <!-- Europe -->
-                                    <path d="M160 45 L180 40 L190 50 L185 65 L175 70 L165 65 L155 55 Z"
-                                          fill="rgba(245, 243, 235, 0.85)"
-                                          stroke="rgba(229, 231, 235, 0.8)"
-                                          stroke-width="0.8"
-                                          class="transition-all duration-300 hover:fill-opacity-90"/>
-
-                                    <!-- Afrique -->
-                                    <path d="M170 80 L185 75 L195 90 L200 110 L195 130 L185 145 L175 150 L165 145 L160 130 L165 110 L165 95 Z"
-                                          fill="rgba(245, 243, 235, 0.85)"
-                                          stroke="rgba(229, 231, 235, 0.8)"
-                                          stroke-width="0.8"
-                                          class="transition-all duration-300 hover:fill-opacity-90"/>
-
-                                    <!-- Asie -->
-                                    <path d="M220 30 L280 25 L300 35 L310 50 L305 70 L290 80 L270 85 L250 80 L230 70 L215 55 L210 40 Z"
-                                          fill="rgba(245, 243, 235, 0.85)"
-                                          stroke="rgba(229, 231, 235, 0.8)"
-                                          stroke-width="0.8"
-                                          class="transition-all duration-300 hover:fill-opacity-90"/>
-
-                                    <!-- Chine/Inde -->
-                                    <path d="M280 90 L310 85 L320 100 L315 115 L300 125 L285 120 L275 105 Z"
-                                          fill="rgba(245, 243, 235, 0.85)"
-                                          stroke="rgba(229, 231, 235, 0.8)"
-                                          stroke-width="0.8"
-                                          class="transition-all duration-300 hover:fill-opacity-90"/>
-
-                                    <!-- Australie -->
-                                    <path d="M300 150 L340 145 L350 155 L345 165 L330 170 L310 165 L295 160 Z"
-                                          fill="rgba(245, 243, 235, 0.85)"
-                                          stroke="rgba(229, 231, 235, 0.8)"
-                                          stroke-width="0.8"
-                                          class="transition-all duration-300 hover:fill-opacity-90"/>
-
-                                    <!-- Groenland -->
-                                    <path d="M120 15 L140 10 L145 20 L140 30 L130 35 L120 30 L115 20 Z"
-                                          fill="rgba(245, 243, 235, 0.85)"
-                                          stroke="rgba(229, 231, 235, 0.8)"
-                                          stroke-width="0.8"/>
-
-                                    <!-- Japon -->
-                                    <rect x="330" y="65" width="8" height="20" rx="2"
-                                          fill="rgba(245, 243, 235, 0.85)"
-                                          stroke="rgba(229, 231, 235, 0.8)"
-                                          stroke-width="0.8"/>
-
-                                    <!-- Royaume-Uni -->
-                                    <ellipse cx="155" cy="50" rx="4" ry="8"
-                                             fill="rgba(245, 243, 235, 0.85)"
-                                             stroke="rgba(229, 231, 235, 0.8)"
-                                             stroke-width="0.8"/>
-
-                                </svg>
-
-                                <!-- Points de données sans clignotement -->
-                                <!-- États-Unis (Floride individuel) -->
-                                <div class="absolute" style="top: 40%; left: 22%;">
-                                    <div class="w-2 h-2 bg-blue-600 rounded-full border-2 border-white shadow-lg"></div>
-                                </div>
+                                <!-- Marqueurs individuels SVG -->
 
                                 <!-- France (Kourou) -->
-                                <div class="absolute" style="top: 55%; left: 12%;">
-                                    <div class="w-2 h-2 bg-red-600 rounded-full border-2 border-white shadow-lg"></div>
+                                <div class="absolute" style="top: 55%; left: 12%; transform: translate(-50%, -100%);">
+                                    <svg width="18" height="28" viewBox="-1 0 28 41">
+                                        <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                              fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                        <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                    </svg>
                                 </div>
 
                                 <!-- Chili (ALMA) -->
-                                <div class="absolute" style="top: 75%; left: 15%;">
-                                    <div class="w-2 h-2 bg-orange-600 rounded-full border-2 border-white shadow-lg"></div>
+                                <div class="absolute" style="top: 75%; left: 15%; transform: translate(-50%, -100%);">
+                                    <svg width="18" height="28" viewBox="-1 0 28 41">
+                                        <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                              fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                        <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                    </svg>
                                 </div>
 
                                 <!-- Japon -->
-                                <div class="absolute" style="top: 35%; left: 82%;">
-                                    <div class="w-2 h-2 bg-yellow-600 rounded-full border-2 border-white shadow-lg"></div>
+                                <div class="absolute" style="top: 35%; left: 82%; transform: translate(-50%, -100%);">
+                                    <svg width="18" height="28" viewBox="-1 0 28 41">
+                                        <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                              fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                        <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                    </svg>
                                 </div>
 
                                 <!-- Australie -->
-                                <div class="absolute" style="top: 75%; left: 78%;">
-                                    <div class="w-2 h-2 bg-teal-600 rounded-full border-2 border-white shadow-lg"></div>
+                                <div class="absolute" style="top: 75%; left: 78%; transform: translate(-50%, -100%);">
+                                    <svg width="18" height="28" viewBox="-1 0 28 41">
+                                        <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                              fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                        <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                    </svg>
                                 </div>
 
-                                <!-- Clusters de points avec regroupement -->
+                                <!-- Clusters -->
 
                                 <!-- Cluster États-Unis (NASA/SpaceX) -->
                                 <div class="absolute" style="top: 32%; left: 18%;">
-                                    <div class="relative">
-                                        <div class="w-5 h-5 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full border-2 border-white shadow-xl flex items-center justify-center">
-                                            <span class="text-white text-xs font-bold">12</span>
-                                        </div>
-                                    </div>
+                                    <div class="marker-cluster marker-cluster-medium">12</div>
                                 </div>
 
                                 <!-- Cluster Europe (ESA + observatoires) -->
                                 <div class="absolute" style="top: 24%; left: 44%;">
-                                    <div class="relative">
-                                        <div class="w-5 h-5 bg-gradient-to-r from-green-500 to-green-700 rounded-full border-2 border-white shadow-xl flex items-center justify-center">
-                                            <span class="text-white text-xs font-bold">8</span>
-                                        </div>
-                                    </div>
+                                    <div class="marker-cluster marker-cluster-medium">8</div>
                                 </div>
 
                                 <!-- Cluster Russie/Kazakhstan (Baïkonour + autres) -->
                                 <div class="absolute" style="top: 25%; left: 65%;">
-                                    <div class="relative">
-                                        <div class="w-5 h-5 bg-gradient-to-r from-purple-500 to-purple-700 rounded-full border-2 border-white shadow-xl flex items-center justify-center">
-                                            <span class="text-white text-xs font-bold">6</span>
-                                        </div>
-                                    </div>
+                                    <div class="marker-cluster marker-cluster-medium">6</div>
                                 </div>
 
                                 <!-- Cluster Asie-Pacifique (Chine, Inde, Corée) -->
                                 <div class="absolute" style="top: 40%; left: 72%;">
-                                    <div class="relative">
-                                        <div class="w-4 h-4 bg-gradient-to-r from-indigo-500 to-indigo-700 rounded-full border-2 border-white shadow-lg flex items-center justify-center">
-                                            <span class="text-white text-xs font-bold">4</span>
-                                        </div>
-                                    </div>
+                                    <div class="marker-cluster marker-cluster-small">4</div>
                                 </div>
 
                                 <!-- Cluster Amérique du Sud (Brésil + Chili) -->
                                 <div class="absolute" style="top: 65%; left: 16%;">
-                                    <div class="relative">
-                                        <div class="w-4 h-4 bg-gradient-to-r from-orange-500 to-orange-700 rounded-full border-2 border-white shadow-lg flex items-center justify-center">
-                                            <span class="text-white text-xs font-bold">3</span>
-                                        </div>
-                                    </div>
+                                    <div class="marker-cluster marker-cluster-small">3</div>
                                 </div>
 
                                 <!-- Interface moderne avec glass effect -->
@@ -344,6 +272,9 @@
                                 </div>
                             </div>
 
+                        </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>

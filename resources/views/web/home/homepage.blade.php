@@ -1,5 +1,9 @@
 @extends('layouts.web', ['footer' => true])
 
+@push('head')
+    @vite(['resources/js/web/homepage/index.js', 'resources/css/web/homepage/index.css'])
+@endpush
+
 @section('content')
 
     @include('web.home.partials.hero')

@@ -1,9 +1,9 @@
 <!-- Section Fonctionnalites principales -->
-<section class="py-12 sm:py-16 md:py-20 bg-white px-3">
+<section class="py-12 sm:py-16 md:py-20 bg-white px-3 sm:mt-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header Section -->
-        <div class="text-center mb-12 sm:mb-16">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+        <div class="text-center mb-[5em] sm:mb-20">
+            <h2 class="text-2xl sm:text-4xl md:text-4xl font-bold text-gray-900">
                 {{ __('web/pages/home.features.title') }}
             </h2>
             <p class="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl sm:max-w-3xl mx-auto px-2 sm:px-0">
@@ -14,127 +14,198 @@
         <!-- Fonctionnalites Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-16 gap-y-16 sm:gap-y-24 lg:gap-y-32 items-center">
 
-            <!-- Fonctionnalite 1: Autour de moi -->
+            <!-- Fonctionnalite 1: Autour de moi - VERSION PREMIUM -->
             <div class="order-2 lg:order-1">
-                <!-- Mockup skeleton : Interface de recherche "autour de moi" avec curseur rayon -->
                 <div class="relative mx-auto w-full sm:w-[90%] md:w-[85%] max-w-sm sm:max-w-md">
-                    <div class="rounded-xl sm:rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-lg sm:shadow-xl">
-                        <!-- Barre de recherche -->
-                        <div class="mb-3 sm:mb-4">
-                            <div class="h-10 sm:h-12 bg-gray-100 rounded-lg flex items-center px-3 sm:px-4 relative">
-                                <div class="h-3 w-3 sm:h-4 sm:w-4 bg-blue-400 rounded mr-2 sm:mr-3 flex items-center justify-center">
-                                    <div class="h-1.5 w-1.5 sm:h-2 sm:w-2 bg-white rounded-full"></div>
-                                </div>
-                                <div class="h-2.5 sm:h-3 w-24 sm:w-32 bg-gray-300 rounded mr-2"></div>
-                            </div>
-                        </div>
+                    <!-- Container principal avec glassmorphism et hauteur fixe -->
+                    <div class="h-[680px] flex items-start justify-center lg:items-center">
 
-                        <!-- Curseur rayon mis en avant avec animation -->
-                        <div class="mb-3 sm:mb-4 p-2.5 sm:p-3 bg-blue-50 border-2 border-blue-200 rounded-lg">
-                            <div class="flex items-center justify-between mb-1.5 sm:mb-2">
-                                <span class="text-xs font-medium text-blue-800">{{ __('web/pages/home.features.modes.proximity.mockup.radius_label') }}</span>
-                                <span class="text-xs font-bold text-blue-600 radius-display">{{ __('web/pages/home.features.modes.proximity.mockup.radius_display') }}</span>
-                            </div>
-                            <div class="relative h-1.5 sm:h-2 bg-blue-200 rounded-full">
-                                <div class="absolute h-3 w-3 sm:h-4 sm:w-4 bg-blue-600 rounded-full -mt-0.5 sm:-mt-1 transform -translate-x-1/2 shadow-lg radius-slider" style="left: 50%; animation: slideRadius 10s infinite;"></div>
-                            </div>
-                        </div>
+                        <!-- Gradient background subtil -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-white to-purple-50/20 pointer-events-none w-full"></div>
 
-                        <!-- Carte avec éléments cartographiques -->
-                        <div class="h-36 sm:h-48 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg relative overflow-hidden border border-gray-200">
-                            <!-- Grille cartographique -->
-                            <div class="absolute inset-0 opacity-20">
-                                <div class="absolute top-0 left-1/2 w-px h-full bg-gray-300"></div>
-                                <div class="absolute left-0 top-1/2 w-full h-px bg-gray-300"></div>
-                                <div class="absolute top-1/4 left-0 right-0 h-px bg-gray-200"></div>
-                                <div class="absolute top-3/4 left-0 right-0 h-px bg-gray-200"></div>
-                                <div class="absolute left-1/4 top-0 bottom-0 w-px bg-gray-200"></div>
-                                <div class="absolute left-3/4 top-0 bottom-0 w-px bg-gray-200"></div>
-                            </div>
+                        <!-- Contenu relatif -->
+                        <div class="relative z-10 rounded-2xl border border-gray-200/60 bg-white p-5 sm:p-6 overflow-hidden w-full">
 
-
-                            <!-- Continents réalistes (repositionnés plus près du centre) -->
-                            <!-- Amérique du Nord -->
-                            <div class="absolute top-10 left-6">
-                                <div class="relative w-12 h-10 bg-gray-400 opacity-70" style="clip-path: polygon(10% 90%, 20% 80%, 30% 85%, 40% 75%, 60% 80%, 80% 70%, 90% 50%, 95% 30%, 85% 20%, 75% 10%, 60% 15%, 40% 5%, 20% 15%, 10% 25%, 5% 40%, 0% 60%, 5% 80%);">
-                                    <div class="absolute inset-0 bg-gradient-to-se from-gray-400 to-gray-300"></div>
+                            <!-- Barre de recherche premium avec glassmorphism -->
+                            <div class="mb-4">
+                                <div class="relative">
+                                    <div class="h-12 bg-white border border-gray-200 rounded-xl flex items-center px-4 transition-all duration-300 hover:border-blue-300 hover:shadow-sm"
+                                         style="box-shadow: 0 2px 8px -2px rgba(0,0,0,0.04);">
+                                        <!-- Icône GPS avec pulse -->
+                                        <div class="relative mr-3">
+                                            <div class="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center animate-pulse">
+                                                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </div>
+                                            <div class="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-40"></div>
+                                        </div>
+                                        <!-- Placeholder animé -->
+                                        <div class="flex-1">
+                                            <span class="text-sm text-gray-400 search-placeholder">Paris, France</span>
+                                        </div>
+                                        <!-- Bouton géolocalisation -->
+                                        <button class="ml-2 px-3 py-1.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200"
+                                                style="box-shadow: 0 2px 8px -2px rgba(59,130,246,0.4);">
+                                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Europe / Afrique -->
-                            <div class="absolute top-8 left-1/2 transform -translate-x-1/2">
-                                <div class="relative w-8 h-16 bg-gray-400 opacity-70" style="clip-path: polygon(20% 0%, 60% 5%, 80% 15%, 90% 35%, 85% 50%, 90% 65%, 80% 80%, 60% 90%, 40% 95%, 20% 90%, 10% 75%, 5% 60%, 15% 45%, 10% 30%, 20% 15%);">
-                                    <div class="absolute inset-0 bg-gradient-to-s from-gray-400 to-gray-300"></div>
+                            <!-- Curseur rayon sophistiqué avec glassmorphism -->
+                            <div class="mb-4 p-4 rounded-xl backdrop-blur-sm relative"
+                                 style="background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(147,197,253,0.12) 100%); border: 1px solid rgba(59,130,246,0.2); box-shadow: 0 4px 16px -4px rgba(59,130,246,0.15);">
+
+                                <div class="mb-4">
+                                    <span class="text-xs font-semibold text-blue-900">{{ __('web/pages/home.features.modes.proximity.mockup.radius_label') }}</span>
+                                </div>
+
+                                <!-- Rail du curseur avec gradient - padding pour éviter la coupure -->
+                                <div class="relative px-3">
+                                    <div class="relative h-2 rounded-full"
+                                         style="background: linear-gradient(90deg, #bfdbfe 0%, #3b82f6 100%);">
+                                        <!-- Poignée 3D avec ombre portée - centré verticalement -->
+                                        <div class="absolute h-5 w-5 bg-white rounded-full top-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-grab active:cursor-grabbing radius-slider transition-all duration-200"
+                                             style="left: 50%; animation: slideRadius 10s infinite ease-in-out; box-shadow: 0 3px 8px -1px rgba(59,130,246,0.4), 0 0 0 3px rgba(59,130,246,0.15), inset 0 1px 0 rgba(255,255,255,0.8);">
+                                            <div class="absolute inset-0.5 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Asie -->
-                            <div class="absolute top-12 right-8">
-                                <div class="relative w-14 h-12 bg-gray-400 opacity-70" style="clip-path: polygon(0% 40%, 15% 20%, 30% 25%, 50% 15%, 70% 20%, 85% 35%, 95% 50%, 90% 70%, 75% 85%, 60% 90%, 40% 95%, 25% 85%, 10% 70%, 5% 55%);">
-                                    <div class="absolute inset-0 bg-gradient-to-sw from-gray-400 to-gray-300"></div>
+                            <!-- Carte premium avec image réelle -->
+                            <div class="h-64 rounded-xl relative overflow-hidden border border-gray-200"
+                                 style="box-shadow: 0 8px 24px -6px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.5);">
+
+                                <!-- Image de fond : Carte réaliste -->
+                                <div class="absolute inset-0 bg-cover bg-center opacity-15" style="background-image: url('{{ Vite::asset('resources/images/backgroud_map.webp') }}'); background-size: 160%"></div>
+
+                                <!-- Marker 1 (proche - ~35% du rayon depuis centre) - distance ~90px -->
+                                <div class="absolute marker-1" style="top: 62%; left: 62%; transform: translate(-50%, -100%); animation: marker1Animation 10s infinite ease-in-out;">
+                                    <svg width="27" height="42" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                              fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                        <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                    </svg>
+                                </div>
+
+                                <!-- Marker 2 (moyen - ~60% du rayon depuis centre) - distance ~150px -->
+                                <div class="absolute marker-2" style="top: 74%; left: 26%; transform: translate(-50%, -100%); animation: marker2Animation 10s infinite ease-in-out;">
+                                    <svg width="27" height="42" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                              fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                        <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                    </svg>
+                                </div>
+
+                                <!-- Marker 3 (loin - ~90% du rayon depuis centre) - distance ~230px -->
+                                <div class="absolute marker-3" style="top: 16%; left: 80%; transform: translate(-50%, -100%); animation: marker3Animation 10s infinite ease-in-out;">
+                                    <svg width="27" height="42" viewBox="-1 0 28 41" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                              fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                        <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                    </svg>
+                                </div>
+
+                                <!-- Point utilisateur avec pulse premium -->
+                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+                                    <div class="relative">
+                                        <div class="w-4 h-4 bg-blue-500 rounded-full border-2 border-white"
+                                             style="box-shadow: 0 2px 8px rgba(59,130,246,0.5), 0 0 0 4px rgba(59,130,246,0.2);"></div>
+                                        <div class="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-50"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Cercle rayon avec effet glow -->
+                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                                    <div class="border-2 border-blue-400/60 rounded-full radius-circle"
+                                         style="width: 60px; height: 60px; animation: radiusAnimation 10s ease-in-out infinite; background: rgba(0,81,255,0.16); box-shadow: 0 0 20px rgba(59,130,246,0.15);"></div>
+                                </div>
+
+                            </div>
+
+                            <!-- Mini-liste de résultats premium - apparaissent selon rayon -->
+                            <div class="mt-4 space-y-2">
+                                <!-- Result card 1 - apparait en premier (rayon moyen) -->
+                                <div class="result-card-1 grid transition-all duration-300"
+                                     style="animation: resultCard1Animation 10s infinite ease-in-out;">
+                                    <div class="overflow-hidden">
+                                        <div class="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-blue-200 transition-all duration-200"
+                                             style="box-shadow: 0 2px 8px -2px rgba(0,0,0,0.04);">
+                                            <!-- Skeleton image -->
+                                            <div class="w-10 h-10 bg-gray-200 rounded flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="h-2.5 w-28 bg-gray-300 rounded mb-1.5"></div>
+                                                <div class="h-2 w-20 bg-gray-200 rounded"></div>
+                                            </div>
+                                            <div class="px-2 py-1 bg-blue-50 rounded">
+                                                <div class="h-3 w-10 bg-blue-200 rounded"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Result card 2 - apparait en second (rayon plus grand) -->
+                                <div class="result-card-2 grid transition-all duration-300"
+                                     style="animation: resultCard2Animation 10s infinite ease-in-out;">
+                                    <div class="overflow-hidden">
+                                        <div class="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-blue-200 transition-all duration-200"
+                                             style="box-shadow: 0 2px 8px -2px rgba(0,0,0,0.04);">
+                                            <!-- Skeleton image -->
+                                            <div class="w-10 h-10 bg-gray-200 rounded flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="h-2.5 w-32 bg-gray-300 rounded mb-1.5"></div>
+                                                <div class="h-2 w-24 bg-gray-200 rounded"></div>
+                                            </div>
+                                            <div class="px-2 py-1 bg-blue-50 rounded">
+                                                <div class="h-3 w-10 bg-blue-200 rounded"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Result card 3 - apparait en dernier (rayon max) -->
+                                <div class="result-card-3 grid transition-all duration-300"
+                                     style="animation: resultCard3Animation 10s infinite ease-in-out;">
+                                    <div class="overflow-hidden">
+                                        <div class="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-blue-200 transition-all duration-200"
+                                             style="box-shadow: 0 2px 8px -2px rgba(0,0,0,0.04);">
+                                            <!-- Skeleton image -->
+                                            <div class="w-10 h-10 bg-gray-200 rounded flex items-center justify-center flex-shrink-0">
+                                                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="h-2.5 w-36 bg-gray-300 rounded mb-1.5"></div>
+                                                <div class="h-2 w-28 bg-gray-200 rounded"></div>
+                                            </div>
+                                            <div class="px-2 py-1 bg-blue-50 rounded">
+                                                <div class="h-3 w-10 bg-blue-200 rounded"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Océanie/Australie -->
-                            <div class="absolute bottom-12 right-12">
-                                <div class="relative w-6 h-4 bg-gray-400 opacity-70" style="clip-path: polygon(15% 30%, 85% 20%, 95% 60%, 80% 90%, 20% 95%, 5% 70%);">
-                                    <div class="absolute inset-0 bg-gradient-to-e from-gray-400 to-gray-300"></div>
-                                </div>
-                            </div>
-
-                            <!-- Amérique du Sud -->
-                            <div class="absolute bottom-16 left-10">
-                                <div class="relative w-5 h-10 bg-gray-400 opacity-70" style="clip-path: polygon(40% 0%, 70% 10%, 85% 30%, 80% 50%, 85% 70%, 75% 85%, 60% 95%, 40% 90%, 25% 85%, 20% 70%, 30% 50%, 25% 30%, 35% 15%);">
-                                    <div class="absolute inset-0 bg-gradient-to-s from-gray-400 to-gray-300"></div>
-                                </div>
-                            </div>
-
-                            <!-- Points statiques (lieux) placés sur les continents repositionnés -->
-                            <!-- Points Amérique du Nord -->
-                            <div class="absolute top-12 left-10 w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <div class="absolute top-16 left-12 w-2 h-2 bg-blue-500 rounded-full"></div>
-
-                            <!-- Points Europe/Afrique -->
-                            <div class="absolute top-18 left-1/2 w-2 h-2 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
-                            <div class="absolute top-20 left-1/2 w-2 h-2 bg-blue-500 rounded-full transform translate-x-1"></div>
-
-                            <!-- Points Asie -->
-                            <div class="absolute top-20 right-16 w-2 h-2 bg-blue-500 rounded-full"></div>
-                            <div class="absolute top-24 right-20 w-2 h-2 bg-blue-500 rounded-full"></div>
-
-                            <!-- Point Océanie -->
-                            <div class="absolute bottom-16 right-18 w-2 h-2 bg-blue-500 rounded-full"></div>
-
-                            <!-- Point Amérique du Sud -->
-                            <div class="absolute bottom-22 left-16 w-2 h-2 bg-blue-500 rounded-full"></div>
-
-                            <!-- Point central clignotant (position utilisateur) -->
-                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse shadow-lg relative">
-                                    <div class="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-75"></div>
-                                    <div class="absolute inset-0.5 bg-white rounded-full"></div>
-                                </div>
-                            </div>
-
-                            <!-- Cercle rayon avec animation synchronisée -->
-                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                <div class="border-2 border-blue-400 bg-[#79aaff38] border-dashed rounded-full opacity-70 radius-circle" style="width: 60px; height: 60px; animation: radiusAnimation 10s infinite;"></div>
-                            </div>
-
-                            <!-- Filtre d'opacité avec masque radial animé par JavaScript -->
-                            <div class="absolute inset-0 pointer-events-none search-radius-mask" id="radius-mask" style="
-                                background: rgba(255,255,255,0.92);
-                                -webkit-mask: radial-gradient(circle 45px at center, transparent 45px, black 55px);
-                                mask: radial-gradient(circle 45px at center, transparent 45px, black 55px);
-                                will-change: mask;
-                            "></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="order-1 lg:order-2 max-w-3xl mx-auto">
-                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
+                <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
                     {{ __('web/pages/home.features.modes.proximity.title') }}
                 </h3>
                 <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-2 sm:px-0 leading-relaxed">
@@ -162,7 +233,7 @@
 
             <!-- Fonctionnalite 2: Recherche thematique -->
             <div class="order-3 max-w-3xl mx-auto">
-                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
+                <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4 px-2 sm:px-0">
                     {{ __('web/pages/home.features.modes.thematic.title') }}
                 </h3>
                 <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 px-2 sm:px-0 leading-relaxed">
@@ -197,147 +268,152 @@
             </div>
 
             <div class="order-4">
-                <!-- Mockup skeleton : Tags et carte thematique -->
+                <!-- Mockup premium : Tags et carte thematique -->
                 <div class="relative mx-auto w-full sm:w-[90%] md:w-[85%] max-w-sm sm:max-w-md">
-                    <div class="rounded-xl sm:rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-lg sm:shadow-xl">
-                        <!-- Tags selectionnes avec animation -->
-                        <div class="mb-4">
+                    <div class="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 relative overflow-hidden"
+                         style="box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.02);">
+                        <!-- Gradient background subtil -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-white to-purple-50/20 pointer-events-none"></div>
+
+                        <!-- Tags selectionnes avec animation premium -->
+                        <div class="relative z-10 mb-4">
                             <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 text-xs font-medium rounded-full border shadow-sm tag-nasa" style="animation: tagNasaAnimation 6s infinite;">{{ __('web/pages/home.features.modes.thematic.mockup.tag_nasa') }}</span>
-                                <span class="px-3 py-1 text-xs rounded-full border transition-colors cursor-pointer tag-apollo" style="animation: tagApolloAnimation 6s infinite;">{{ __('web/pages/home.features.modes.thematic.mockup.tag_apollo') }}</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full border border-gray-200 hover:bg-gray-200 transition-colors cursor-pointer">SpaceX</span>
-                                <div class="px-2 py-1 border-2 border-dashed border-gray-300 text-gray-400 text-xs rounded-full flex items-center">
-                                    <div class="w-2 h-2 bg-gray-300 rounded-full mr-1"></div>
+                                <span class="px-3 py-1.5 text-xs font-medium rounded-full border tag-nasa"
+                                      style="animation: tagNasaAnimation 6s infinite; transition: all 0.3s ease;">
+                                    {{ __('web/pages/home.features.modes.thematic.mockup.tag_nasa') }}
+                                </span>
+                                <span class="px-3 py-1.5 text-xs font-medium rounded-full border tag-apollo"
+                                      style="animation: tagApolloAnimation 6s infinite; transition: all 0.3s ease;">
+                                    {{ __('web/pages/home.features.modes.thematic.mockup.tag_apollo') }}
+                                </span>
+                                <span class="px-3 py-1.5 bg-gray-50 text-gray-500 text-xs font-medium rounded-full border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer">
+                                    SpaceX
+                                </span>
+                                <div class="px-2.5 py-1.5 border-2 border-dashed border-gray-300 text-gray-400 text-xs font-medium rounded-full flex items-center hover:border-gray-400 transition-colors cursor-pointer">
+                                    <div class="w-2 h-2 bg-gray-300 rounded-full mr-1.5"></div>
                                     <span>+3</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Carte mondiale avec animation des points -->
-                        <div class="h-48 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg relative overflow-hidden border border-gray-200">
-                            <!-- Grille cartographique -->
-                            <div class="absolute inset-0 opacity-20">
-                                <div class="absolute top-0 left-1/2 w-px h-full bg-gray-300 transform -translate-x-1/2"></div>
-                                <div class="absolute left-0 top-1/2 w-full h-px bg-gray-300 transform -translate-y-1/2"></div>
-                                <div class="absolute top-1/4 left-0 w-full h-px bg-gray-200"></div>
-                                <div class="absolute top-3/4 left-0 w-full h-px bg-gray-200"></div>
-                                <div class="absolute left-1/4 top-0 bottom-0 w-px bg-gray-200"></div>
-                                <div class="absolute left-3/4 top-0 bottom-0 w-px bg-gray-200"></div>
+                        <!-- Carte mondiale avec background image et points -->
+                        <div class="relative z-10 h-64 rounded-xl relative overflow-hidden border border-gray-200"
+                             style="box-shadow: 0 4px 12px -2px rgba(0,0,0,0.05);">
+
+                            <!-- Background map image -->
+                            <div class="absolute inset-0 bg-cover bg-center opacity-20"
+                                 style="background-image: url('{{ Vite::asset('resources/images/backgroud_map.webp') }}');"></div>
+
+                            <!-- NASA Points (3 clusters + 5 markers) - Visible de 0 à 3s -->
+                            <!-- Cluster 1 NASA -->
+                            <div class="nasa-points absolute" style="top: 20%; left: 15%; animation: nasaPointsAnimation 6s infinite;">
+                                <div class="marker-cluster marker-cluster-medium">12</div>
+                            </div>
+                            <!-- Cluster 2 NASA -->
+                            <div class="nasa-points absolute" style="top: 65%; right: 20%; animation: nasaPointsAnimation 6s infinite;">
+                                <div class="marker-cluster marker-cluster-medium">8</div>
+                            </div>
+                            <!-- Cluster 3 NASA -->
+                            <div class="nasa-points absolute" style="top: 40%; right: 15%; animation: nasaPointsAnimation 6s infinite;">
+                                <div class="marker-cluster marker-cluster-small">5</div>
                             </div>
 
-                            <!-- Continents réalistes -->
-                            <!-- Amérique du Nord -->
-                            <div class="absolute top-6 left-2">
-                                <div class="relative w-12 h-10 bg-gray-400 opacity-70" style="clip-path: polygon(10% 90%, 20% 80%, 30% 85%, 40% 75%, 60% 80%, 80% 70%, 90% 50%, 95% 30%, 85% 20%, 75% 10%, 60% 15%, 40% 5%, 20% 15%, 10% 25%, 5% 40%, 0% 60%, 5% 80%);">
-                                    <div class="absolute inset-0 bg-gradient-to-se from-gray-400 to-gray-300"></div>
-                                </div>
+                            <!-- Marker 1 NASA -->
+                            <div class="nasa-points absolute marker-1-nasa" style="top: 30%; left: 25%; animation: nasaPointsAnimation 6s infinite;">
+                                <svg width="27" height="42" viewBox="-1 0 28 41">
+                                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                          fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                </svg>
+                            </div>
+                            <!-- Marker 2 NASA -->
+                            <div class="nasa-points absolute marker-2-nasa" style="top: 55%; left: 35%; animation: nasaPointsAnimation 6s infinite;">
+                                <svg width="27" height="42" viewBox="-1 0 28 41">
+                                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                          fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                </svg>
+                            </div>
+                            <!-- Marker 3 NASA -->
+                            <div class="nasa-points absolute marker-3-nasa" style="top: 15%; left: 45%; animation: nasaPointsAnimation 6s infinite;">
+                                <svg width="27" height="42" viewBox="-1 0 28 41">
+                                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                          fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                </svg>
+                            </div>
+                            <!-- Marker 4 NASA -->
+                            <div class="nasa-points absolute marker-4-nasa" style="top: 70%; left: 60%; animation: nasaPointsAnimation 6s infinite;">
+                                <svg width="27" height="42" viewBox="-1 0 28 41">
+                                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                          fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                </svg>
+                            </div>
+                            <!-- Marker 5 NASA -->
+                            <div class="nasa-points absolute marker-5-nasa" style="top: 45%; right: 30%; animation: nasaPointsAnimation 6s infinite;">
+                                <svg width="27" height="42" viewBox="-1 0 28 41">
+                                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                          fill="#3b82f6" stroke="#ffffff" stroke-width="1.5"/>
+                                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                </svg>
                             </div>
 
-                            <!-- Europe / Afrique -->
-                            <div class="absolute top-16 left-1/2 transform -translate-x-1/2">
-                                <div class="relative w-8 h-16 bg-gray-400 opacity-70" style="clip-path: polygon(20% 0%, 60% 5%, 80% 15%, 90% 35%, 85% 50%, 90% 65%, 80% 80%, 60% 90%, 40% 95%, 20% 90%, 10% 75%, 5% 60%, 15% 45%, 10% 30%, 20% 15%);">
-                                    <div class="absolute inset-0 bg-gradient-to-s from-gray-400 to-gray-300"></div>
-                                </div>
+                            <!-- Apollo Points (4 clusters + 3 markers) - Visible de 3 à 6s -->
+                            <!-- Cluster 1 Apollo -->
+                            <div class="apollo-points absolute" style="top: 25%; left: 20%; animation: apolloPointsAnimation 6s infinite; opacity: 0;">
+                                <div class="marker-cluster marker-cluster-medium marker-cluster-purple">7</div>
+                            </div>
+                            <!-- Cluster 2 Apollo -->
+                            <div class="apollo-points absolute" style="top: 60%; left: 40%; animation: apolloPointsAnimation 6s infinite; opacity: 0;">
+                                <div class="marker-cluster marker-cluster-medium marker-cluster-purple">11</div>
+                            </div>
+                            <!-- Cluster 3 Apollo -->
+                            <div class="apollo-points absolute" style="top: 35%; right: 25%; animation: apolloPointsAnimation 6s infinite; opacity: 0;">
+                                <div class="marker-cluster marker-cluster-small marker-cluster-purple">4</div>
+                            </div>
+                            <!-- Cluster 4 Apollo -->
+                            <div class="apollo-points absolute" style="top: 15%; right: 15%; animation: apolloPointsAnimation 6s infinite; opacity: 0;">
+                                <div class="marker-cluster marker-cluster-small marker-cluster-purple">6</div>
                             </div>
 
-                            <!-- Asie -->
-                            <div class="absolute top-8 right-4">
-                                <div class="relative w-14 h-12 bg-gray-400 opacity-70" style="clip-path: polygon(0% 40%, 15% 20%, 30% 25%, 50% 15%, 70% 20%, 85% 35%, 95% 50%, 90% 70%, 75% 85%, 60% 90%, 40% 95%, 25% 85%, 10% 70%, 5% 55%);">
-                                    <div class="absolute inset-0 bg-gradient-to-sw from-gray-400 to-gray-300"></div>
-                                </div>
+                            <!-- Marker 1 Apollo -->
+                            <div class="apollo-points absolute marker-1-apollo" style="top: 50%; left: 25%; animation: apolloPointsAnimation 6s infinite; opacity: 0;">
+                                <svg width="27" height="42" viewBox="-1 0 28 41">
+                                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                          fill="#a855f7" stroke="#ffffff" stroke-width="1.5"/>
+                                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                </svg>
                             </div>
-
-                            <!-- Océanie/Australie -->
-                            <div class="absolute bottom-8 right-8">
-                                <div class="relative w-6 h-4 bg-gray-400 opacity-70" style="clip-path: polygon(15% 30%, 85% 20%, 95% 60%, 80% 90%, 20% 95%, 5% 70%);">
-                                    <div class="absolute inset-0 bg-gradient-to-e from-gray-400 to-gray-300"></div>
-                                </div>
+                            <!-- Marker 2 Apollo -->
+                            <div class="apollo-points absolute marker-2-apollo" style="top: 70%; right: 35%; animation: apolloPointsAnimation 6s infinite; opacity: 0;">
+                                <svg width="27" height="42" viewBox="-1 0 28 41">
+                                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                          fill="#a855f7" stroke="#ffffff" stroke-width="1.5"/>
+                                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                </svg>
                             </div>
-
-                            <!-- Amérique du Sud -->
-                            <div class="absolute bottom-12 left-6">
-                                <div class="relative w-5 h-10 bg-gray-400 opacity-70" style="clip-path: polygon(40% 0%, 70% 10%, 85% 30%, 80% 50%, 85% 70%, 75% 85%, 60% 95%, 40% 90%, 25% 85%, 20% 70%, 30% 50%, 25% 30%, 35% 15%);">
-                                    <div class="absolute inset-0 bg-gradient-to-s from-gray-400 to-gray-300"></div>
-                                </div>
-                            </div>
-
-                            <!-- Point central (position utilisateur) -->
-                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse shadow-lg relative">
-                                    <div class="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-75"></div>
-                                    <div class="absolute inset-0.5 bg-white rounded-full"></div>
-                                </div>
-                            </div>
-
-                            <!-- Points NASA (animation de visibilité) -->
-                            <div class="absolute top-16 left-12 nasa-points" style="animation: nasaPointsAnimation 6s infinite;">
-                                <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center shadow-lg">
-                                    <span class="text-white text-xs font-bold">3</span>
-                                </div>
-                            </div>
-                            <div class="absolute top-24 left-8 nasa-points" style="animation: nasaPointsAnimation 6s infinite;">
-                                <div class="w-4 h-4 bg-blue-500 rounded-full shadow-md"></div>
-                            </div>
-                            <div class="absolute bottom-20 right-16 nasa-points" style="animation: nasaPointsAnimation 6s infinite;">
-                                <div class="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center shadow-md">
-                                    <span class="text-white text-xs font-bold">7</span>
-                                </div>
-                            </div>
-                            <div class="absolute top-20 right-20 w-3 h-3 bg-blue-400 rounded-full nasa-points" style="animation: nasaPointsAnimation 6s infinite;"></div>
-                            <div class="absolute top-8 left-20 nasa-points" style="animation: nasaPointsAnimation 6s infinite;">
-                                <div class="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center shadow-md">
-                                    <span class="text-white text-xs font-bold">12</span>
-                                </div>
-                            </div>
-                            <div class="absolute bottom-8 left-16 w-3 h-3 bg-blue-400 rounded-full nasa-points" style="animation: nasaPointsAnimation 6s infinite;"></div>
-                            <div class="absolute top-28 right-8 w-3 h-3 bg-blue-400 rounded-full nasa-points" style="animation: nasaPointsAnimation 6s infinite;"></div>
-                            <div class="absolute bottom-32 right-24 nasa-points" style="animation: nasaPointsAnimation 6s infinite;">
-                                <div class="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center shadow-md">
-                                    <span class="text-white text-xs font-bold">5</span>
-                                </div>
-                            </div>
-
-                            <!-- Points Apollo (animation de visibilité) -->
-                            <div class="absolute top-12 left-16 apollo-points" style="animation: apolloPointsAnimation 6s infinite; opacity: 0;">
-                                <div class="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center shadow-lg">
-                                    <span class="text-white text-xs font-bold">2</span>
-                                </div>
-                            </div>
-                            <div class="absolute bottom-16 left-12 apollo-points" style="animation: apolloPointsAnimation 6s infinite; opacity: 0;">
-                                <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center shadow-md">
-                                    <span class="text-white text-xs font-bold">5</span>
-                                </div>
-                            </div>
-                            <div class="absolute top-20 right-12 apollo-points" style="animation: apolloPointsAnimation 6s infinite; opacity: 0;">
-                                <div class="w-4 h-4 bg-purple-500 rounded-full shadow-md"></div>
-                            </div>
-                            <div class="absolute bottom-24 right-20 w-3 h-3 bg-purple-400 rounded-full apollo-points" style="animation: apolloPointsAnimation 6s infinite; opacity: 0;"></div>
-                            <div class="absolute top-32 left-24 apollo-points" style="animation: apolloPointsAnimation 6s infinite; opacity: 0;">
-                                <div class="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center shadow-md">
-                                    <span class="text-white text-xs font-bold">8</span>
-                                </div>
-                            </div>
-                            <div class="absolute bottom-8 right-12 w-3 h-3 bg-purple-400 rounded-full apollo-points" style="animation: apolloPointsAnimation 6s infinite; opacity: 0;"></div>
-                            <div class="absolute top-8 right-20 apollo-points" style="animation: apolloPointsAnimation 6s infinite; opacity: 0;">
-                                <div class="w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center shadow-md">
-                                    <span class="text-white text-xs font-bold">3</span>
-                                </div>
-                            </div>
-                            <div class="absolute bottom-28 left-20 w-3 h-3 bg-purple-400 rounded-full apollo-points" style="animation: apolloPointsAnimation 6s infinite; opacity: 0;"></div>
-                            <div class="absolute top-36 right-16 apollo-points" style="animation: apolloPointsAnimation 6s infinite; opacity: 0;">
-                                <div class="w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center shadow-md">
-                                    <span class="text-white text-xs font-bold">4</span>
-                                </div>
+                            <!-- Marker 3 Apollo -->
+                            <div class="apollo-points absolute marker-3-apollo" style="top: 25%; left: 55%; animation: apolloPointsAnimation 6s infinite; opacity: 0;">
+                                <svg width="27" height="42" viewBox="-1 0 28 41">
+                                    <path d="M12.5 0C5.6 0 0 5.6 0 12.5c0 1.9 0.4 3.7 1.2 5.3l11.3 23.2l11.3-23.2c0.8-1.6 1.2-3.4 1.2-5.3C25 5.6 19.4 0 12.5 0z"
+                                          fill="#a855f7" stroke="#ffffff" stroke-width="1.5"/>
+                                    <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+                                </svg>
                             </div>
                         </div>
 
-                        <!-- Compteur resultats avec animation -->
-                        <div class="mt-4 text-center">
-                            <span class="text-sm text-gray-600 results-counter" style="animation: resultsAnimation 6s infinite;"
-                                  data-nasa-text="{{ str_replace(':count', '47', __('web/pages/home.features.modes.thematic.mockup.results_nasa')) }}"
-                                  data-apollo-text="{{ str_replace(':count', '23', __('web/pages/home.features.modes.thematic.mockup.results_apollo')) }}">
-                                <span class="results-content">{{ str_replace(':count', '47', __('web/pages/home.features.modes.thematic.mockup.results_nasa')) }}</span>
-                            </span>
+                        <!-- Compteur resultats avec animation premium -->
+                        <div class="relative z-10 mt-4">
+                            <div class="text-center px-4 py-2.5 bg-white rounded-lg border border-gray-200"
+                                 style="box-shadow: 0 2px 8px -2px rgba(0,0,0,0.04);">
+                                <span class="text-sm font-medium text-gray-700 results-counter"
+                                      style="animation: resultsAnimation 6s infinite;"
+                                      data-nasa-text="{{ str_replace(':count', '30', __('web/pages/home.features.modes.thematic.mockup.results_nasa')) }}"
+                                      data-apollo-text="{{ str_replace(':count', '31', __('web/pages/home.features.modes.thematic.mockup.results_apollo')) }}">
+                                    <span class="results-content">{{ str_replace(':count', '30', __('web/pages/home.features.modes.thematic.mockup.results_nasa')) }}</span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -346,383 +422,4 @@
     </div>
 </section>
 
-<script>
-// Animation du compteur de résultats multilingue
-document.addEventListener('DOMContentLoaded', function() {
-    const resultsCounter = document.querySelector('.results-counter .results-content');
-
-    if (resultsCounter) {
-        const parentEl = resultsCounter.parentElement;
-        const nasaText = parentEl.dataset.nasaText;
-        const apolloText = parentEl.dataset.apolloText;
-
-        function animateResults() {
-            // Phase NASA (0% - 35.7%)
-            setTimeout(() => {
-                resultsCounter.innerHTML = '<strong class="text-blue-600">47</strong> ' + nasaText.replace('47 ', '');
-            }, 0);
-
-            // Phase Apollo (43% - 85.7%)
-            setTimeout(() => {
-                resultsCounter.innerHTML = '<strong class="text-blue-600">23</strong> ' + apolloText.replace('23 ', '');
-            }, 2580); // 43% de 6000ms
-
-            // Retour à NASA (92.8%)
-            setTimeout(() => {
-                resultsCounter.innerHTML = '<strong class="text-blue-600">47</strong> ' + nasaText.replace('47 ', '');
-            }, 5570); // 92.8% de 6000ms
-        }
-
-        // Démarrer l'animation
-        animateResults();
-
-        // Répéter l'animation toutes les 6 secondes
-        setInterval(animateResults, 6000);
-    }
-
-    // Animation du rayon (cycles de 10 secondes)
-    const radiusDisplay = document.querySelector('.radius-display');
-    if (radiusDisplay) {
-        const originalText = radiusDisplay.textContent;
-        const radiusValues = ['200 km', '300 km', '400 km', '500 km', '650 km', '800 km', '950 km', '1100 km'];
-        const reverseValues = [...radiusValues].reverse();
-
-        function animateRadius() {
-            let step = 0;
-            const interval = setInterval(() => {
-                if (step < radiusValues.length) {
-                    // Phase ascendante
-                    radiusDisplay.textContent = radiusValues[step];
-                } else if (step < radiusValues.length + reverseValues.length - 1) {
-                    // Phase descendante
-                    radiusDisplay.textContent = reverseValues[step - radiusValues.length + 1];
-                } else {
-                    // Retour à l'original
-                    radiusDisplay.textContent = originalText;
-                    clearInterval(interval);
-                }
-                step++;
-            }, 625); // 10s / 16 étapes
-        }
-
-        // Démarrer et répéter l'animation toutes les 10 secondes
-        setInterval(animateRadius, 10000);
-        animateRadius();
-    }
-
-    // Animation fluide du masque radial PARFAITEMENT synchronisée en lisant l'état CSS réel
-    const radiusMask = document.getElementById('radius-mask');
-    const radiusCircle = document.querySelector('.radius-circle');
-
-    if (radiusMask && radiusCircle) {
-        function animateRadiusMask() {
-            // Lire la taille RÉELLE du cercle animé par CSS
-            const computedStyle = getComputedStyle(radiusCircle);
-            const currentWidth = parseFloat(computedStyle.width);
-
-            // Convertir la largeur du cercle en rayon de masque
-            // Le cercle varie de 60px à 300px en width, donc rayon de 30px à 150px
-            // On veut que le masque ait exactement le même rayon
-            const circleRadius = (currentWidth / 2) * 0.97;
-            const maskRadius = Math.round(circleRadius);
-
-            // Appliquer le masque avec le rayon calculé
-            const maskValue = `radial-gradient(circle ${maskRadius}px at center, transparent ${maskRadius}px, black ${maskRadius + 10}px)`;
-
-            radiusMask.style.webkitMask = maskValue;
-            radiusMask.style.mask = maskValue;
-
-            requestAnimationFrame(animateRadiusMask);
-        }
-
-        // Démarrer immédiatement - plus besoin de délai car on lit l'état réel
-        animateRadiusMask();
-    }
-});
-</script>
-
-<style>
-/* Animations pour le mockup "Autour de moi" */
-@keyframes slideRadius {
-    0%, 10% {
-        left: 20%; /* 200km */
-    }
-    45%, 55% {
-        left: 80%; /* 1100km */
-    }
-    90%, 100% {
-        left: 20%; /* 200km */
-    }
-}
-
-@keyframes radiusAnimation {
-    0%, 10% {
-        width: 110px;
-        height: 110px;
-    }
-    45%, 55% {
-        width: 300px;
-        height: 300px;
-    }
-    90%, 100% {
-        width: 110px;
-        height: 110px;
-    }
-}
-
-/* Animation du texte du rayon désormais gérée uniquement par JavaScript */
-.radius-display {
-    opacity: 1;
-}
-
-/* Ancienne animation radiusTextAnimation supprimée - plus d'opacité variable */
-
-/* Animations pour le mockup "Recherche thématique" - Cycle de 6s avec pause de 7s */
-
-/* Animation des tags avec transitions fluides */
-@keyframes tagNasaAnimation {
-    0%, 35% {
-        background-color: #dbeafe;
-        border-color: #3b82f6;
-        color: #1e40af;
-        transform: scale(1);
-        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-    }
-    37% {
-        background-color: #e0e7ff;
-        border-color: #6b7280;
-        color: #6b7280;
-        transform: scale(0.98);
-        box-shadow: 0 1px 3px rgba(59, 130, 246, 0.2);
-    }
-    40% {
-        background-color: #f3f4f6;
-        border-color: #d1d5db;
-        color: #9ca3af;
-        transform: scale(0.96);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-    43%, 85% {
-        background-color: #f3f4f6;
-        border-color: #d1d5db;
-        color: #9ca3af;
-        transform: scale(1);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-    90% {
-        background-color: #e0e7ff;
-        border-color: #6b7280;
-        color: #6b7280;
-        transform: scale(1.02);
-        box-shadow: 0 2px 3px rgba(59, 130, 246, 0.2);
-    }
-    93% {
-        background-color: #dbeafe;
-        border-color: #3b82f6;
-        color: #1e40af;
-        transform: scale(1.03);
-        box-shadow: 0 3px 6px rgba(59, 130, 246, 0.35);
-    }
-    100% {
-        background-color: #dbeafe;
-        border-color: #3b82f6;
-        color: #1e40af;
-        transform: scale(1);
-        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-    }
-}
-
-@keyframes tagApolloAnimation {
-    0%, 35% {
-        background-color: #f3f4f6;
-        border-color: #d1d5db;
-        color: #9ca3af;
-        transform: scale(1);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-    40% {
-        background-color: #f3f0ff;
-        border-color: #a78bfa;
-        color: #8b5cf6;
-        transform: scale(1.02);
-        box-shadow: 0 2px 3px rgba(139, 92, 246, 0.2);
-    }
-    43% {
-        background-color: #faf5ff;
-        border-color: #8b5cf6;
-        color: #7c3aed;
-        transform: scale(1.03);
-        box-shadow: 0 3px 6px rgba(139, 92, 246, 0.35);
-    }
-    50%, 85% {
-        background-color: #faf5ff;
-        border-color: #8b5cf6;
-        color: #7c3aed;
-        transform: scale(1);
-        box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
-    }
-    87% {
-        background-color: #f3f0ff;
-        border-color: #a78bfa;
-        color: #8b5cf6;
-        transform: scale(0.98);
-        box-shadow: 0 1px 3px rgba(139, 92, 246, 0.2);
-    }
-    90% {
-        background-color: #f3f4f6;
-        border-color: #d1d5db;
-        color: #9ca3af;
-        transform: scale(0.96);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-    100% {
-        background-color: #f3f4f6;
-        border-color: #d1d5db;
-        color: #9ca3af;
-        transform: scale(1);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-}
-
-/* Animation des points NASA avec transition fluide */
-@keyframes nasaPointsAnimation {
-    0%, 35% {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-    }
-    37% {
-        opacity: 0.9;
-        transform: scale(0.9) rotate(5deg);
-    }
-    39% {
-        opacity: 0.6;
-        transform: scale(0.7) rotate(10deg);
-    }
-    41% {
-        opacity: 0.2;
-        transform: scale(0.4) rotate(20deg);
-    }
-    43% {
-        opacity: 0;
-        transform: scale(0.2) rotate(30deg);
-    }
-    50%, 85% {
-        opacity: 0;
-        transform: scale(0.2) rotate(30deg);
-    }
-    87% {
-        opacity: 0.2;
-        transform: scale(0.4) rotate(-20deg);
-    }
-    89% {
-        opacity: 0.6;
-        transform: scale(0.7) rotate(-10deg);
-    }
-    91% {
-        opacity: 0.9;
-        transform: scale(0.9) rotate(-5deg);
-    }
-    93% {
-        opacity: 1;
-        transform: scale(1.05) rotate(0deg);
-    }
-    95% {
-        opacity: 1;
-        transform: scale(1.02);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Animation des points Apollo avec transition fluide */
-@keyframes apolloPointsAnimation {
-    0%, 35% {
-        opacity: 0;
-        transform: scale(0.2) rotate(-30deg);
-    }
-    37% {
-        opacity: 0.2;
-        transform: scale(0.4) rotate(-20deg);
-    }
-    39% {
-        opacity: 0.6;
-        transform: scale(0.7) rotate(-10deg);
-    }
-    41% {
-        opacity: 0.9;
-        transform: scale(0.9) rotate(-5deg);
-    }
-    43% {
-        opacity: 1;
-        transform: scale(1.05) rotate(0deg);
-    }
-    45% {
-        opacity: 1;
-        transform: scale(1.02);
-    }
-    50%, 85% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    87% {
-        opacity: 0.9;
-        transform: scale(0.9) rotate(5deg);
-    }
-    89% {
-        opacity: 0.6;
-        transform: scale(0.7) rotate(10deg);
-    }
-    91% {
-        opacity: 0.2;
-        transform: scale(0.4) rotate(20deg);
-    }
-    93% {
-        opacity: 0;
-        transform: scale(0.2) rotate(30deg);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0.2) rotate(30deg);
-    }
-}
-
-/* Animation du compteur de résultats avec transition marquée */
-.results-counter {
-    animation: resultsContainerAnimation 6s infinite;
-}
-
-@keyframes resultsContainerAnimation {
-    0%, 35.7% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    40% {
-        transform: scale(0.9);
-        opacity: 0.7;
-    }
-    42.8% {
-        transform: scale(1.05);
-        opacity: 1;
-    }
-    50%, 85.7% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    90% {
-        transform: scale(0.9);
-        opacity: 0.7;
-    }
-    92.8% {
-        transform: scale(1.05);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-</style>
 
