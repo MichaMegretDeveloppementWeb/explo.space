@@ -13,17 +13,19 @@
         </div>
     </div>
 
-    {{-- Map container - wire:ignore pour éviter que Livewire détruise Leaflet --}}
-    <div
-        wire:ignore
-        id="place-map"
-        data-latitude="{{ $currentFilters['latitude'] ?? '' }}"
-        data-longitude="{{ $currentFilters['longitude'] ?? '' }}"
-        data-radius="{{ $currentFilters['radius'] ?? '' }}"
-        data-places="{{ json_encode($coordinates) }}"
-        data-use-bounding-box="{{ $useBoundingBox ? 'true' : 'false' }}"
-        class="w-full h-full opacity-0 transition-opacity duration-300"
-    ></div>
+    {{-- Wrapper avec wire:ignore pour protéger Leaflet --}}
+    <div wire:ignore class="w-full h-full">
+        {{-- Map container --}}
+        <div
+            id="place-map"
+            data-latitude="{{ $currentFilters['latitude'] ?? '' }}"
+            data-longitude="{{ $currentFilters['longitude'] ?? '' }}"
+            data-radius="{{ $currentFilters['radius'] ?? '' }}"
+            data-places="{{ json_encode($coordinates) }}"
+            data-use-bounding-box="{{ $useBoundingBox ? 'true' : 'false' }}"
+            class="w-full h-full opacity-0 transition-opacity duration-300"
+        ></div>
+    </div>
 
 
     {{-- Error display (if any) --}}

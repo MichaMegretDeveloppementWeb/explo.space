@@ -92,12 +92,11 @@
         @enderror
 
         {{-- Interactive Leaflet Map (wire:ignore) --}}
-        <div>
+        <div wire:ignore>
             <label class="block text-sm font-medium text-gray-700 mb-2">
                 {{ __('web/pages/place-request.location.interactive_map') }}
             </label>
-            <div wire:ignore
-                 id="placeRequestMap"
+            <div id="placeRequestMap"
                  class="h-96 w-full rounded-lg border-2 border-gray-300 shadow-sm overflow-hidden"
                  style="min-height: 400px;z-index: 2">
             </div>

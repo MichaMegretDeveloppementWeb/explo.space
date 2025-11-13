@@ -13,14 +13,7 @@
                     <!-- Header -->
                     <tr>
                         <td style="padding-bottom: 32px; text-align: center;">
-                            <div style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 48px; height: 48px; border-radius: 12px; position: relative;">
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="white" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                                    <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
-                                </svg>
-                            </div>
-                            <h1 style="margin: 16px 0 0 0; font-size: 24px; font-weight: 600; color: #1a202c; letter-spacing: -0.025em;">
-                                Explo.space
-                            </h1>
+                            <img src="{{ asset('build/assets/logo_explo_space-BU3NfJYE.webp') }}" alt="Explo.space" style="height: 48px; width: auto; display: inline-block;">
                         </td>
                     </tr>
 

@@ -76,12 +76,11 @@
     @enderror
 
     {{-- Interactive Leaflet Map (wire:ignore) --}}
-    <div>
+    <div wire:ignore>
         <label class="block text-sm font-medium text-gray-700 mb-2">
             Carte interactive
         </label>
-        <div wire:ignore
-             id="admin-location-map"
+        <div id="admin-location-map"
              data-latitude="{{ $latitude }}"
              data-longitude="{{ $longitude }}"
              data-original-latitude="{{ $originalLatitude }}"
