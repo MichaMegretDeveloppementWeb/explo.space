@@ -1,9 +1,13 @@
 {{-- Alpine.js : validation limites PHP critiques (upload_max_filesize + post_max_size) --}}
 <div class="space-y-6"
      x-data="{
-        uploadMaxSizeMB: {{ \App\Helpers\UploadHelper::getPhpUploadMaxSizeMB() }},
-        postMaxSizeMB: {{ \App\Helpers\UploadHelper::getPostMaxSizeMB() }},
+        uploadMaxSizeMB: {{ round(min(\App\Helpers\UploadHelper::getPhpUploadMaxSizeKB(), config('upload.images.max_size_kb')) / 1024, 2) }},
+        postMaxSizeMB: {{ round(min(\App\Helpers\UploadHelper::getPostMaxSizeKB(), config('upload.images.max_size_kb') * config('upload.images.max_files')) / 1024, 2) }},
         phpLimitError: null,
+        errorMessages: {
+            fileTooLarge: '{{ __('errors/upload.file_too_large') }}',
+            totalTooLarge: '{{ __('errors/upload.total_too_large') }}'
+        },
 
         validateBeforeUpload(event) {
             // Clear l'erreur Alpine.js
@@ -25,7 +29,10 @@
 
                 // Vérification 1 : Fichier individuel > upload_max_filesize
                 if (fileSizeMB > this.uploadMaxSizeMB) {
-                    this.phpLimitError = `Le fichier &quot;${files[i].name}&quot; (${fileSizeMB.toFixed(1)} Mo) dépasse la taille limite autorisée.`;
+                    this.phpLimitError = this.errorMessages.fileTooLarge
+                        .replace(':filename', files[i].name)
+                        .replace(':size', fileSizeMB.toFixed(1))
+                        .replace(':max', this.uploadMaxSizeMB.toFixed(1));
                     event.target.value = '';
                     event.stopImmediatePropagation(); // BLOQUE wire:model.live
                     return;
@@ -34,7 +41,9 @@
 
             // Vérification 2 : Total tous fichiers > post_max_size
             if (totalSizeMB > this.postMaxSizeMB) {
-                this.phpLimitError = `La taille totale des fichiers (${totalSizeMB.toFixed(1)} Mo) dépasse la taille limite cumulée autorisée. Veuillez sélectionner moins de fichiers ou des fichiers plus petits.`;
+                this.phpLimitError = this.errorMessages.totalTooLarge
+                    .replace(':size', totalSizeMB.toFixed(1))
+                    .replace(':max', this.postMaxSizeMB.toFixed(1));
                 event.target.value = '';
                 event.stopImmediatePropagation(); // BLOQUE wire:model.live
                 return;
@@ -395,6 +404,4 @@
             </div>
         </div>
     </div>
-</div>
-
 </div>
