@@ -106,7 +106,7 @@ return [
         'photos_label' => 'Photos',
         'upload_button' => 'Télécharger des photos',
         'drag_drop' => 'ou glisser-déposer',
-        'file_requirements' => 'JPEG, PNG, WebP jusqu\'à 5 Mo (max 10 photos)',
+        'file_requirements' => 'JPEG, PNG, WebP jusqu\'à 10 Mo (max 10 photos)',
         'selected_photos' => 'Photos sélectionnées',
         'validating' => 'Validation des photos en cours...',
         'contact_email' => 'Votre email de contact',

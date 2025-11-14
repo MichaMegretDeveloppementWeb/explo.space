@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\Category\CategoryCreateController;
 use App\Http\Controllers\Admin\Category\CategoryEditController;
 use App\Http\Controllers\Admin\Category\CategoryListController;
 use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
-use App\Http\Controllers\Admin\DiagnosticController;
 use App\Http\Controllers\Admin\EditRequest\EditRequestListController;
 use App\Http\Controllers\Admin\EditRequest\EditRequestShowController;
 use App\Http\Controllers\Admin\Place\PlaceCreateController;
@@ -147,10 +146,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Paramètres (Settings)
         Route::get('/parametres', [SettingsShowController::class, 'show'])
             ->name('settings.show');
-
-        // Diagnostic serveur (upload configuration)
-        Route::get('/diagnostic', [DiagnosticController::class, 'index'])
-            ->name('diagnostic.index');
 
     });
 });
