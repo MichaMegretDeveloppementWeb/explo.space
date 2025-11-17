@@ -6,5 +6,5 @@ return [
     ],
 
     // Message d'erreur Livewire pour uploads échoués (remplace "The {attribute} failed to upload.")
-    'uploaded' => 'L\'upload de :attribute a échoué. Veuillez réessayer.',
+    'uploaded' => 'L\'upload du fichier a échoué. Veuillez réessayer.',
 ];

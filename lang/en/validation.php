@@ -6,5 +6,5 @@ return [
     ],
 
     // Livewire error message for failed uploads (replaces "The {attribute} failed to upload.")
-    'uploaded' => 'The :attribute upload failed. Please try again.',
+    'uploaded' => 'The file upload failed. Please try again.',
 ];

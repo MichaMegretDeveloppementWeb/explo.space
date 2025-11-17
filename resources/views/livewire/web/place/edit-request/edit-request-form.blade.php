@@ -180,12 +180,12 @@
                                                      data-lng="{{ $new_values['coordinates']['lng'] ?? $current_values['coordinates']['lng'] }}">
                                                 </div>
 
-                                                <div class="relative">
+                                                <div wire:ignore class="relative">
                                                     {{-- Loader (EN DEHORS du wire:ignore) --}}
                                                     <x-web.map-loader />
 
                                                     {{-- Wrapper avec wire:ignore pour protéger Leaflet --}}
-                                                    <div wire:ignore>
+                                                    <div>
                                                         {{-- Conteneur de la carte --}}
                                                         <div id="edit-request-map"
                                                              class="h-64 rounded-lg border border-gray-300">
