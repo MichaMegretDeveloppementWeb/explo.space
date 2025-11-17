@@ -25,6 +25,7 @@ fi
 echo "→ Mise à jour du dépôt Git..."
 git fetch origin
 git reset --hard origin/main
+git clean -fd  # Supprimer fichiers et dossiers non-trackés
 
 # 3. Installer les dépendances PHP avec composer.phar
 echo "→ Installation des dépendances PHP..."
