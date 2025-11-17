@@ -18,24 +18,24 @@
                    class="flex-1 py-2 px-0 text-gray-900 placeholder-gray-500 bg-transparent border-0 focus:ring-0 focus:outline-none">
 
             @if($address)
-                <button wire:click="$set('address', '')" class="p-2 text-gray-400 hover:text-gray-600">
+                <button wire:click="$set('address', '')" class="p-2 pr-1 text-gray-400 hover:text-gray-600">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             @endif
 
-        </div>
+            <button wire:click="requestGeolocation"
+                    @disabled($geolocLoading)
+                    class="p-2 pl-1 text-gray-400 hover:text-gray-600 cursor-pointer disabled:opacity-50 transition-colors rounded-md">
+                @if($geolocLoading)
+                    <div class="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+                @else
+                    <x-icons.crosshair class="h-5 w-5 text-blue-500" />
+                @endif
+            </button>
 
-        <button wire:click="requestGeolocation"
-                @disabled($geolocLoading)
-                class="ml-1 p-2 text-gray-400 hover:text-gray-600 cursor-pointer disabled:opacity-50 transition-colors rounded-md shadow-md">
-            @if($geolocLoading)
-                <div class="animate-spin h-5 w-5 border-2 border-blue-500 border-t-transparent rounded-full"></div>
-            @else
-                <x-icons.crosshair class="h-5 w-5 text-blue-500" />
-            @endif
-        </button>
+        </div>
 
     </div>
 
