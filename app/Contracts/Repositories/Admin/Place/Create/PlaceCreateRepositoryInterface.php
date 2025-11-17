@@ -2,6 +2,7 @@
 
 namespace App\Contracts\Repositories\Admin\Place\Create;
 
+use App\Models\Photo;
 use App\Models\Place;
 use App\Models\PlaceRequest;
 
@@ -38,9 +39,23 @@ interface PlaceCreateRepositoryInterface
     /**
      * Create photos for a place.
      *
-     * @param  array<int, array{filename: string, original_name: string, mime_type: string, size: int, alt_text: ?string, is_main: bool, sort_order: int}>  $photoData
+     * @param  array<int, array{filename: string, original_name: string, mime_type: string, size: int, is_main: bool, sort_order: int}>  $photoData
      */
     public function createPhotos(Place $place, array $photoData): void;
+
+    /**
+     * Create a single photo and return it (for mapping).
+     *
+     * @param  array{filename: string, original_name: string, mime_type: string, size: int, is_main: bool, sort_order: int}  $photoData
+     */
+    public function createPhoto(Place $place, array $photoData): Photo;
+
+    /**
+     * Create photo translations.
+     *
+     * @param  array<string, array{alt_text: ?string}>  $translations
+     */
+    public function createPhotoTranslations(Photo $photo, array $translations): void;
 
     /**
      * Mark a PlaceRequest as accepted and link it to the created place.

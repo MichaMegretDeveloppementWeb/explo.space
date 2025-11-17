@@ -13,12 +13,13 @@
                         type="button"
                         data-photo-id="{{ $photo['id'] }}"
                         data-photo-url="{{ $photo['url'] }}"
+                        data-photo-alt="{{ $photo['alt_text'] ?? ($place->title . ' - Image ' . $loop->iteration) }}"
                         class="group relative aspect-[4/3] rounded-lg overflow-hidden bg-transparent  hover:opacity-80 transition-opacity cursor-pointer"
                         onclick="openPhotoGallery({{ $loop->index }})"
                     >
                         <img
                             src="{{ $photo['medium_url'] }}"
-                            alt="{{ $place->title }} - Photo {{ $loop->iteration }}"
+                            alt="{{ $photo['alt_text'] ?? ($place->title . ' - Image ' . $loop->iteration) }}"
                             class="w-full h-full object-cover"
                             loading="lazy"
                         >

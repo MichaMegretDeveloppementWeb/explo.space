@@ -84,7 +84,7 @@
             </div>
 
             <div class="p-6">
-                @include('livewire.admin.place.store.partials.photo-gallery')
+                @include('livewire.admin.place.store.partials.photo-gallery.index')
             </div>
         </div>
 

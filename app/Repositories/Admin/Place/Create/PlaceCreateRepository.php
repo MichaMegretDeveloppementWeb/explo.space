@@ -5,6 +5,7 @@ namespace App\Repositories\Admin\Place\Create;
 use App\Contracts\Repositories\Admin\Place\Create\PlaceCreateRepositoryInterface;
 use App\Enums\RequestStatus;
 use App\Models\Photo;
+use App\Models\PhotoTranslation;
 use App\Models\Place;
 use App\Models\PlaceRequest;
 use App\Models\PlaceTranslation;
@@ -73,9 +74,45 @@ class PlaceCreateRepository implements PlaceCreateRepositoryInterface
                 'original_name' => $photo['original_name'],
                 'mime_type' => $photo['mime_type'],
                 'size' => $photo['size'],
-                'alt_text' => $photo['alt_text'] ?? null,
                 'is_main' => $photo['is_main'] ?? false,
                 'sort_order' => $photo['sort_order'],
+            ]);
+        }
+    }
+
+    /**
+     * Create a single photo and return it.
+     *
+     * @param  array{filename: string, original_name: string, mime_type: string, size: int, is_main: bool, sort_order: int}  $photoData
+     */
+    public function createPhoto(Place $place, array $photoData): Photo
+    {
+        return Photo::create([
+            'place_id' => $place->id,
+            'filename' => $photoData['filename'],
+            'original_name' => $photoData['original_name'],
+            'mime_type' => $photoData['mime_type'],
+            'size' => $photoData['size'],
+            'is_main' => $photoData['is_main'] ?? false,
+            'sort_order' => $photoData['sort_order'],
+        ]);
+    }
+
+    public function createPhotoTranslations(Photo $photo, array $translations): void
+    {
+        if (empty($translations)) {
+            return;
+        }
+
+        foreach ($translations as $locale => $translationData) {
+            if (empty($translationData['alt_text'])) {
+                continue; // Skip if no alt_text provided (nullable)
+            }
+
+            PhotoTranslation::create([
+                'photo_id' => $photo->id,
+                'locale' => $locale,
+                'alt_text' => $translationData['alt_text'],
             ]);
         }
     }

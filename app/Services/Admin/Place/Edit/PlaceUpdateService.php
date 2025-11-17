@@ -68,13 +68,27 @@ class PlaceUpdateService
             }
 
             // Add new photos
+            $createdPhotosMap = []; // Map clé temporaire => Photo créée
             if (! empty($data['new_photos'])) {
-                $this->processAndAddPhotos($place, $data['new_photos']);
+                $uploadedPhotosMap = $this->processAndAddPhotos($place, $data['new_photos']);
+                $createdPhotosMap = array_merge($createdPhotosMap, $uploadedPhotosMap);
             }
 
             // Add EditRequest photos if present
             if (! empty($data['edit_request_photos'])) {
-                $this->processEditRequestPhotos($place, $data['edit_request_photos']);
+                $editRequestPhotosMap = $this->processEditRequestPhotos($place, $data['edit_request_photos']);
+                $createdPhotosMap = array_merge($createdPhotosMap, $editRequestPhotosMap);
+            }
+
+            // Handle photo translations if provided
+            if (! empty($data['photo_translations'])) {
+                // Create translations for new photos
+                if (! empty($createdPhotosMap)) {
+                    $this->createPhotoTranslations($createdPhotosMap, $data['photo_translations']);
+                }
+
+                // Update translations for existing photos
+                $this->updateExistingPhotoTranslations($place, $data['photo_translations']);
             }
 
             // Update photo order
@@ -163,17 +177,19 @@ class PlaceUpdateService
      * - \Throwable : erreur imprévue → rollback + log + wrapper + throw
      *
      * @param  array<UploadedFile>  $uploadedPhotos
+     * @return array<string, \App\Models\Photo> Mapping clé temporaire => Photo créée
      *
      * @throws PhotoValidationException|PhotoProcessingException|UnexpectedPhotoException
      */
-    private function processAndAddPhotos(Place $place, array $uploadedPhotos): void
+    private function processAndAddPhotos(Place $place, array $uploadedPhotos): array
     {
         $photoData = [];
         $storedFilenames = [];
         $currentMaxSortOrder = $place->photos()->max('sort_order') ?? -1;
         $sortOrder = $currentMaxSortOrder + 1;
+        $photosMap = []; // Map temp_{index} => Photo créée
 
-        foreach ($uploadedPhotos as $uploadedPhoto) {
+        foreach ($uploadedPhotos as $index => $uploadedPhoto) {
             try {
                 // Process and store photo with thumbnails
                 $processedData = $this->photoService->processWithThumbnails(
@@ -184,11 +200,11 @@ class PlaceUpdateService
                 );
 
                 $photoData[] = [
+                    'index' => $index, // Stocker l'index pour le mapping
                     'filename' => $processedData['filename'],
                     'original_name' => $processedData['original_name'],
                     'mime_type' => $processedData['mime_type'],
                     'size' => $processedData['size'],
-                    'alt_text' => null,
                     'is_main' => false,
                     'sort_order' => $sortOrder,
                 ];
@@ -231,8 +247,15 @@ class PlaceUpdateService
         }
 
         if (! empty($photoData)) {
-            $this->repository->addPhotos($place, $photoData);
+            // Créer les photos et les récupérer pour le mapping
+            foreach ($photoData as $data) {
+                $photo = $this->repository->addPhoto($place, $data);
+                // Clé temporaire format: temp_{index}
+                $photosMap["temp_{$data['index']}"] = $photo;
+            }
         }
+
+        return $photosMap;
     }
 
     /**
@@ -304,15 +327,17 @@ class PlaceUpdateService
      * Utilise copyEditRequestPhotoWithThumbnails() + rollback pattern identique à processAndAddPhotos().
      *
      * @param  array<int, array{id: string, url: string, source: string, path: string, edit_request_id: int, filename: string}>  $editRequestPhotos
+     * @return array<string, \App\Models\Photo> Mapping clé temporaire => Photo créée
      *
      * @throws PhotoValidationException|PhotoProcessingException|UnexpectedPhotoException
      */
-    private function processEditRequestPhotos(Place $place, array $editRequestPhotos): void
+    private function processEditRequestPhotos(Place $place, array $editRequestPhotos): array
     {
         $photoData = [];
         $storedFilenames = [];
         $currentMaxSortOrder = $place->photos()->max('sort_order') ?? -1;
         $sortOrder = $currentMaxSortOrder + 1;
+        $photosMap = []; // Map editRequest_{id} => Photo créée
 
         foreach ($editRequestPhotos as $editRequestPhoto) {
             try {
@@ -326,11 +351,11 @@ class PlaceUpdateService
                 );
 
                 $photoData[] = [
+                    'edit_request_photo_id' => $editRequestPhoto['id'], // Stocker l'ID pour le mapping
                     'filename' => $processedData['filename'],
                     'original_name' => $processedData['original_name'],
                     'mime_type' => $processedData['mime_type'],
                     'size' => $processedData['size'],
-                    'alt_text' => null,
                     'is_main' => false,
                     'sort_order' => $sortOrder,
                 ];
@@ -373,13 +398,20 @@ class PlaceUpdateService
         }
 
         if (! empty($photoData)) {
-            $this->repository->addPhotos($place, $photoData);
+            // Créer les photos et les récupérer pour le mapping
+            foreach ($photoData as $data) {
+                $photo = $this->repository->addPhoto($place, $data);
+                // Clé format: editRequest_{id}
+                $photosMap["editRequest_{$data['edit_request_photo_id']}"] = $photo;
+            }
 
             Log::info('EditRequest photos added to place', [
                 'place_id' => $place->id,
                 'count' => count($photoData),
             ]);
         }
+
+        return $photosMap;
     }
 
     /**
@@ -413,5 +445,56 @@ class PlaceUpdateService
             'admin_id' => $adminId,
             'applied_changes' => $appliedChanges,
         ]);
+    }
+
+    /**
+     * Create photo translations from mapping (new photos).
+     *
+     * @param  array<string, \App\Models\Photo>  $photosMap  Mapping clé => Photo
+     * @param  array<string, array<string, array{alt_text: ?string}>>  $photoTranslations  Translations par clé
+     */
+    private function createPhotoTranslations(array $photosMap, array $photoTranslations): void
+    {
+        foreach ($photosMap as $key => $photo) {
+            if (isset($photoTranslations[$key])) {
+                $this->repository->createPhotoTranslations($photo, $photoTranslations[$key]);
+
+                Log::info('Photo translations created', [
+                    'photo_id' => $photo->id,
+                    'key' => $key,
+                    'locales' => array_keys($photoTranslations[$key]),
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Update translations for existing photos.
+     *
+     * @param  array<string, array<string, array{alt_text: ?string}>>  $photoTranslations  Translations par clé (photo_{id})
+     */
+    private function updateExistingPhotoTranslations(Place $place, array $photoTranslations): void
+    {
+        foreach ($photoTranslations as $key => $translations) {
+            // Traiter uniquement les clés de photos existantes (format: photo_{id})
+            if (! str_starts_with($key, 'photo_')) {
+                continue;
+            }
+
+            // Extraire l'ID de la photo
+            $photoId = (int) str_replace('photo_', '', $key);
+
+            // Vérifier que la photo appartient bien au lieu
+            $photo = $place->photos()->find($photoId);
+
+            if ($photo) {
+                $this->repository->updatePhotoTranslations($photo, $translations);
+
+                Log::info('Photo translations updated', [
+                    'photo_id' => $photo->id,
+                    'locales' => array_keys($translations),
+                ]);
+            }
+        }
     }
 }

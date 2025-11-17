@@ -79,6 +79,7 @@ class PlaceDetailService
             tags: $this->prepareTags($place->tags),
             photos: $this->preparePhotos($place->photos),
             mainPhotoUrl: $this->getMainPhotoUrl($place->photos),
+            mainPhotoAltText: $this->getMainPhotoAltText($place->photos),
             createdAt: $place->created_at->translatedFormat('d F Y'),
             updatedAt: $place->updated_at->translatedFormat('d F Y'),
         );
@@ -111,20 +112,25 @@ class PlaceDetailService
     }
 
     /**
-     * Préparer les photos
+     * Préparer les photos avec leurs traductions alt_text
      *
      * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Photo>  $photos
-     * @return array<int, array{id: int, url: string, medium_url: string, is_main: bool, sort_order: int}>
+     * @return array<int, array{id: int, url: string, medium_url: string, is_main: bool, sort_order: int, alt_text: string|null}>
      */
     private function preparePhotos($photos): array
     {
         return $photos->map(function (\App\Models\Photo $photo) {
+            // Récupérer la traduction alt_text pour la locale actuelle
+            $translation = $photo->translations->first();
+            $altText = $translation?->alt_text;
+
             return [
                 'id' => $photo->id,
                 'url' => $photo->url,
                 'medium_url' => $photo->medium_url,
                 'is_main' => $photo->is_main,
                 'sort_order' => $photo->sort_order,
+                'alt_text' => $altText,
             ];
         })->toArray();
     }
@@ -140,5 +146,25 @@ class PlaceDetailService
         $mainPhoto = $photos->firstWhere('is_main', true);
 
         return $mainPhoto?->url;
+    }
+
+    /**
+     * Récupérer le texte alternatif traduit de la photo principale
+     *
+     * @param  \Illuminate\Database\Eloquent\Collection<int, \App\Models\Photo>  $photos
+     * @return string|null Le texte alternatif traduit ou null
+     */
+    private function getMainPhotoAltText($photos): ?string
+    {
+        $mainPhoto = $photos->firstWhere('is_main', true);
+
+        if (! $mainPhoto) {
+            return null;
+        }
+
+        // Récupérer la traduction alt_text pour la locale actuelle
+        $translation = $mainPhoto->translations->first();
+
+        return $translation?->alt_text;
     }
 }

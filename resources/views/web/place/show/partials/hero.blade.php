@@ -3,7 +3,7 @@
     @if($place->mainPhotoUrl)
         <img
             src="{{ $place->mainPhotoUrl }}"
-            alt="{{ $place->title }}"
+            alt="{{ $place->mainPhotoAltText ?? $place->title }}"
             class="w-full h-full object-cover"
         >
         {{-- Overlay gradient subtil --}}

@@ -107,6 +107,7 @@ return [
         'geolocating' => 'Locating...',
         'geolocate_me' => '📍 Locate me',
         'view_detail' => 'View detail',
+        'view_place' => 'View place',
         'directions' => 'Directions',
         'increase_radius' => 'No space places in this area. Try increasing the search radius.',
 

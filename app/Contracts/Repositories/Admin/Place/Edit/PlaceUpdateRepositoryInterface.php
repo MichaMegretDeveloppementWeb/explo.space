@@ -43,9 +43,30 @@ interface PlaceUpdateRepositoryInterface
     /**
      * Add photos to a place.
      *
-     * @param  array<int, array{filename: string, original_name: string, mime_type: string, size: int, alt_text: ?string, is_main: bool, sort_order: int}>  $photoData
+     * @param  array<int, array{filename: string, original_name: string, mime_type: string, size: int, is_main: bool, sort_order: int}>  $photoData
      */
     public function addPhotos(Place $place, array $photoData): void;
+
+    /**
+     * Add a single photo and return it (for mapping).
+     *
+     * @param  array{filename: string, original_name: string, mime_type: string, size: int, is_main: bool, sort_order: int}  $photoData
+     */
+    public function addPhoto(Place $place, array $photoData): Photo;
+
+    /**
+     * Create photo translations.
+     *
+     * @param  array<string, array{alt_text: ?string}>  $translations
+     */
+    public function createPhotoTranslations(Photo $photo, array $translations): void;
+
+    /**
+     * Update photo translations.
+     *
+     * @param  array<string, array{alt_text: ?string}>  $translations
+     */
+    public function updatePhotoTranslations(Photo $photo, array $translations): void;
 
     /**
      * Update photo order for a place.

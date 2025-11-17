@@ -4,6 +4,7 @@ namespace App\Repositories\Admin\Place\Edit;
 
 use App\Contracts\Repositories\Admin\Place\Edit\PlaceUpdateRepositoryInterface;
 use App\Models\Photo;
+use App\Models\PhotoTranslation;
 use App\Models\Place;
 use App\Models\PlaceTranslation;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,9 @@ class PlaceUpdateRepository implements PlaceUpdateRepositoryInterface
             'tags',
             'photos' => function ($query) {
                 $query->orderBy('sort_order');
+            },
+            'photos.translations' => function ($query) {
+                $query->whereIn('locale', ['fr', 'en']);
             },
         ])->find($id);
     }
@@ -78,10 +82,65 @@ class PlaceUpdateRepository implements PlaceUpdateRepositoryInterface
                 'original_name' => $photo['original_name'],
                 'mime_type' => $photo['mime_type'],
                 'size' => $photo['size'],
-                'alt_text' => $photo['alt_text'] ?? null,
                 'is_main' => $photo['is_main'] ?? false,
                 'sort_order' => $photo['sort_order'],
             ]);
+        }
+    }
+
+    /**
+     * Add a single photo and return it.
+     *
+     * @param  array{filename: string, original_name: string, mime_type: string, size: int, is_main: bool, sort_order: int}  $photoData
+     */
+    public function addPhoto(Place $place, array $photoData): Photo
+    {
+        return Photo::create([
+            'place_id' => $place->id,
+            'filename' => $photoData['filename'],
+            'original_name' => $photoData['original_name'],
+            'mime_type' => $photoData['mime_type'],
+            'size' => $photoData['size'],
+            'is_main' => $photoData['is_main'] ?? false,
+            'sort_order' => $photoData['sort_order'],
+        ]);
+    }
+
+    public function createPhotoTranslations(Photo $photo, array $translations): void
+    {
+        if (empty($translations)) {
+            return;
+        }
+
+        foreach ($translations as $locale => $translationData) {
+            if (empty($translationData['alt_text'])) {
+                continue; // Skip if no alt_text provided (nullable)
+            }
+
+            PhotoTranslation::create([
+                'photo_id' => $photo->id,
+                'locale' => $locale,
+                'alt_text' => $translationData['alt_text'],
+            ]);
+        }
+    }
+
+    public function updatePhotoTranslations(Photo $photo, array $translations): void
+    {
+        if (empty($translations)) {
+            return;
+        }
+
+        foreach ($translations as $locale => $translationData) {
+            PhotoTranslation::updateOrCreate(
+                [
+                    'photo_id' => $photo->id,
+                    'locale' => $locale,
+                ],
+                [
+                    'alt_text' => $translationData['alt_text'] ?? null,
+                ]
+            );
         }
     }
 

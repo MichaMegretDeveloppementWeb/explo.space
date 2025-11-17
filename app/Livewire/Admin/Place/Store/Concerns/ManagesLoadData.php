@@ -42,14 +42,22 @@ trait ManagesLoadData
         $this->categoryIds = $place->categories->pluck('id')->toArray();
         $this->tagIds = $place->tags->pluck('id')->toArray();
 
-        // Load photos
+        // Load photos with translations
         $this->existingPhotos = $place->photos->sortBy('sort_order')->map(function ($photo) {
+            $translations = [];
+            foreach ($photo->translations as $translation) {
+                $translations[$translation->locale] = [
+                    'alt_text' => $translation->alt_text,
+                ];
+            }
+
             return [
                 'id' => $photo->id,
                 'url' => $photo->url,
                 'medium_url' => $photo->medium_url,
                 'is_main' => $photo->is_main,
                 'sort_order' => $photo->sort_order,
+                'translations' => $translations,
             ];
         })->values()->toArray();
 

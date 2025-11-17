@@ -17,8 +17,9 @@ readonly class PlaceDetailDTO implements Wireable
      * @param  string|null  $address  Adresse physique (optionnel)
      * @param  bool  $isFeatured  Lieu à la une
      * @param  array<int, array{name: string, slug: string, color: string}>  $tags  Tags avec traductions
-     * @param  array<int, array{id: int, url: string, medium_url: string, is_main: bool, sort_order: int}>  $photos  Photos du lieu
+     * @param  array<int, array{id: int, url: string, medium_url: string, is_main: bool, sort_order: int, alt_text: string|null}>  $photos  Photos du lieu avec alt_text traduit
      * @param  string|null  $mainPhotoUrl  URL de la photo principale
+     * @param  string|null  $mainPhotoAltText  Texte alternatif de la photo principale (traduit ou null)
      * @param  string  $createdAt  Date de création formatée
      * @param  string  $updatedAt  Date de dernière modification formatée
      */
@@ -35,6 +36,7 @@ readonly class PlaceDetailDTO implements Wireable
         public array $tags,
         public array $photos,
         public ?string $mainPhotoUrl,
+        public ?string $mainPhotoAltText,
         public string $createdAt,
         public string $updatedAt,
     ) {}
@@ -59,6 +61,7 @@ readonly class PlaceDetailDTO implements Wireable
             'tags' => $this->tags,
             'photos' => $this->photos,
             'mainPhotoUrl' => $this->mainPhotoUrl,
+            'mainPhotoAltText' => $this->mainPhotoAltText,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
         ];
@@ -84,6 +87,7 @@ readonly class PlaceDetailDTO implements Wireable
             tags: $value['tags'],
             photos: $value['photos'],
             mainPhotoUrl: $value['mainPhotoUrl'],
+            mainPhotoAltText: $value['mainPhotoAltText'],
             createdAt: $value['createdAt'],
             updatedAt: $value['updatedAt'],
         );

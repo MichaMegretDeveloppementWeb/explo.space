@@ -8,7 +8,6 @@ use App\Models\PlaceRequest;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class HomeService
 {
@@ -41,6 +40,8 @@ class HomeService
 
     /**
      * Get all statistics (for hero and community sections)
+     *
+     * @return array{places_count: int, featured_places_count: int, active_tags_count: int, active_members: int, total_submissions: int}
      */
     public function getStats(): array
     {

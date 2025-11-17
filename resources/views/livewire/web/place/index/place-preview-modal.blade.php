@@ -93,7 +93,7 @@
 
                     {{-- Bouton CTA sobre avec outline --}}
                     <a href="{{ localRoute('places.show', ['slug' => $place->slug]) }}"
-                       class="inline-flex items-center justify-center gap-2 w-full border border-gray-300 hover:border-gray-400 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-lg font-medium text-sm transition-colors">
+                       class="inline-flex items-center justify-center gap-2 w-full border border-gray-300 hover:border-gray-400 bg-gray-800 hover:bg-gray-900 text-white px-4 py-2.5 rounded-lg font-medium text-sm transition-colors">
                         <span>{{ __('web/pages/explore.place_preview.view_detail') }}</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>

@@ -205,6 +205,57 @@ class PlaceCreateServiceTest extends TestCase
         $this->assertFalse($thirdPhoto->is_main);
     }
 
+    public function test_create_place_with_photos_and_translations(): void
+    {
+        // Arrange
+        $data = $this->getBasicPlaceData();
+        $data['photos'] = [
+            UploadedFile::fake()->image('photo1.jpg', 800, 600)->size(2000),
+            UploadedFile::fake()->image('photo2.jpg', 800, 600)->size(2000),
+        ];
+        $data['photo_translations'] = [
+            'temp_0' => [
+                'fr' => ['alt_text' => 'Tour Eiffel de jour'],
+                'en' => ['alt_text' => 'Eiffel Tower by day'],
+            ],
+            'temp_1' => [
+                'fr' => ['alt_text' => 'Tour Eiffel de nuit'],
+                'en' => ['alt_text' => 'Eiffel Tower by night'],
+            ],
+        ];
+
+        // Act
+        $place = $this->service->create($data);
+
+        // Assert - Photos created
+        $this->assertCount(2, $place->photos);
+
+        // Assert - Photo translations created
+        $firstPhoto = $place->photos->sortBy('sort_order')->first();
+        $this->assertDatabaseHas('photo_translations', [
+            'photo_id' => $firstPhoto->id,
+            'locale' => 'fr',
+            'alt_text' => 'Tour Eiffel de jour',
+        ]);
+        $this->assertDatabaseHas('photo_translations', [
+            'photo_id' => $firstPhoto->id,
+            'locale' => 'en',
+            'alt_text' => 'Eiffel Tower by day',
+        ]);
+
+        $secondPhoto = $place->photos->where('sort_order', 1)->first();
+        $this->assertDatabaseHas('photo_translations', [
+            'photo_id' => $secondPhoto->id,
+            'locale' => 'fr',
+            'alt_text' => 'Tour Eiffel de nuit',
+        ]);
+        $this->assertDatabaseHas('photo_translations', [
+            'photo_id' => $secondPhoto->id,
+            'locale' => 'en',
+            'alt_text' => 'Eiffel Tower by night',
+        ]);
+    }
+
     public function test_create_place_with_all_relations_and_photos(): void
     {
         // Arrange

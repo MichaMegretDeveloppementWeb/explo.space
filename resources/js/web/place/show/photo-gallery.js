@@ -113,9 +113,9 @@ function updatePhoto(withTransition = true, direction = null) {
         modalPhoto.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
 
         setTimeout(() => {
-            // Changer l'image
+            // Changer l'image avec alt_text traduit ou fallback
             modalPhoto.src = photo.url;
-            modalPhoto.alt = `Photo ${currentPhotoIndex + 1}`;
+            modalPhoto.alt = photo.alt_text || `Image ${currentPhotoIndex + 1}`;
 
             // Positionner l'image du côté opposé
             const translateIn = direction === 'next' ? 'translate-x-20' : '-translate-x-20';
@@ -132,9 +132,9 @@ function updatePhoto(withTransition = true, direction = null) {
             }, 10);
         }, 300);
     } else {
-        // Pas de transition (ouverture initiale)
+        // Pas de transition (ouverture initiale) avec alt_text traduit ou fallback
         modalPhoto.src = photo.url;
-        modalPhoto.alt = `Photo ${currentPhotoIndex + 1}`;
+        modalPhoto.alt = photo.alt_text || `Image ${currentPhotoIndex + 1}`;
         modalPhoto.style.transform = 'translate-x-0';
         modalPhoto.style.opacity = '1';
         modalPhoto.style.transition = 'transform 0.3s ease, opacity 0.3s ease';

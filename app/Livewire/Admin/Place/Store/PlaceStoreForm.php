@@ -7,20 +7,28 @@ use App\Contracts\Repositories\Admin\Tag\TagSelectionRepositoryInterface;
 use App\Livewire\Admin\Place\Store\Concerns\ManagesLoadData;
 use App\Livewire\Admin\Place\Store\Concerns\ManagesLocation;
 use App\Livewire\Admin\Place\Store\Concerns\ManagesPhotos;
+use App\Livewire\Admin\Place\Store\Concerns\ManagesPhotoTranslations;
 use App\Livewire\Admin\Place\Store\Concerns\ManagesRelations;
 use App\Livewire\Admin\Place\Store\Concerns\ManagesSaving;
 use App\Livewire\Admin\Place\Store\Concerns\ManagesTranslations;
+use App\Models\Category;
 use App\Models\Place;
 use App\Models\PlaceRequest;
+use App\Models\Tag;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+/**
+ * @property-read Collection<int, Category> $availableCategories
+ * @property-read Collection<int, Tag> $availableTags
+ */
 class PlaceStoreForm extends Component
 {
     use ManagesLoadData;
     use ManagesLocation;
     use ManagesPhotos;
+    use ManagesPhotoTranslations;
     use ManagesRelations;
     use ManagesSaving;
     use ManagesTranslations;
@@ -135,6 +143,24 @@ class PlaceStoreForm extends Component
 
     public ?int $mainPhotoId = null;
 
+    // Photo translations management (used by ManagesPhotoTranslations trait)
+    /** @var array<string, array{fr: array{alt_text: ?string}, en: array{alt_text: ?string}}> */
+    public array $photoTranslations = [];
+
+    public ?string $currentPhotoId = null;
+
+    public string $currentPhotoSource = '';
+
+    /** @var array{fr: array{alt_text: string}, en: array{alt_text: string}} */
+    public array $currentPhotoTranslations = [
+        'fr' => ['alt_text' => ''],
+        'en' => ['alt_text' => ''],
+    ];
+
+    public bool $showPhotoTranslationModal = false;
+
+    public string $currentPhotoPreviewUrl = '';
+
     // Address management
     public string $queryAddress = '';
 
@@ -145,27 +171,36 @@ class PlaceStoreForm extends Component
 
     public bool $showSuggestions = false;
 
-    // Available options for selects
-    /** @var Collection<int, \App\Models\Category> */
-    public Collection $availableCategories;
+    /**
+     * Computed property for available categories with eager-loaded translations.
+     * Using computed property prevents Livewire serialization from losing eager-loaded relations.
+     *
+     * @return Collection<int, Category>
+     */
+    public function getAvailableCategoriesProperty(): Collection
+    {
+        return app(CategorySelectionRepositoryInterface::class)->getAll();
+    }
 
-    /** @var Collection<int, \App\Models\Tag> */
-    public Collection $availableTags;
+    /**
+     * Computed property for available tags with eager-loaded translations.
+     * Using computed property prevents Livewire serialization from losing eager-loaded relations.
+     *
+     * @return Collection<int, Tag>
+     */
+    public function getAvailableTagsProperty(): Collection
+    {
+        return app(TagSelectionRepositoryInterface::class)->getAll();
+    }
 
     public function mount(
         ?int $placeId,
         ?int $placeRequestId,
-        ?int $editRequestId,
-        CategorySelectionRepositoryInterface $categoryRepository,
-        TagSelectionRepositoryInterface $tagRepository
+        ?int $editRequestId
     ): void {
         $this->placeId = $placeId;
         $this->placeRequestId = $placeRequestId;
         $this->editRequestId = $editRequestId;
-
-        // Load available options with all translations
-        $this->availableCategories = $categoryRepository->getAll();
-        $this->availableTags = $tagRepository->getAll();
 
         // Initialize translations structure
         $supportedLocales = config('locales.supported', ['fr', 'en']);
@@ -200,6 +235,9 @@ class PlaceStoreForm extends Component
 
     public function render(): \Illuminate\View\View
     {
-        return view('livewire.admin.place.store.place-store-form');
+        return view('livewire.admin.place.store.place-store-form', [
+            'availableCategories' => $this->availableCategories,
+            'availableTags' => $this->availableTags,
+        ]);
     }
 }

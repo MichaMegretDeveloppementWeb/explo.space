@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -23,7 +24,6 @@ class Photo extends Model
         'original_name',
         'mime_type',
         'size',
-        'alt_text',
         'is_main',
         'sort_order',
     ];
@@ -45,6 +45,11 @@ class Photo extends Model
     public function place(): BelongsTo
     {
         return $this->belongsTo(Place::class);
+    }
+
+    public function translations(): HasMany
+    {
+        return $this->hasMany(PhotoTranslation::class);
     }
 
     public function getUrlAttribute(): string

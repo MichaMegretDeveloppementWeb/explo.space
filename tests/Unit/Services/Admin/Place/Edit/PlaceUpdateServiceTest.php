@@ -348,6 +348,89 @@ class PlaceUpdateServiceTest extends TestCase
         $this->assertCount(2, $updated->photos);
     }
 
+    public function test_add_new_photos_with_translations(): void
+    {
+        // Arrange
+        $place = $this->createBasicPlace();
+
+        $data = $this->getBasicUpdateData();
+        $data['new_photos'] = [
+            UploadedFile::fake()->image('photo1.jpg', 800, 600)->size(2000),
+            UploadedFile::fake()->image('photo2.jpg', 800, 600)->size(2000),
+        ];
+        $data['photo_translations'] = [
+            'temp_0' => [
+                'fr' => ['alt_text' => 'Vue aérienne'],
+                'en' => ['alt_text' => 'Aerial view'],
+            ],
+            'temp_1' => [
+                'fr' => ['alt_text' => 'Vue de face'],
+                'en' => ['alt_text' => 'Front view'],
+            ],
+        ];
+
+        // Act
+        $updated = $this->service->update($place->id, $data);
+
+        // Assert - Photos created
+        $this->assertCount(2, $updated->photos);
+
+        // Assert - Photo translations created
+        $firstPhoto = $updated->photos->sortBy('sort_order')->first();
+        $this->assertDatabaseHas('photo_translations', [
+            'photo_id' => $firstPhoto->id,
+            'locale' => 'fr',
+            'alt_text' => 'Vue aérienne',
+        ]);
+        $this->assertDatabaseHas('photo_translations', [
+            'photo_id' => $firstPhoto->id,
+            'locale' => 'en',
+            'alt_text' => 'Aerial view',
+        ]);
+
+        $secondPhoto = $updated->photos->sortBy('sort_order')->last();
+        $this->assertDatabaseHas('photo_translations', [
+            'photo_id' => $secondPhoto->id,
+            'locale' => 'fr',
+            'alt_text' => 'Vue de face',
+        ]);
+        $this->assertDatabaseHas('photo_translations', [
+            'photo_id' => $secondPhoto->id,
+            'locale' => 'en',
+            'alt_text' => 'Front view',
+        ]);
+    }
+
+    public function test_update_existing_photo_translations(): void
+    {
+        // Arrange
+        $place = $this->createBasicPlace();
+        $photo = Photo::factory()->create(['place_id' => $place->id, 'sort_order' => 0]);
+
+        $data = $this->getBasicUpdateData();
+        $data['photo_translations'] = [
+            "photo_{$photo->id}" => [
+                'fr' => ['alt_text' => 'Nouveau texte FR'],
+                'en' => ['alt_text' => 'New text EN'],
+            ],
+        ];
+
+        // Act
+        $updated = $this->service->update($place->id, $data);
+
+        // Assert
+        $this->assertDatabaseHas('photo_translations', [
+            'photo_id' => $photo->id,
+            'locale' => 'fr',
+            'alt_text' => 'Nouveau texte FR',
+        ]);
+        $this->assertDatabaseHas('photo_translations', [
+            'photo_id' => $photo->id,
+            'locale' => 'en',
+            'alt_text' => 'New text EN',
+        ]);
+    }
+
     public function test_delete_photos(): void
     {
         // Arrange

@@ -25,7 +25,6 @@ class PhotoFactory extends Factory
             'original_name' => fake()->words(3, true).'.jpg',
             'mime_type' => 'image/jpeg',
             'size' => fake()->numberBetween(100000, 5000000),
-            'alt_text' => fake()->sentence(),
             'is_main' => false,
             'sort_order' => fake()->numberBetween(0, 10),
         ];

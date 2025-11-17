@@ -126,6 +126,7 @@
                             <div class="p-4 hover:bg-gray-50 cursor-pointer transition-colors"
                                  data-place-id="{{ $place['id'] }}"
                                  @click="handleResultClick()">
+                                {{-- Contenu principal --}}
                                 <div class="flex items-start space-x-3">
                                     @if(!empty($place['main_photo']))
                                         <img src="{{ $place['main_photo']['thumb_url'] }}"
@@ -187,12 +188,19 @@
                                             </div>
                                         @endif
                                     </div>
+                                </div>
 
-                                    <div class="flex-shrink-0">
-                                        <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                {{-- Bouton "Voir le lieu" en bas --}}
+                                <div class="mt-1 pt-3">
+                                    <a href="{{ localRoute('places.show', ['slug' => $place['translation']['slug']]) }}"
+                                       @click.stop
+                                       class="flex items-center justify-center w-max px-3 py-1 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ml-auto">
+                                        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
-                                    </div>
+                                        {{ __('web/pages/explore.livewire.view_place') }}
+                                    </a>
                                 </div>
                             </div>
                         @endforeach

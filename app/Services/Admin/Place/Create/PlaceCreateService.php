@@ -53,13 +53,23 @@ class PlaceCreateService
 
             // Process and copy PlaceRequest photos (first, to set correct sort_order)
             $nextSortOrder = 0;
+            $createdPhotosMap = []; // Map clé temporaire => Photo créée
+
             if (! empty($data['place_request_photos'])) {
-                $nextSortOrder = $this->copyPlaceRequestPhotos($place, $data['place_request_photos']);
+                $result = $this->copyPlaceRequestPhotos($place, $data['place_request_photos']);
+                $nextSortOrder = $result['next_sort_order'];
+                $createdPhotosMap = array_merge($createdPhotosMap, $result['photos_map']);
             }
 
             // Process and create new uploaded photos
             if (! empty($data['photos'])) {
-                $this->processAndCreatePhotos($place, $data['photos'], $nextSortOrder);
+                $uploadedPhotosMap = $this->processAndCreatePhotos($place, $data['photos'], $nextSortOrder);
+                $createdPhotosMap = array_merge($createdPhotosMap, $uploadedPhotosMap);
+            }
+
+            // Create photo translations if provided
+            if (! empty($data['photo_translations']) && ! empty($createdPhotosMap)) {
+                $this->createPhotoTranslations($createdPhotosMap, $data['photo_translations']);
             }
 
             // Mark PlaceRequest as accepted if applicable
@@ -96,16 +106,18 @@ class PlaceCreateService
      *
      * @param  array<UploadedFile>  $uploadedPhotos
      * @param  int  $startSortOrder  Sort order de départ (pour continuer après PlaceRequest photos)
+     * @return array<string, \App\Models\Photo> Mapping clé temporaire => Photo créée
      *
      * @throws PhotoValidationException|PhotoProcessingException|UnexpectedPhotoException
      */
-    private function processAndCreatePhotos(Place $place, array $uploadedPhotos, int $startSortOrder = 0): void
+    private function processAndCreatePhotos(Place $place, array $uploadedPhotos, int $startSortOrder = 0): array
     {
         $photoData = [];
         $storedFilenames = [];
         $sortOrder = $startSortOrder;
+        $photosMap = []; // Map index => Photo créée
 
-        foreach ($uploadedPhotos as $uploadedPhoto) {
+        foreach ($uploadedPhotos as $index => $uploadedPhoto) {
             try {
                 // Process and store photo with thumbnails
                 $processedData = $this->photoService->processWithThumbnails(
@@ -116,11 +128,11 @@ class PlaceCreateService
                 );
 
                 $photoData[] = [
+                    'index' => $index, // Stocker l'index pour le mapping
                     'filename' => $processedData['filename'],
                     'original_name' => $processedData['original_name'],
                     'mime_type' => $processedData['mime_type'],
                     'size' => $processedData['size'],
-                    'alt_text' => null,
                     'is_main' => $sortOrder === 0, // Main photo = first photo overall
                     'sort_order' => $sortOrder,
                 ];
@@ -163,8 +175,15 @@ class PlaceCreateService
         }
 
         if (! empty($photoData)) {
-            $this->repository->createPhotos($place, $photoData);
+            // Créer les photos et les récupérer pour le mapping
+            foreach ($photoData as $data) {
+                $photo = $this->repository->createPhoto($place, $data);
+                // Clé temporaire format: temp_{index}
+                $photosMap["temp_{$data['index']}"] = $photo;
+            }
         }
+
+        return $photosMap;
     }
 
     /**
@@ -207,15 +226,16 @@ class PlaceCreateService
      * Avec rollback pattern : en cas d'erreur, supprime toutes les photos déjà copiées.
      *
      * @param  array<int, array{id: int, url: string, medium_url: string, source: string}>  $placeRequestPhotos
-     * @return int Next sort_order value (nombre de photos copiées)
+     * @return array{next_sort_order: int, photos_map: array<string, \App\Models\Photo>}
      *
      * @throws PhotoProcessingException|UnexpectedPhotoException
      */
-    private function copyPlaceRequestPhotos(Place $place, array $placeRequestPhotos): int
+    private function copyPlaceRequestPhotos(Place $place, array $placeRequestPhotos): array
     {
         $photoData = [];
         $storedFilenames = [];
         $sortOrder = 0;
+        $photosMap = []; // Map request_{id} => Photo créée
 
         foreach ($placeRequestPhotos as $prPhoto) {
             try {
@@ -228,11 +248,11 @@ class PlaceCreateService
                 );
 
                 $photoData[] = [
+                    'place_request_photo_id' => $prPhoto['id'], // Stocker l'ID pour le mapping
                     'filename' => $processedData['filename'],
                     'original_name' => $processedData['original_name'],
                     'mime_type' => $processedData['mime_type'],
                     'size' => $processedData['size'],
-                    'alt_text' => null,
                     'is_main' => $sortOrder === 0, // Première photo = principale
                     'sort_order' => $sortOrder,
                 ];
@@ -274,9 +294,38 @@ class PlaceCreateService
         }
 
         if (! empty($photoData)) {
-            $this->repository->createPhotos($place, $photoData);
+            // Créer les photos et les récupérer pour le mapping
+            foreach ($photoData as $data) {
+                $photo = $this->repository->createPhoto($place, $data);
+                // Clé format: request_{id}
+                $photosMap["request_{$data['place_request_photo_id']}"] = $photo;
+            }
         }
 
-        return $sortOrder; // Retourne le prochain sort_order disponible
+        return [
+            'next_sort_order' => $sortOrder,
+            'photos_map' => $photosMap,
+        ];
+    }
+
+    /**
+     * Create photo translations from mapping.
+     *
+     * @param  array<string, \App\Models\Photo>  $photosMap  Mapping clé => Photo
+     * @param  array<string, array<string, array{alt_text: ?string}>>  $photoTranslations  Translations par clé
+     */
+    private function createPhotoTranslations(array $photosMap, array $photoTranslations): void
+    {
+        foreach ($photosMap as $key => $photo) {
+            if (isset($photoTranslations[$key])) {
+                $this->repository->createPhotoTranslations($photo, $photoTranslations[$key]);
+
+                Log::info('Photo translations created', [
+                    'photo_id' => $photo->id,
+                    'key' => $key,
+                    'locales' => array_keys($photoTranslations[$key]),
+                ]);
+            }
+        }
     }
 }

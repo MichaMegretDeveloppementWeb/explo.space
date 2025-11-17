@@ -33,9 +33,12 @@ class PlaceDetailRepository implements PlaceDetailRepositoryInterface
                 // Admin qui a créé le lieu
                 'admin',
 
-                // Photos triées par sort_order
+                // Photos triées par sort_order avec leurs traductions
                 'photos' => function ($query) {
                     $query->orderBy('sort_order');
+                },
+                'photos.translations' => function ($query) use ($locale) {
+                    $query->where('locale', $locale);
                 },
 
                 // Tags avec leurs traductions dans la locale donnée

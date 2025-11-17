@@ -26,16 +26,16 @@ class SitemapController extends Controller
      */
     private function generateSitemap(string $baseUrl, array $locales): string
     {
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"' . "\n";
-        $xml .= '        xmlns:xhtml="http://www.w3.org/1999/xhtml">' . "\n\n";
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'."\n";
+        $xml .= '        xmlns:xhtml="http://www.w3.org/1999/xhtml">'."\n\n";
 
         // Static pages configuration
         $staticPages = $this->getStaticPages();
 
         foreach ($staticPages as $page) {
             foreach ($locales as $locale) {
-                $url = $baseUrl . $page['path'][$locale];
+                $url = $baseUrl.$page['path'][$locale];
 
                 $xml .= "    <!-- {$page['name']} {$locale} -->\n";
                 $xml .= "    <url>\n";
@@ -43,12 +43,12 @@ class SitemapController extends Controller
 
                 // Add alternate language links for all locales
                 foreach ($locales as $altLocale) {
-                    $altUrl = $baseUrl . $page['path'][$altLocale];
+                    $altUrl = $baseUrl.$page['path'][$altLocale];
                     $xml .= "        <xhtml:link rel=\"alternate\" hreflang=\"{$altLocale}\" href=\"{$altUrl}\" />\n";
                 }
 
                 // Add x-default (French as default)
-                $defaultUrl = $baseUrl . $page['path']['fr'];
+                $defaultUrl = $baseUrl.$page['path']['fr'];
                 $xml .= "        <xhtml:link rel=\"alternate\" hreflang=\"x-default\" href=\"{$defaultUrl}\" />\n";
 
                 $xml .= "        <changefreq>{$page['changefreq']}</changefreq>\n";

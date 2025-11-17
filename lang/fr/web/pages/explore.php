@@ -107,6 +107,7 @@ return [
         'geolocating' => 'Localisation...',
         'geolocate_me' => '📍 Me localiser',
         'view_detail' => 'Voir le détail',
+        'view_place' => 'Voir le lieu',
         'directions' => 'Itinéraire',
         'increase_radius' => 'Aucun lieu spatial dans cette zone. Essayez d\'augmenter le rayon de recherche.',
 

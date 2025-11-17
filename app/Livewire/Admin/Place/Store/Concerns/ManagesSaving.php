@@ -100,6 +100,7 @@ trait ManagesSaving
         $data['request_id'] = $this->placeRequestId;
         $data['place_request_photos'] = $this->placeRequestPhotos;
         $data['photos'] = $this->photos;
+        $data['photo_translations'] = $this->transformPhotoTranslationKeysForCreate();
 
         // Note: On utilise app() au lieu d'injecter le service en propriété pour éviter
         // la sérialisation du service à chaque cycle Livewire (impact performance).
@@ -124,6 +125,7 @@ trait ManagesSaving
         $data['deleted_photo_ids'] = $this->deletedPhotoIds;
         $data['photo_order'] = $this->photoOrder;
         $data['main_photo_id'] = $this->mainPhotoId;
+        $data['photo_translations'] = $this->transformPhotoTranslationKeysForUpdate();
 
         // Ajouter les données EditRequest si présentes
         if ($this->editRequestId !== null) {
@@ -221,5 +223,105 @@ trait ManagesSaving
             'error' => $e->getMessage(),
             'trace' => $e->getTraceAsString(),
         ]);
+    }
+
+    /**
+     * Transform photo translation keys from Livewire format to Service format (CREATE).
+     *
+     * Livewire uses:
+     * - pending_0, pending_1 (uploaded photos)
+     * - placeRequest_0, placeRequest_1 (PlaceRequest photos by index)
+     *
+     * Services expect:
+     * - temp_0, temp_1 (uploaded photos)
+     * - request_123 (PlaceRequest photo by actual photo ID)
+     *
+     * @return array<string, array<string, array{alt_text: ?string}>>
+     */
+    private function transformPhotoTranslationKeysForCreate(): array
+    {
+        $transformed = [];
+
+        foreach ($this->photoTranslations as $key => $translations) {
+            $newKey = null;
+
+            // Transform pending_* to temp_*
+            if (str_starts_with($key, 'pending_')) {
+                $index = str_replace('pending_', '', $key);
+                $newKey = "temp_{$index}";
+            }
+            // Transform placeRequest_* (index) to request_* (actual photo ID)
+            elseif (str_starts_with($key, 'placeRequest_')) {
+                $index = (int) str_replace('placeRequest_', '', $key);
+
+                // Get actual PlaceRequest photo ID from array
+                if (isset($this->placeRequestPhotos[$index]['id'])) {
+                    $photoId = $this->placeRequestPhotos[$index]['id'];
+                    $newKey = "request_{$photoId}";
+                }
+            }
+
+            if ($newKey) {
+                $transformed[$newKey] = $translations;
+            }
+        }
+
+        return $transformed;
+    }
+
+    /**
+     * Transform photo translation keys from Livewire format to Service format (UPDATE).
+     *
+     * Livewire uses:
+     * - existing_123 (existing photos)
+     * - pending_0, pending_1 (uploaded photos)
+     * - editRequest_123_2 (EditRequest photos: editRequestId_index)
+     *
+     * Services expect:
+     * - photo_123 (existing photos)
+     * - temp_0, temp_1 (uploaded photos)
+     * - editRequest_50 (EditRequest photo by actual photo ID)
+     *
+     * @return array<string, array<string, array{alt_text: ?string}>>
+     */
+    private function transformPhotoTranslationKeysForUpdate(): array
+    {
+        $transformed = [];
+
+        foreach ($this->photoTranslations as $key => $translations) {
+            $newKey = null;
+
+            // Transform existing_* to photo_*
+            if (str_starts_with($key, 'existing_')) {
+                $photoId = str_replace('existing_', '', $key);
+                $newKey = "photo_{$photoId}";
+            }
+            // Transform pending_* to temp_*
+            elseif (str_starts_with($key, 'pending_')) {
+                $index = str_replace('pending_', '', $key);
+                $newKey = "temp_{$index}";
+            }
+            // Transform editRequest_123_2 (editRequestId_index) to editRequest_50 (actual photo ID)
+            elseif (str_starts_with($key, 'editRequest_')) {
+                $parts = explode('_', $key);
+
+                if (count($parts) === 3) {
+                    $editRequestId = $parts[1];
+                    $index = (int) $parts[2];
+
+                    // Get actual EditRequest photo ID from array
+                    if (isset($this->editRequestPhotos[$index]['id'])) {
+                        $photoId = $this->editRequestPhotos[$index]['id'];
+                        $newKey = "editRequest_{$photoId}";
+                    }
+                }
+            }
+
+            if ($newKey) {
+                $transformed[$newKey] = $translations;
+            }
+        }
+
+        return $transformed;
     }
 }
