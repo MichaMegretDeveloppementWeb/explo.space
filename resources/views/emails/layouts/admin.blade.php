@@ -13,7 +13,7 @@
                     <!-- Header -->
                     <tr>
                         <td style="padding-bottom: 32px; text-align: center;">
-                            <img src="{{ asset('build/assets/logo_explo_space-BU3NfJYE.webp') }}" alt="Explo.space" style="height: 48px; width: auto; display: inline-block;">
+                            <img src="{{ asset('images/logo_explo_space.png') }}" alt="Explo.space" style="height: 48px; width: auto; display: inline-block;">
                         </td>
                     </tr>
 
