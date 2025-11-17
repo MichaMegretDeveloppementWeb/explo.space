@@ -22,7 +22,7 @@
 
     {{-- Carte de prévisualisation --}}
     @if($placeRequest->latitude && $placeRequest->longitude)
-        <div wire:ignore class="mt-4 pt-4 border-t border-gray-200">
+        <div wire:ignore wire:key="map-section" class="mt-4 pt-4 border-t border-gray-200">
             <div id="place-request-location-preview"
                  class="rounded-lg h-48 z-0"
                  data-latitude="{{ $placeRequest->latitude }}"

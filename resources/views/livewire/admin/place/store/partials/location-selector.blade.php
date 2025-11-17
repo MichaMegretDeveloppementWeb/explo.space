@@ -76,7 +76,7 @@
     @enderror
 
     {{-- Interactive Leaflet Map (wire:ignore) --}}
-    <div wire:ignore>
+    <div wire:ignore wire:key="map-section">
         <label class="block text-sm font-medium text-gray-700 mb-2">
             Carte interactive
         </label>

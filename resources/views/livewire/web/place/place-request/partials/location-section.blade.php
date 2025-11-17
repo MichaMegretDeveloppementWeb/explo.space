@@ -91,8 +91,8 @@
             </div>
         @enderror
 
-        {{-- Interactive Leaflet Map (wire:ignore) --}}
-        <div wire:ignore>
+        {{-- Interactive Leaflet Map (wire:ignore avec wire:key pour éviter duplication) --}}
+        <div wire:ignore wire:key="map-section">
             <label class="block text-sm font-medium text-gray-700 mb-2">
                 {{ __('web/pages/place-request.location.interactive_map') }}
             </label>

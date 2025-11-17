@@ -180,7 +180,7 @@
                                                      data-lng="{{ $new_values['coordinates']['lng'] ?? $current_values['coordinates']['lng'] }}">
                                                 </div>
 
-                                                <div wire:ignore class="relative">
+                                                <div wire:ignore class="relative" wire:key="map-section">
                                                     {{-- Loader (EN DEHORS du wire:ignore) --}}
                                                     <x-web.map-loader />
 
