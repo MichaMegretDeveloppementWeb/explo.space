@@ -159,6 +159,13 @@ return [
         'cta' => 'Voir tous les lieux emblématiques',
     ],
 
+    'latest_places' => [
+        'badge' => 'Derniers ajouts',
+        'title' => 'Nouveaux lieux découverts',
+        'subtitle' => 'Découvrez les lieux récemment ajoutés à notre collection mondiale',
+        'no_places' => 'Aucun lieu récent disponible pour le moment.',
+    ],
+
     'why_cosmap' => [
         'title' => 'Pourquoi choisir '.config('app.name').' ?',
         'subtitle' => 'Une plateforme collaborative dédiée à la cartographie mondiale des sites spatiaux',

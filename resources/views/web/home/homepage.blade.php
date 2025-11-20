@@ -16,6 +16,8 @@
 
     @include('web.home.partials.featured-places')
 
+    @include('web.home.partials.latest-places')
+
     @include('web.home.partials.community-stats')
 
     @include('web.home.partials.why-cosmap')

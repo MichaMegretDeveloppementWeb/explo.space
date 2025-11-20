@@ -179,6 +179,13 @@ return [
         'cta' => 'See all iconic places',
     ],
 
+    'latest_places' => [
+        'badge' => 'Latest additions',
+        'title' => 'Newly discovered places',
+        'subtitle' => 'Discover the places recently added to our global collection',
+        'no_places' => 'No recent places available at the moment.',
+    ],
+
     'why_cosmap' => [
         'title' => 'Why choose '.config('app.name').' ?',
         'subtitle' => 'A collaborative platform dedicated to global mapping of space sites',

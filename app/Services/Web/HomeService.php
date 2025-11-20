@@ -39,6 +39,33 @@ class HomeService
     }
 
     /**
+     * @return Collection<int, Place>
+     */
+    public function getLatestPlaces(): Collection
+    {
+        return Place::query()
+            ->with([
+                'translations' => function ($query) {
+                    $query->where('locale', app()->getLocale())
+                        ->where('status', 'published');
+                },
+                'photos' => function ($query) {
+                    $query->where('is_main', true);
+                },
+                'tags.translations' => function ($query) {
+                    $query->where('locale', app()->getLocale())
+                        ->where('status', 'published');
+                },
+            ])
+            ->whereHas('translations', function ($query) {
+                $query->where('locale', app()->getLocale());
+            })
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+    }
+
+    /**
      * Get all statistics (for hero and community sections)
      *
      * @return array{places_count: int, featured_places_count: int, active_tags_count: int, active_members: int, total_submissions: int}
