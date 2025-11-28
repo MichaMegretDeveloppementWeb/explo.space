@@ -41,17 +41,20 @@
                     show: true,
                     progress: 100,
                     duration: 5000,
-                    interval: null
+                    interval: null,
+                    init() {
+                        this.interval = setInterval(() => {
+                            this.progress -= 100 / (this.duration / 50);
+                            if (this.progress <= 0) {
+                                this.close();
+                            }
+                        }, 50);
+                    },
+                    close() {
+                        this.show = false;
+                        if (this.interval) clearInterval(this.interval);
+                    }
                  }"
-                 x-init="
-                    interval = setInterval(() => {
-                        progress -= 100 / (duration / 50);
-                        if (progress <= 0) {
-                            show = false;
-                            clearInterval(interval);
-                        }
-                    }, 50);
-                 "
                  x-show="show"
                  x-transition:enter="transition ease-out duration-300"
                  x-transition:enter-start="opacity-0 translate-x-full"
@@ -60,7 +63,7 @@
                  x-transition:leave-start="opacity-100"
                  x-transition:leave-end="opacity-0 scale-95"
                  role="alert"
-                 style="display: none;">
+                 x-cloak>
 
                 @if($toast['type'] === 'success')
                     {{-- Success Toast --}}
@@ -82,7 +85,7 @@
                                     <p class="text-sm font-medium text-gray-900">Succès</p>
                                     <p class="mt-1 text-sm text-gray-600">{{ $toast['message'] }}</p>
                                 </div>
-                                <button @click="show = false; clearInterval(interval)"
+                                <button @click="close()"
                                         class="ml-4 flex-shrink-0 inline-flex text-gray-400 hover:text-gray-600 focus:outline-none">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -113,7 +116,7 @@
                                     <p class="text-sm font-medium text-gray-900">Erreur</p>
                                     <p class="mt-1 text-sm text-gray-600">{{ $toast['message'] }}</p>
                                 </div>
-                                <button @click="show = false; clearInterval(interval)"
+                                <button @click="close()"
                                         class="ml-4 flex-shrink-0 inline-flex text-gray-400 hover:text-gray-600 focus:outline-none">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -144,7 +147,7 @@
                                     <p class="text-sm font-medium text-gray-900">Attention</p>
                                     <p class="mt-1 text-sm text-gray-600">{{ $toast['message'] }}</p>
                                 </div>
-                                <button @click="show = false; clearInterval(interval)"
+                                <button @click="close()"
                                         class="ml-4 flex-shrink-0 inline-flex text-gray-400 hover:text-gray-600 focus:outline-none">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -175,7 +178,7 @@
                                     <p class="text-sm font-medium text-gray-900">Information</p>
                                     <p class="mt-1 text-sm text-gray-600">{{ $toast['message'] }}</p>
                                 </div>
-                                <button @click="show = false; clearInterval(interval)"
+                                <button @click="close()"
                                         class="ml-4 flex-shrink-0 inline-flex text-gray-400 hover:text-gray-600 focus:outline-none">
                                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
