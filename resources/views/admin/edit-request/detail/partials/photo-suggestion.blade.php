@@ -48,7 +48,8 @@
             // Extraire le tableau 'photos' depuis la structure suggested_changes
             $suggestedPhotos = $suggestedPhotoData['photos'] ?? [];
             $appliedChanges = $editRequest->applied_changes ?? [];
-            $appliedPhotos = $appliedChanges['photos'] ?? [];
+            // Convertir en entiers car les valeurs sont stockées comme strings en JSON
+            $appliedPhotos = array_map('intval', $appliedChanges['photos'] ?? []);
         @endphp
 
         @if(!empty($suggestedPhotos))
