@@ -23,9 +23,10 @@ class UserCreateService
     /**
      * Create a new admin user and send invitation email.
      *
-     * @param  array<string, mixed>  $data  ['name' => string, 'email' => string, 'role' => string]
+     * @param array<string, mixed> $data ['name' => string, 'email' => string, 'role' => string]
      *
      * @throws \InvalidArgumentException Si l'email existe déjà
+     * @throws \Exception
      */
     public function createAdmin(array $data): User
     {
@@ -49,13 +50,20 @@ class UserCreateService
         // Générer le token d'invitation
         $invitation = $this->invitationService->generateInvitationToken($user);
 
-        // Envoyer l'email d'invitation
-        Mail::to($user->email)->send(new AdminInvitationMail($user, $invitation->token));
+        try {
 
-        Log::info('Admin user created and invitation sent', [
-            'user_id' => $user->id,
-            'role' => $user->role,
-        ]);
+            // Envoyer l'email d'invitation
+            Mail::to($user->email)->send(new AdminInvitationMail($user, $invitation->token));
+
+            Log::info('Admin user created and invitation sent', [
+                'user_id' => $user->id,
+                'role' => $user->role,
+            ]);
+
+        }catch (\Exception $e) {
+            throw new \Exception('Erreur lors de l\'envoi de l\'invitation par email. La connexion avec le service a échouée.');
+        }
+
 
         return $user;
     }
