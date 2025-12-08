@@ -3,6 +3,32 @@
         Options -MultiViews -Indexes
     </IfModule>
 
+    # Exclure les routes Livewire du cache CDN Hostinger
+    <IfModule mod_headers.c>
+        # Toutes les requêtes /livewire/ (GET pour preview)
+        <If "%{REQUEST_URI} =~ m#^/livewire/#">
+          Header set Cache-Control "no-store, no-cache, must-revalidate, private"
+          Header set CDN-Cache-Control "no-store"
+          Header set Surrogate-Control "no-store"
+          Header set X-Accel-Expires "0"
+        </If>
+    </IfModule>
+
+    # Bypass CDN pour les requêtes POST (uploads Livewire)
+    <IfModule mod_rewrite.c>
+        RewriteCond %{REQUEST_METHOD} POST
+        RewriteCond %{REQUEST_URI} ^/livewire/ [NC]
+        RewriteRule .* - [E=NO_CDN:1]
+    </IfModule>
+
+    <IfModule mod_headers.c>
+        Header set CDN-Cache-Control "no-store" env=NO_CDN
+        Header set Cache-Control "no-store, no-cache, must-revalidate, private" env=NO_CDN
+        Header set Surrogate-Control "no-store" env=NO_CDN
+        Header set X-Accel-Buffering "no" env=NO_CDN
+        Header set X-Accel-Expires "0" env=NO_CDN
+    </IfModule>
+
     RewriteEngine On
 
     # Handle Authorization Header
