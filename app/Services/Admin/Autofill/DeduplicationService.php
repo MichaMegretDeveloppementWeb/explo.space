@@ -3,13 +3,18 @@
 namespace App\Services\Admin\Autofill;
 
 use App\Models\Place;
+use App\Models\PlaceTranslation;
 
 class DeduplicationService
 {
     /**
      * Filter out places that already exist in the database.
      *
-     * @param  array<int, array<string, mixed>>  $places  Each place must have 'name', 'latitude', 'longitude'.
+     * Uses a two-pass strategy:
+     * 1. Name-based: compare against ALL place translations (language-independent)
+     * 2. Coordinate-based: if coordinates are available, check within a radius
+     *
+     * @param  array<int, array<string, mixed>>  $places  Each place should have 'name' and optionally 'latitude', 'longitude'.
      * @return array{unique: array<int, array<string, mixed>>, duplicateNames: array<int, string>}
      */
     public function filterDuplicates(array $places): array
@@ -17,8 +22,14 @@ class DeduplicationService
         $unique = [];
         $duplicateNames = [];
 
+        // Pre-load all existing place titles for efficient name comparison
+        $existingTitles = PlaceTranslation::query()
+            ->select('title')
+            ->pluck('title')
+            ->toArray();
+
         foreach ($places as $place) {
-            if ($this->checkSinglePlace($place)) {
+            if ($this->isDuplicate($place, $existingTitles)) {
                 $duplicateNames[] = $place['name'];
             } else {
                 $unique[] = $place;
@@ -32,44 +43,54 @@ class DeduplicationService
     }
 
     /**
-     * Check if a single place already exists in the database.
+     * Check if a place is a duplicate using name-first, then coordinates.
      *
-     * @param  array<string, mixed>  $place  Must have 'name', 'latitude', 'longitude'.
-     * @return bool true if the place is a duplicate
+     * @param  array<string, mixed>  $place
+     * @param  array<int, string>  $existingTitles  All existing place titles from DB
      */
-    public function checkSinglePlace(array $place): bool
+    private function isDuplicate(array $place, array $existingTitles): bool
     {
         $name = $place['name'] ?? '';
-        $latitude = (float) ($place['latitude'] ?? 0);
-        $longitude = (float) ($place['longitude'] ?? 0);
 
-        if ($name === '' || ($latitude === 0.0 && $longitude === 0.0)) {
+        if ($name === '') {
             return false;
         }
 
-        $radiusMeters = (int) config('autofill.deduplication_radius', 500);
-        $radiusKm = $radiusMeters / 1000;
+        $nameThreshold = (int) config('autofill.deduplication_name_threshold', 60);
 
-        $nearbyPlaces = Place::query()
-            ->withinRadius($latitude, $longitude, $radiusKm)
-            ->with(['translations:id,place_id,title,locale'])
-            ->get();
-
-        if ($nearbyPlaces->isEmpty()) {
-            return false;
-        }
-
-        $threshold = (int) config('autofill.deduplication_name_threshold', 60);
-
-        foreach ($nearbyPlaces as $existingPlace) {
-            foreach ($existingPlace->translations as $translation) {
-                if ($this->namesMatch($name, $translation->title, $threshold)) {
-                    return true;
-                }
+        // Pass 1: Name-based deduplication against ALL place translations
+        foreach ($existingTitles as $existingTitle) {
+            if ($this->namesMatch($name, $existingTitle, $nameThreshold)) {
+                return true;
             }
         }
 
-        return false;
+        // Pass 2: Coordinate-based deduplication (catches renamed/translated places nearby)
+        $latitude = (float) ($place['latitude'] ?? 0);
+        $longitude = (float) ($place['longitude'] ?? 0);
+
+        if ($latitude === 0.0 && $longitude === 0.0) {
+            return false;
+        }
+
+        return $this->hasNearbyPlace($latitude, $longitude);
+    }
+
+    /**
+     * Check if any place exists near the given coordinates.
+     *
+     * A place within the radius is considered a duplicate regardless of name,
+     * since different names for the same physical location are common
+     * (e.g., "Kennedy Space Center" and "KSC Visitor Complex").
+     */
+    private function hasNearbyPlace(float $latitude, float $longitude): bool
+    {
+        $radiusMeters = (int) config('autofill.deduplication_radius', 2000);
+        $radiusKm = $radiusMeters / 1000;
+
+        return Place::query()
+            ->withinRadius($latitude, $longitude, $radiusKm)
+            ->exists();
     }
 
     /**
@@ -82,6 +103,13 @@ class DeduplicationService
 
         if ($normalizedA === $normalizedB) {
             return true;
+        }
+
+        // Check if one name contains the other (handles "Kennedy Space Center" vs "Kennedy Space Center Visitor Complex")
+        if (mb_strlen($normalizedA) > 5 && mb_strlen($normalizedB) > 5) {
+            if (str_contains($normalizedA, $normalizedB) || str_contains($normalizedB, $normalizedA)) {
+                return true;
+            }
         }
 
         $percent = 0;

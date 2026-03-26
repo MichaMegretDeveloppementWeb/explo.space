@@ -20,73 +20,103 @@ class DeduplicationServiceTest extends TestCase
         $this->service = new DeduplicationService;
     }
 
-    public function test_identical_name_and_nearby_coords_is_duplicate(): void
-    {
-        $place = Place::factory()->create([
-            'latitude' => 28.5721,
-            'longitude' => -80.6480,
-        ]);
+    // --- Name-based deduplication (primary) ---
 
+    public function test_identical_name_is_duplicate_regardless_of_coordinates(): void
+    {
+        $place = Place::factory()->create(['latitude' => 48.947, 'longitude' => 2.437]);
         PlaceTranslation::factory()->create([
             'place_id' => $place->id,
             'locale' => 'en',
             'title' => 'Kennedy Space Center',
         ]);
 
-        $result = $this->service->checkSinglePlace([
-            'name' => 'Kennedy Space Center',
-            'latitude' => 28.5725,
-            'longitude' => -80.6485,
+        $result = $this->service->filterDuplicates([
+            ['name' => 'Kennedy Space Center', 'latitude' => 0, 'longitude' => 0],
         ]);
 
-        $this->assertTrue($result);
+        $this->assertCount(0, $result['unique']);
+        $this->assertSame('Kennedy Space Center', $result['duplicateNames'][0]);
     }
 
-    public function test_similar_name_multilingual_with_nearby_coords_is_duplicate(): void
+    public function test_name_matches_against_all_locale_translations(): void
     {
-        $place = Place::factory()->create([
-            'latitude' => 28.5721,
-            'longitude' => -80.6480,
-        ]);
-
+        $place = Place::factory()->create(['latitude' => 48.947, 'longitude' => 2.437]);
         PlaceTranslation::factory()->create([
             'place_id' => $place->id,
             'locale' => 'fr',
-            'title' => 'Centre Spatial Kennedy',
+            'title' => 'Musée de l\'Air et de l\'Espace',
         ]);
 
-        $result = $this->service->checkSinglePlace([
-            'name' => 'Kennedy Space Center',
-            'latitude' => 28.5725,
-            'longitude' => -80.6485,
+        $result = $this->service->filterDuplicates([
+            ['name' => 'Musée de l\'Air et de l\'Espace', 'latitude' => 10, 'longitude' => 20],
         ]);
 
-        // similar_text between normalized names — may or may not match depending on threshold
-        // At minimum, the test validates the code path works without errors
-        $this->assertIsBool($result);
+        $this->assertCount(0, $result['unique']);
+        $this->assertCount(1, $result['duplicateNames']);
     }
 
-    public function test_nearby_coords_but_different_name_is_not_duplicate(): void
+    public function test_name_containment_detects_duplicate(): void
     {
-        $place = Place::factory()->create([
-            'latitude' => 28.5721,
-            'longitude' => -80.6480,
-        ]);
-
+        $place = Place::factory()->create(['latitude' => 28.572, 'longitude' => -80.648]);
         PlaceTranslation::factory()->create([
             'place_id' => $place->id,
             'locale' => 'en',
             'title' => 'Kennedy Space Center',
         ]);
 
-        $result = $this->service->checkSinglePlace([
-            'name' => 'Cape Canaveral Air Force Station',
-            'latitude' => 28.5725,
-            'longitude' => -80.6485,
+        $result = $this->service->filterDuplicates([
+            ['name' => 'Kennedy Space Center Visitor Complex', 'latitude' => 28.524, 'longitude' => -80.681],
         ]);
 
-        $this->assertFalse($result);
+        $this->assertCount(0, $result['unique']);
+        $this->assertCount(1, $result['duplicateNames']);
     }
+
+    // --- Coordinate-based deduplication (secondary) ---
+
+    public function test_nearby_coords_is_duplicate_even_with_different_name(): void
+    {
+        $place = Place::factory()->create([
+            'latitude' => 28.5721,
+            'longitude' => -80.6480,
+        ]);
+        PlaceTranslation::factory()->create([
+            'place_id' => $place->id,
+            'locale' => 'en',
+            'title' => 'Kennedy Space Center',
+        ]);
+
+        // Same coordinates, different name → duplicate (same physical location)
+        $result = $this->service->filterDuplicates([
+            ['name' => 'KSC Launch Pad 39B', 'latitude' => 28.5725, 'longitude' => -80.6485],
+        ]);
+
+        $this->assertCount(0, $result['unique']);
+    }
+
+    public function test_far_coords_and_different_name_is_not_duplicate(): void
+    {
+        $place = Place::factory()->create([
+            'latitude' => 28.5721,
+            'longitude' => -80.6480,
+        ]);
+        PlaceTranslation::factory()->create([
+            'place_id' => $place->id,
+            'locale' => 'en',
+            'title' => 'Kennedy Space Center',
+        ]);
+
+        // Far away, different name → unique
+        $result = $this->service->filterDuplicates([
+            ['name' => 'Baikonur Cosmodrome', 'latitude' => 45.9646, 'longitude' => 63.3052],
+        ]);
+
+        $this->assertCount(1, $result['unique']);
+        $this->assertEmpty($result['duplicateNames']);
+    }
+
+    // --- Edge cases ---
 
     public function test_no_places_in_db_returns_all_unique(): void
     {
@@ -100,6 +130,52 @@ class DeduplicationServiceTest extends TestCase
         $this->assertCount(2, $result['unique']);
         $this->assertEmpty($result['duplicateNames']);
     }
+
+    public function test_empty_name_is_not_duplicate(): void
+    {
+        $result = $this->service->filterDuplicates([
+            ['name' => '', 'latitude' => 28.5721, 'longitude' => -80.6480],
+        ]);
+
+        $this->assertCount(1, $result['unique']);
+    }
+
+    public function test_zero_coords_fall_back_to_name_only(): void
+    {
+        // No place in DB → not duplicate even with zero coords
+        $result = $this->service->filterDuplicates([
+            ['name' => 'Some Place', 'latitude' => 0, 'longitude' => 0],
+        ]);
+
+        $this->assertCount(1, $result['unique']);
+    }
+
+    public function test_filter_separates_unique_and_duplicates(): void
+    {
+        $place = Place::factory()->create([
+            'latitude' => 28.5721,
+            'longitude' => -80.6480,
+        ]);
+        PlaceTranslation::factory()->create([
+            'place_id' => $place->id,
+            'locale' => 'en',
+            'title' => 'Kennedy Space Center',
+        ]);
+
+        $places = [
+            ['name' => 'Kennedy Space Center', 'latitude' => 28.5725, 'longitude' => -80.6485],
+            ['name' => 'Baikonur Cosmodrome', 'latitude' => 45.9646, 'longitude' => 63.3052],
+        ];
+
+        $result = $this->service->filterDuplicates($places);
+
+        $this->assertCount(1, $result['unique']);
+        $this->assertSame('Baikonur Cosmodrome', $result['unique'][0]['name']);
+        $this->assertCount(1, $result['duplicateNames']);
+        $this->assertSame('Kennedy Space Center', $result['duplicateNames'][0]);
+    }
+
+    // --- Name normalization & matching ---
 
     public function test_normalize_name_removes_accents_and_punctuation(): void
     {
@@ -120,42 +196,5 @@ class DeduplicationServiceTest extends TestCase
     public function test_names_do_not_match_completely_different(): void
     {
         $this->assertFalse($this->service->namesMatch('Kennedy Space Center', 'Baikonur Cosmodrome'));
-    }
-
-    public function test_filter_duplicates_separates_unique_and_duplicates(): void
-    {
-        $place = Place::factory()->create([
-            'latitude' => 28.5721,
-            'longitude' => -80.6480,
-        ]);
-
-        PlaceTranslation::factory()->create([
-            'place_id' => $place->id,
-            'locale' => 'en',
-            'title' => 'Kennedy Space Center',
-        ]);
-
-        $places = [
-            ['name' => 'Kennedy Space Center', 'latitude' => 28.5725, 'longitude' => -80.6485],
-            ['name' => 'Baikonur Cosmodrome', 'latitude' => 45.9646, 'longitude' => 63.3052],
-        ];
-
-        $result = $this->service->filterDuplicates($places);
-
-        $this->assertCount(1, $result['unique']);
-        $this->assertSame('Baikonur Cosmodrome', $result['unique'][0]['name']);
-        $this->assertCount(1, $result['duplicateNames']);
-        $this->assertSame('Kennedy Space Center', $result['duplicateNames'][0]);
-    }
-
-    public function test_zero_coords_are_not_checked(): void
-    {
-        $result = $this->service->checkSinglePlace([
-            'name' => 'Some Place',
-            'latitude' => 0,
-            'longitude' => 0,
-        ]);
-
-        $this->assertFalse($result);
     }
 }

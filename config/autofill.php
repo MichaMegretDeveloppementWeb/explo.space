@@ -87,7 +87,7 @@ return [
     |
     */
 
-    'deduplication_radius' => 500,
+    'deduplication_radius' => 2000,
     'deduplication_name_threshold' => 60,
     'deduplication_max_iterations' => 3,
 
