@@ -10,9 +10,9 @@ class DeduplicationService
     /**
      * Filter out places that already exist in the database.
      *
-     * Uses a two-pass strategy:
-     * 1. Name-based: compare against ALL place translations (language-independent)
-     * 2. Coordinate-based: if coordinates are available, check within a radius
+     * Uses a coordinate-first strategy (no bulk load):
+     * 1. Spatial query: check if a place exists within a configurable radius
+     * 2. Targeted name search: SQL query for similar names (fallback when coordinates are off)
      *
      * @param  array<int, array<string, mixed>>  $places  Each place should have 'name' and optionally 'latitude', 'longitude'.
      * @return array{unique: array<int, array<string, mixed>>, duplicateNames: array<int, string>}
@@ -22,14 +22,8 @@ class DeduplicationService
         $unique = [];
         $duplicateNames = [];
 
-        // Pre-load all existing place titles for efficient name comparison
-        $existingTitles = PlaceTranslation::query()
-            ->select('title')
-            ->pluck('title')
-            ->toArray();
-
         foreach ($places as $place) {
-            if ($this->isDuplicate($place, $existingTitles)) {
+            if ($this->isDuplicate($place)) {
                 $duplicateNames[] = $place['name'];
             } else {
                 $unique[] = $place;
@@ -43,12 +37,11 @@ class DeduplicationService
     }
 
     /**
-     * Check if a place is a duplicate using name-first, then coordinates.
+     * Check if a place is a duplicate using coordinates-first, then targeted name search.
      *
      * @param  array<string, mixed>  $place
-     * @param  array<int, string>  $existingTitles  All existing place titles from DB
      */
-    private function isDuplicate(array $place, array $existingTitles): bool
+    private function isDuplicate(array $place): bool
     {
         $name = $place['name'] ?? '';
 
@@ -56,29 +49,24 @@ class DeduplicationService
             return false;
         }
 
-        $nameThreshold = (int) config('autofill.deduplication_name_threshold', 60);
+        // Pass 1: Coordinate-based deduplication (spatial index, ~1ms per query)
+        $latitude = (float) ($place['latitude'] ?? 0);
+        $longitude = (float) ($place['longitude'] ?? 0);
 
-        // Pass 1: Name-based deduplication against ALL place translations
-        foreach ($existingTitles as $existingTitle) {
-            if ($this->namesMatch($name, $existingTitle, $nameThreshold)) {
+        if ($latitude !== 0.0 || $longitude !== 0.0) {
+            if ($this->hasNearbyPlace($latitude, $longitude)) {
                 return true;
             }
         }
 
-        // Pass 2: Coordinate-based deduplication (catches renamed/translated places nearby)
-        $latitude = (float) ($place['latitude'] ?? 0);
-        $longitude = (float) ($place['longitude'] ?? 0);
-
-        if ($latitude === 0.0 && $longitude === 0.0) {
-            return false;
-        }
-
-        return $this->hasNearbyPlace($latitude, $longitude);
+        // Pass 2: Targeted name search in DB (no bulk load)
+        return $this->hasMatchingNameInDb($name);
     }
 
     /**
      * Check if any place exists near the given coordinates.
      *
+     * Uses the spatial index on the places table for efficient lookups.
      * A place within the radius is considered a duplicate regardless of name,
      * since different names for the same physical location are common
      * (e.g., "Kennedy Space Center" and "KSC Visitor Complex").
@@ -91,6 +79,41 @@ class DeduplicationService
         return Place::query()
             ->withinRadius($latitude, $longitude, $radiusKm)
             ->exists();
+    }
+
+    /**
+     * Search for matching place names directly in the database.
+     *
+     * Instead of loading all titles into memory, this runs a targeted SQL query
+     * using the collation (utf8mb4_general_ci) for case-insensitive matching,
+     * then confirms with PHP-level normalized comparison on the small result set.
+     */
+    private function hasMatchingNameInDb(string $name): bool
+    {
+        if (mb_strlen($name) <= 3) {
+            return false;
+        }
+
+        $threshold = (int) config('autofill.deduplication_name_threshold', 60);
+        $lowerName = mb_strtolower($name);
+
+        // SQL-level search: exact match or containment (case-insensitive via collation)
+        $potentialMatches = PlaceTranslation::query()
+            ->select('title')
+            ->where(function ($query) use ($lowerName) {
+                $query->whereRaw('LOWER(title) LIKE ?', ['%'.$lowerName.'%'])
+                    ->orWhereRaw('? LIKE CONCAT(\'%\', LOWER(title), \'%\')', [$lowerName]);
+            })
+            ->limit(20)
+            ->pluck('title');
+
+        foreach ($potentialMatches as $existingTitle) {
+            if ($this->namesMatch($name, $existingTitle, $threshold)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

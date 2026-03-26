@@ -122,6 +122,8 @@ class DiscoveryJob implements ShouldQueue
                     'enrichment_data' => [
                         'approximate_location' => $place['approximate_location'] ?? null,
                         'justification' => $place['justification'] ?? null,
+                        'latitude' => $place['latitude'] ?? null,
+                        'longitude' => $place['longitude'] ?? null,
                     ],
                 ]);
             }

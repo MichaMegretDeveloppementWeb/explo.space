@@ -36,6 +36,7 @@ class DiscoveryAgent implements Agent, HasTools
    - Search in the original query language AND in English.
    - Try broad terms (e.g., "space museums worldwide") and specific terms from the query.
    - Example: for "musée spatial", search "space museums", "musée spatial", "aerospace museum", etc.
+3. For EACH place found, use web search to verify its exact GPS coordinates. This is critical — coordinates will be used to place pins on an interactive map. Never guess or estimate coordinates.
 SEARCH
             : '2. Use your extensive knowledge to find real, verified places matching the query.';
 
@@ -50,7 +51,7 @@ Relevant place types include: launch sites, spaceports, space museums, aviation 
 ## Workflow
 1. Understand the user's query — translate it to English if needed.
 {$searchInstruction}
-3. Compile your findings into the required JSON format.
+4. Compile your findings into the required JSON format.
 
 ## Output format
 Respond with ONLY a valid JSON object (no markdown, no explanation) matching this structure:
@@ -61,8 +62,8 @@ Respond with ONLY a valid JSON object (no markdown, no explanation) matching thi
       "name": "Place Name",
       "approximate_location": "City, Country",
       "justification": "Why this place is relevant (1-2 sentences)",
-      "latitude": 48.8566,
-      "longitude": 2.3522
+      "latitude": 48.94716,
+      "longitude": 2.43780
     }
   ]
 }
@@ -74,7 +75,7 @@ Respond with ONLY a valid JSON object (no markdown, no explanation) matching thi
 - Propose UP TO the number of places requested. It's OK to return fewer if you can't find enough, but try hard to reach the requested count.
 - Provide an approximate location (city, region, country) for each place.
 - Provide a short justification (1-2 sentences) explaining why this place is relevant.
-- Provide approximate GPS coordinates (latitude, longitude) for each place for deduplication purposes.
+- Provide precise GPS coordinates (latitude, longitude) for each place with at least 5 decimal places. These coordinates will be used on an interactive map — accuracy is critical. Always verify coordinates via web search.
 - All output must be in English, regardless of the input language.
 PROMPT;
     }

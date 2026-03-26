@@ -113,7 +113,7 @@ class WorkflowCompletionJobTest extends TestCase
         $this->assertStringContainsString('1 lieu(x) créé(s)', $recap->payload['text']);
     }
 
-    public function test_nullifies_intermediate_data_on_items(): void
+    public function test_nullifies_images_data_but_preserves_enrichment_data(): void
     {
         $admin = User::factory()->create();
         $workflow = AutofillWorkflow::factory()->create([
@@ -132,7 +132,8 @@ class WorkflowCompletionJobTest extends TestCase
         $job->handle();
 
         $item->refresh();
-        $this->assertNull($item->enrichment_data);
+        $this->assertNotNull($item->enrichment_data);
+        $this->assertSame('Test', $item->enrichment_data['title']);
         $this->assertNull($item->images_data);
     }
 
