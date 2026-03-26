@@ -66,7 +66,7 @@ IMPORTANT formatting rules for description:
 The complete physical address (street, city, state/region, postal code, country). If no precise street address exists, provide the most specific address available.
 
 ### latitude / longitude
-GPS coordinates with maximum precision (at least 5 decimal places). Use your knowledge to provide the exact location.
+GPS coordinates with maximum precision (at least 5 decimal places). If GPS coordinates are provided in the prompt, verify them and correct if needed. Otherwise, look them up. Accuracy is critical — these will be used on an interactive map.
 
 ### practical_info
 Practical visitor information in English: opening hours, admission fees, how to get there, accessibility, tips. If information is unavailable, explicitly state "Information not available" — NEVER invent practical details.

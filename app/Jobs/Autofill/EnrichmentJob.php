@@ -51,7 +51,10 @@ class EnrichmentJob implements ShouldQueue
             ['provider' => $provider, 'model' => $model] = $this->getProviderAndModel($workflow, 'mid');
 
             $location = $item->enrichment_data['approximate_location'] ?? '';
-            $prompt = "Enrich: {$item->name}, {$location}";
+            $lat = $item->enrichment_data['latitude'] ?? null;
+            $lng = $item->enrichment_data['longitude'] ?? null;
+            $gpsHint = ($lat && $lng) ? " (GPS: {$lat}, {$lng})" : '';
+            $prompt = "Enrich: {$item->name}, {$location}{$gpsHint}";
 
             $webSearchProviders = ['openai', 'anthropic', 'gemini'];
             $useWebSearch = in_array($provider, $webSearchProviders, true);
