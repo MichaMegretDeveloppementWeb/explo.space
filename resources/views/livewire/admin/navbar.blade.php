@@ -31,6 +31,9 @@
                     <a href="{{ route('admin.categories.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-indigo-50 @if(request()->routeIs('admin.categories.*')) text-indigo-600 bg-indigo-50 @endif">
                         Catégories
                     </a>
+                    <a href="{{ route('admin.autofill.index') }}" class="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium transition-colors rounded-md hover:bg-indigo-50 @if(request()->routeIs('admin.autofill.*')) text-indigo-600 bg-indigo-50 @endif">
+                        Remplissage auto
+                    </a>
 
                     {{-- Dropdown Demandes --}}
                     <div class="relative" x-data="{ open: false }" @click.away="open = false">
@@ -119,6 +122,9 @@
                 </a>
                 <a href="{{ route('admin.categories.index') }}" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium @if(request()->routeIs('admin.categories.*')) text-indigo-600 bg-indigo-50 @endif">
                     Catégories
+                </a>
+                <a href="{{ route('admin.autofill.index') }}" class="block text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 rounded-md text-base font-medium @if(request()->routeIs('admin.autofill.*')) text-indigo-600 bg-indigo-50 @endif">
+                    Remplissage auto
                 </a>
 
                 {{-- Dropdown Demandes Mobile --}}

@@ -18,6 +18,7 @@
 /storage/*.key
 /storage/pail
 /storage/debugbar/*
+/storage/app/autofill_temp
 !/storage/debugbar/.gitignore
 /vendor
 Homestead.json
@@ -29,6 +30,9 @@ Thumbs.db
 .junie/
 .mcp.json
 CLAUDE.md
+GEMINI.md
+AGENTS.md
+boost.json
 
 # Documentation de travail et notes
 docs/
@@ -40,6 +44,7 @@ grumphp.yml
 conversation.md
 prompt.txt
 todo_list.md
+TODO_LIST.md
 
 # Scripts utilitaires locaux
 create-test-database.php

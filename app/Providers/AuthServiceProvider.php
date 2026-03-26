@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\AutofillWorkflow;
 use App\Models\User;
+use App\Policies\AutofillPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -15,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         User::class => UserPolicy::class,
+        AutofillWorkflow::class => AutofillPolicy::class,
     ];
 
     /**

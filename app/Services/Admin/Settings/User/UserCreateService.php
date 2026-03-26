@@ -23,7 +23,7 @@ class UserCreateService
     /**
      * Create a new admin user and send invitation email.
      *
-     * @param array<string, mixed> $data ['name' => string, 'email' => string, 'role' => string]
+     * @param  array<string, mixed>  $data  ['name' => string, 'email' => string, 'role' => string]
      *
      * @throws \InvalidArgumentException Si l'email existe déjà
      * @throws \Exception
@@ -60,10 +60,9 @@ class UserCreateService
                 'role' => $user->role,
             ]);
 
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new \Exception('Erreur lors de l\'envoi de l\'invitation par email. La connexion avec le service a échouée.');
         }
-
 
         return $user;
     }

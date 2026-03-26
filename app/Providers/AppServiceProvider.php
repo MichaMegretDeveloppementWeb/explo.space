@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Ai\Providers\PerplexityProvider;
 use App\Contracts\Repositories\Admin\Category\CategorySelectionRepositoryInterface;
 use App\Contracts\Repositories\Admin\Category\Create\CategoryCreateRepositoryInterface;
 use App\Contracts\Repositories\Admin\Category\Edit\CategoryUpdateRepositoryInterface;
@@ -33,6 +34,7 @@ use App\Contracts\Services\Admin\Auth\AdminAuthenticationServiceInterface;
 use App\Contracts\Services\Admin\EditRequest\Detail\EditRequestTranslationServiceInterface;
 use App\Contracts\Services\GeocodingServiceInterface;
 use App\Contracts\Translation\TranslationStrategyInterface;
+use App\Models\AutofillWorkflow;
 use App\Repositories\Admin\Category\CategorySelectionRepository;
 use App\Repositories\Admin\Category\Create\CategoryCreateRepository;
 use App\Repositories\Admin\Category\Edit\CategoryUpdateRepository;
@@ -61,12 +63,19 @@ use App\Repositories\Web\Place\PreviewModal\PlacePreviewRepository;
 use App\Repositories\Web\Place\Show\PlaceDetailRepository as WebPlaceDetailRepository;
 use App\Repositories\Web\Tag\TagSelectionRepository as WebTagSelectionRepository;
 use App\Services\Admin\Auth\AdminAuthenticationService;
+use App\Services\Admin\Autofill\AutofillPipelineService;
 use App\Services\Admin\EditRequest\Detail\EditRequestTranslationService;
 use App\Strategies\Geocoding\GeocodingResolver;
 use App\Strategies\Translation\TranslationResolver;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Ai\AiManager;
+use Laravel\Ai\Gateway\Prism\PrismGateway;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -75,6 +84,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Bridge: JsonSchema contract not yet available in this framework version.
+        // The AI SDK references it but JsonSchemaTypeFactory extends the concrete class.
+        if (! class_exists(\Illuminate\Contracts\JsonSchema\JsonSchema::class)) {
+            class_alias(
+                \Illuminate\JsonSchema\JsonSchema::class,
+                \Illuminate\Contracts\JsonSchema\JsonSchema::class
+            );
+        }
         // Repositories
         $this->app->bind(
             PlaceExplorationRepositoryInterface::class,
@@ -248,6 +265,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register Perplexity as a custom AI driver (not yet in Laravel AI SDK)
+        $this->app->make(AiManager::class)->extend('perplexity', function ($app, array $config) {
+            return new PerplexityProvider(
+                new PrismGateway($app['events']),
+                $config,
+                $app->make(Dispatcher::class)
+            );
+        });
+
+        $this->registerAutofillJobFailureHandler();
+
         Schema::defaultStringLength(191);
 
         // Ajouter un placeholder custom :maxMo (en plus de :max standard)
@@ -266,6 +294,60 @@ class AppServiceProvider extends ServiceProvider
             $message = str_replace(':max', $parameters[0] ?? '', $message);
 
             return $message;
+        });
+    }
+
+    /**
+     * Register a global handler for autofill job failures.
+     *
+     * This catches failures that bypass the job's failed() method,
+     * such as MaxAttemptsExceededException thrown at queue level.
+     */
+    private function registerAutofillJobFailureHandler(): void
+    {
+        Queue::failing(function (JobFailed $event) {
+            try {
+                /** @var array<string, mixed> $payload */
+                $payload = json_decode($event->job->getRawBody(), true);
+                $displayName = $payload['displayName'] ?? '';
+
+                if (! str_starts_with((string) $displayName, 'App\\Jobs\\Autofill\\')) {
+                    return;
+                }
+
+                /** @var string $serialized */
+                $serialized = $payload['data']['command'] ?? '';
+                $command = unserialize($serialized);
+
+                if (! is_object($command) || ! property_exists($command, 'workflowId')) {
+                    return;
+                }
+
+                /** @var int $workflowId */
+                $workflowId = $command->workflowId;
+                $workflow = AutofillWorkflow::find($workflowId);
+
+                if (! $workflow || ! $workflow->isActive()) {
+                    return;
+                }
+
+                app(AutofillPipelineService::class)->pause(
+                    $workflow,
+                    'Une erreur inattendue est survenue. Vous pouvez réessayer.',
+                    mb_substr($event->exception->getMessage(), 0, 1000)
+                );
+
+                Log::warning('Autofill workflow paused via global failure handler', [
+                    'workflow_id' => $workflowId,
+                    'job' => $displayName,
+                    'exception' => get_class($event->exception),
+                ]);
+            } catch (\Throwable $e) {
+                Log::critical('Failed to pause autofill workflow after job failure', [
+                    'error' => $e->getMessage(),
+                    'trace' => mb_substr($e->getTraceAsString(), 0, 500),
+                ]);
+            }
         });
     }
 }

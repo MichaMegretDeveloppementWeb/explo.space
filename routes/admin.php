@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\Auth\AdminAuthController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationController;
 use App\Http\Controllers\Admin\Auth\InvitationController;
 use App\Http\Controllers\Admin\Auth\PasswordResetController;
+use App\Http\Controllers\Admin\Autofill\AutofillListController;
+use App\Http\Controllers\Admin\Autofill\AutofillShowController;
 use App\Http\Controllers\Admin\Category\CategoryCreateController;
 use App\Http\Controllers\Admin\Category\CategoryEditController;
 use App\Http\Controllers\Admin\Category\CategoryListController;
@@ -142,6 +144,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/categories/{id}/editer', CategoryEditController::class)
             ->name('categories.edit');
+
+        // Remplissage automatique (Autofill)
+        Route::get('/remplissage-auto', AutofillListController::class)
+            ->name('autofill.index');
+
+        Route::get('/remplissage-auto/{workflow}', AutofillShowController::class)
+            ->name('autofill.show');
 
         // Paramètres (Settings)
         Route::get('/parametres', [SettingsShowController::class, 'show'])
