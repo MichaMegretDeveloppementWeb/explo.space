@@ -11,15 +11,16 @@ class AutofillCleanupService
     /**
      * Purge intermediate data after a workflow completes successfully.
      *
-     * Nullifies enrichment_data and images_data on items, and cleans up temp files.
+     * Nullifies images_data on items and cleans up temp files.
+     * Enrichment data is preserved for the workflow detail page (justification, description, etc.).
      * Messages are preserved so the chat can display the recap.
      * Step logs are preserved for the I/O modal.
      */
     public function purgeCompletedWorkflow(AutofillWorkflow $workflow): void
     {
-        // Nullify intermediate data on items (keep items for detail page)
+        // Nullify only images_data (temp file references, no longer needed).
+        // Keep enrichment_data for the detail page recap.
         $workflow->items()->update([
-            'enrichment_data' => null,
             'images_data' => null,
         ]);
 

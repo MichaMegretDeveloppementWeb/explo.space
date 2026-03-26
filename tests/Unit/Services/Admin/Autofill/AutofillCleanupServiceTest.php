@@ -46,7 +46,7 @@ class AutofillCleanupServiceTest extends TestCase
         $this->assertSame(3, $workflow->messages()->count());
     }
 
-    public function test_purge_nullifies_enrichment_and_images_data(): void
+    public function test_purge_nullifies_images_data_but_preserves_enrichment_data(): void
     {
         $workflow = AutofillWorkflow::factory()->completed()->create([
             'admin_id' => $this->admin->id,
@@ -55,14 +55,16 @@ class AutofillCleanupServiceTest extends TestCase
         $item = AutofillItem::factory()->create([
             'workflow_id' => $workflow->id,
             'status' => AutofillItemStatus::Saved,
-            'enrichment_data' => ['title' => 'Test'],
+            'enrichment_data' => ['title' => 'Test', 'justification' => 'Space museum'],
             'images_data' => [['url' => 'https://example.com/img.jpg']],
         ]);
 
         $this->service->purgeCompletedWorkflow($workflow);
 
         $item->refresh();
-        $this->assertNull($item->enrichment_data);
+        $this->assertNotNull($item->enrichment_data);
+        $this->assertSame('Test', $item->enrichment_data['title']);
+        $this->assertSame('Space museum', $item->enrichment_data['justification']);
         $this->assertNull($item->images_data);
     }
 
